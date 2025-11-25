@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Iuran Warga & Pembayaran Kas (Terintegrasi)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ======================================= */
+        /* === CSS UMUM & FULL LAYAR === */
+        /* ======================================= */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            margin: 0 auto;
+            background: white;
+            padding: 30px 15px;
+            box-shadow: none; 
+            position: relative;
+        }
+        .content-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 1.8em;
+            color: #ff5722;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        /* ======================================= */
+        /* === Search & Result Styling === */
+        /* ======================================= */
+        #search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        #search-form input[type="text"] {
+            flex-grow: 1; 
+            max-width: 70%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px 0 0 8px;
+            font-size: 1em;
+        }
+        #search-form button {
+            width: 100px;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        #result-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .data-item .lunas { color: #28a745; font-weight: bold; }
+        .data-item .belum { color: #dc3545; font-weight: bold; }
+        .total-info {
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 4px;
+            text-align: center;
+        }
+        /* Style untuk pesan lunas */
+        #lunas-message {
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        /* ======================================= */
+        /* === Manual Payment Integration === */
+        /* ======================================= */
+        #btn-show-manual {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        #btn-show-manual:hover {
+            background-color: #e68900;
+        }
+        #manual-payment-section {
+            margin-top: 25px;
+            padding: 20px;
+            border: 1px dashed #007bff;
+            border-radius: 8px;
+            background-color: #f8fafd;
+            display: none;
+            text-align: center;
+        }
+        #payment-form-manual input[type="number"],
+        #payment-form-manual input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        #payment-result-manual { 
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed #28a745;
+            background-color: #e6ffed;
+            text-align: left;
+            display: none;
+        }
+        #payment-result-manual button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            background-color: #25d366; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        /* Style QRIS Image Container */
+        .qris-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            
+        }
+        .qris-display img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        /* ======================================= */
+        /* === KOMPONEN TAMBAHAN === */
+        /* ======================================= */
+        .reset-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #6c757d; 
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="container-iuran">
+        <div class="content-wrapper">
+            <h1>🔍 CEK & BAYAR KAS GANG E21-25 </h1>
+            <p>Masukkan **Nama** atau **NO Rumah**</p>
+            <p style="font-size: 0.9em; color: #888;">Coba cari dengan: **ROHMAN** atau **E21-48**</p>
+
+            <form id="search-form">
+                <input type="text" 
+                id="search-input" 
+                placeholder="Contoh: ROHMAN atau E21-48" required>
+                <button type="submit"><i class="fas fa-search"></i> CARI</button>
+            </form>
+
+            <div class="loader" id="loader"></div>
+
+            <div id="result-container" style="display:none;">
+                <div id="status-message" class="status-message"></div>
+
+                <div id="content-display">
+                    <h3 style="color:#007bff;">Detail Iuran Kas: <span id="user-name"></span></h3>
+                    
+                    <div id="data-display"></div>
+
+                    <div id="payment-summary">
+                        <div class="total-info">
+                            Total Tunggakan: <span id="total-tunggakan">Rp 0</span>
+                        </div>
+                    </div>
+                    
+                    <div id="lunas-message">
+                        <i class="fas fa-handshake"></i> Terima kasih, **Anda sudah membayar kas dengan lancar!**
+                    </div>
+                    
+                    <div id="tunggakan-options">
+                        <p style="margin-top:15px; font-style:italic;">--- Pilihan Pembayaran Lain ---</p>
+
+                        <button id="btn-show-manual" onclick="toggleManualPayment()">
+                            <i class="fas fa-calendar-check"></i> Bayar Iuran Per Bulan (Manual)
+                        </button>
+                    </div>
+
+
+                    <div id="manual-payment-section">
+                        <h3>💵 Pembayaran Per Bulan</h3>
+                        <p>Bayar iuran spesifik untuk bulan tertentu.</p>
+                        <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0;">
+                        <p style="font-weight: bold;">Untuk: <span id="manual-user-detail" style="color:#ff5722;"></span></p>
+
+                        <form id="payment-form-manual">
+
+                            <div class="form-group" style="text-align: left;">
+                                <label for="manual-amount">Jumlah Pembayaran (Rp)</label>
+                                <input type="number" id="manual-amount" name="amount" min="25000" required placeholder="masukan jumlah " value="">
+                            </div>
+
+                            <div class="form-group" style="text-align: left;">
+                                <label for="manual-month">Bulan Pembayaran</label>
+                                <input type="text" id="manual-month" name="month" required placeholder="Contoh: Agustus 2025">
+                            </div>
+
+                            <div class="form-group" style="text-align: left;">
+                                <label>Pilih Metode Pembayaran</label>
+                                <div class="radio-group">
+                                    <input type="radio" id="manual-qrcode" name="method" value="QR Code (QRIS)" checked>
+                                    <label for="manual-qrcode">QR Code (QRIS)</label>
+
+                                    <input type="radio" id="manual-banktransfer" name="method" value="Transfer Bank">
+                                    <label for="manual-banktransfer">Transfer Bank</label>
+                                </div>
+                            </div>
+
+                            <button type="submit"><i class="fas fa-hand-holding-usd"></i> Lanjutkan Pembayaran</button>
+                        </form>
+
+                        <div id="payment-result-manual">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="reset-button" onclick="resetContainer('container-iuran')">
+            <i class="fas fa-redo"></i> Reset Pencarian
+        </button>
+    </div>
+
+    <script>
+        // Data Dummy Sederhana
+        const DUMMY_DATA = [
+            {
+                id: 'ROHMAN',
+                nama: 'E21-51',
+                iuran: [
+                    { bulan: 'Januari 2025', nominal: 25000, status: 'LUNAS'},
+                    { bulan: 'Februari 2025', nominal: 25000, status: 'BELUM BAYAR'},
+                    { bulan: 'Maret 2025',  nominal: 25000, status: 'BELUM BAYAR'},
+                    { bulan: 'April 2025',  nominal: 25000, status: 'BELUM BAYAR'},
+                    { bulan: 'Mei 2025',    nominal: 25000, status: 'BELUM BAYAR'},
+                ]
+            },
+            {
+                id: 'NANA',
+                nama: 'E21-48',
+                iuran: [
+                    { bulan: 'Januari 2025', nominal: 50000, status: 'LUNAS'},
+                    { bulan: 'Februari 2025', nominal: 50000, status: 'LUNAS'},
+                    { bulan: 'Maret 2025',  nominal: 50000, status: 'LUNAS'},
+                    { bulan: 'April 2025',  nominal: 50000, status: 'LUNAS'},
+                ]
+            }
+        ];
+
+        // --- VARIABEL DOM & STATE ---
+        const searchForm = document.getElementById('search-form');
+        const loader = document.getElementById('loader');
+        const resultContainer = document.getElementById('result-container');
+        const contentDisplay = document.getElementById('content-display');
+        const dataDisplay = document.getElementById('data-display');
+        const userNameSpan = document.getElementById('user-name');
+        const totalTunggakanSpan = document.getElementById('total-tunggakan');
+        const statusMessageDiv = document.getElementById('status-message');
+        const lunasMessageDiv = document.getElementById('lunas-message');
+        const tunggakanOptionsDiv = document.getElementById('tunggakan-options');
+        const btnShowManual = document.getElementById('btn-show-manual');
+        const manualPaymentSection = document.getElementById('manual-payment-section');
+        const manualPaymentForm = document.getElementById('payment-form-manual');
+        const manualResultDiv = document.getElementById('payment-result-manual');
+        const manualUserDetailSpan = document.getElementById('manual-user-detail');
+
+        let currentTunggakanAmount = 0; 
+        let currentUserId = ''; 
+        let currentUserName = ''; 
+        
+        // --- FUNGSI UTAMA PENCARIAN ---
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const query = document.getElementById('search-input').value.trim().toUpperCase();
+            
+            loader.style.display = 'block';
+            resultContainer.style.display = 'none';
+            manualPaymentSection.style.display = 'none'; 
+            manualResultDiv.style.display = 'none';
+            lunasMessageDiv.style.display = 'none'; // Sembunyikan pesan lunas
+
+            // Reset state user
+            currentUserId = '';
+            currentUserName = '';
+
+            setTimeout(() => {
+                loader.style.display = 'none';
+
+                const foundUser = DUMMY_DATA.find(user => 
+                    user.id.toUpperCase() === query || user.nama.toUpperCase().includes(query)
+                );
+                
+                resultContainer.style.display = 'block';
+
+                if (foundUser) {
+                    currentUserId = foundUser.id;
+                    currentUserName = foundUser.nama;
+                    displayUserData(foundUser);
+                } else {
+                    displayNotFound(query);
+                }
+            }, 1500); 
+        });
+
+        // --- FUNGSI MENAMPILKAN DATA ---
+        function displayUserData(user) {
+            statusMessageDiv.className = 'status-message status-found';
+            statusMessageDiv.innerHTML = `✅ Data Warga **${user.nama}** Ditemukan!`;
+            contentDisplay.style.display = 'block';
+
+            userNameSpan.textContent = user.nama + ' (' + user.id + ')';
+            manualUserDetailSpan.textContent = user.nama + ' (' + user.id + ')'; 
+
+            let htmlContent = '';
+            currentTunggakanAmount = 0;
+
+            user.iuran.forEach(item => {
+                const statusClass = item.status === 'LUNAS' ? 'lunas' : 'belum';
+                const statusText = item.status === 'LUNAS' ? 'LUNAS' : 'TUNGGAKAN';
+                const nominalIDR = item.nominal.toLocaleString('id-ID');
+                
+                if (item.status !== 'LUNAS') {
+                    currentTunggakanAmount += item.nominal;
+                }
+
+                htmlContent += `
+                    <div class="data-item">
+                        <span><strong>${item.bulan}:</strong></span>
+                        <span>Rp ${nominalIDR}</span>
+                        <span class="${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            });
+            
+            dataDisplay.innerHTML = htmlContent;
+            totalTunggakanSpan.textContent = 'Rp ' + currentTunggakanAmount.toLocaleString('id-ID');
+
+            const totalInfoDiv = document.querySelector('.total-info');
+            
+            if (currentTunggakanAmount > 0) {
+                // Ada tunggakan
+                tunggakanOptionsDiv.style.display = 'block'; 
+                lunasMessageDiv.style.display = 'none';
+                totalInfoDiv.style.backgroundColor = '#ffe8e8';
+                totalInfoDiv.style.color = '#dc3545';
+            } else {
+                // Semua Lunas
+                tunggakanOptionsDiv.style.display = 'none'; 
+                lunasMessageDiv.style.display = 'block';
+                totalTunggakanSpan.textContent = 'Rp 0 (Semua Iuran Lunas!)';
+                totalInfoDiv.style.backgroundColor = '#e6ffed';
+                totalInfoDiv.style.color = '#1e7e34';
+            }
+        }
+        
+        // --- FUNGSI MENAMPILKAN/MENYEMBUNYIKAN FORM MANUAL ---
+        function toggleManualPayment() {
+            manualPaymentSection.style.display = manualPaymentSection.style.display === 'block' ? 'none' : 'block';
+            manualResultDiv.style.display = 'none';
+            manualPaymentForm.reset();
+        }
+
+        // --- FUNGSI SUBMIT PEMBAYARAN MANUAL ---
+        manualPaymentForm.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+
+            const amount = document.getElementById('manual-amount').value;
+            const month = document.getElementById('manual-month').value;
+            const method = document.querySelector('#manual-payment-section input[name="method"]:checked').value;
+            
+            manualResultDiv.style.display = 'block';
+            
+            const amountIDR = new Intl.NumberFormat('id-ID').format(amount);
+            
+            let htmlContent = `
+                <h3><i class="fas fa-check-circle"></i> Instruksi Pembayaran Dibuat</h3>
+                <p><strong>Warga:</strong> ${currentUserName} (${currentUserId})</p>
+                <p><strong>Untuk Bulan:</strong> ${month}</p>
+                <p><strong>Metode:</strong> ${method}</p>
+                <p><strong>Jumlah:</strong> <span style="font-size: 1.2em; color: #dc3545; font-weight: bold;">Rp ${amountIDR}</span></p>
+                <hr style="margin: 10px 0;">
+            `;
+
+            if (method === 'QR Code (QRIS)') {
+                 htmlContent += `
+                    <p style="text-align: center;">Scan **QRIS** di bawah ini menggunakan aplikasi pembayaran Anda (Dana, GoPay, Mobile Banking, dll.)</p>
+                    <div class="qris-display">
+                        <img src="qrcode.jpg" alt="QRIS Kas Gang E21/25" class="qrcode-image">
+                    </div>
+                `;
+            } else if (method === 'Transfer Bank') {
+                htmlContent += `
+                    <div style="text-align: left;">
+                        <p style="font-weight: bold; margin-top: 10px;">Pilih Salah Satu Rekening:</p>
+                        <p><strong>Bank:</strong> MANDIRI</p>
+                        <p><strong>Nomor Rekening:</strong> 1234-567-890</p>
+                        <p><strong>Atas Nama:</strong> CANDRA</p>
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 10px 0;">
+                        <p><strong>Bank:</strong> DANA (Transfer Virtual)</p>
+                        <p><strong>Nomor Rekening:</strong> 0857-8125-6570</p>
+                        <p><strong>Atas Nama:</strong> CANDRA</p>
+                    </div>
+                    <p style="color: red; font-weight: bold; margin-top: 15px;">**Penting:** Pastikan jumlah transfer tepat Rp ${amountIDR}</p>
+                `; 
+            }
+
+            // Tambahkan Tombol WhatsApp
+            htmlContent += `
+                <p style="margin-top: 25px; font-weight: bold; color: #28a745;">Langkah Terakhir: Kirim Bukti Pembayaran</p>
+                <button onclick="sendProofViaWhatsApp('${currentUserName}', '${currentUserId}', '${amountIDR}', '${month}', '${method}')">
+                    <i class="fab fa-whatsapp"></i> Upload Bukti Pembayaran via WhatsApp
+                </button>
+            `;
+
+            manualResultDiv.innerHTML = htmlContent;
+        });
+
+        // --- FUNGSI WA INTEGRATION ---
+        function sendProofViaWhatsApp(name, id, amountIDR, month, method) {
+            const phoneNumber = '6285781256570'; // Nomor WhatsApp Bendahara
+            const message = `*Konfirmasi Pembayaran Iuran Kas*\n\n` +
+                            `Warga: *${name}* (ID: ${id})\n` +
+                            `Bulan: *${month}*\n` +
+                            `Jumlah: *Rp ${amountIDR}*\n` +
+                            `Metode: *${method}*\n\n` +
+                            `Mohon dicatat dan diverifikasi. Bukti transfer/QR terlampir.`;
+                            
+            const whatsappURL = `https://wa.me/${+6285781256570}?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappURL, '_blank');
+        }
+
+
+        // --- FUNGSI NOT FOUND ---
+        function displayNotFound(query) {
+            statusMessageDiv.className = 'status-message status-not-found';
+            statusMessageDiv.innerHTML = `❌ Data untuk **${query}** Tidak Ditemukan.`;
+            contentDisplay.style.display = 'none';
+            dataDisplay.innerHTML = '';
+            tunggakanOptionsDiv.style.display = 'none';
+            lunasMessageDiv.style.display = 'none';
+        }
+
+        // --- FUNGSI RESET UNIVERSAL ---
+        function resetContainer(containerId) {
+            if (containerId === 'container-iuran') {
+                document.getElementById('search-form').reset();
+                document.getElementById('search-input').value = '';
+                document.getElementById('result-container').style.display = 'none';
+                document.getElementById('loader').style.display = 'none';
+                manualPaymentSection.style.display = 'none';
+                manualResultDiv.style.display = 'none';
+                tunggakanOptionsDiv.style.display = 'none';
+                lunasMessageDiv.style.display = 'none';
+                currentTunggakanAmount = 0;
+                currentUserId = '';
+                currentUserName = '';
+            }
+        }
+    </script>
+
+</body>
+</html>
