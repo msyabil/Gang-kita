@@ -722,7 +722,7 @@
                 if (amount >= tunggakan2025) {
                     // Bayar lunas tunggakan 2025
                     remainingAmount -= tunggakan2025;
-                    detailPembayaran += `LUNAS Tunggakan 2025 (Rp ${tunggakan2025.toLocaleString('id-ID')})`;
+                    detailPembayaran += `Lunas Tunggakan 2025 (Rp ${tunggakan2025.toLocaleString('id-ID')})`;
                     isTunggakan2025Paid = true;
                 } else {
                     // Bayar sebagian tunggakan 2025
@@ -747,7 +747,7 @@
                         const monthsAvailable = currentTunggakanList.length;
                         
                         detailPembayaran += (detailPembayaran ? ' & ' : '') + 
-                                            `LUNAS Iuran 2026: ${monthsToPay.length} bulan (${monthsToPay.join(', ')})`;
+                                            `Bayar Iuran 2026: ${monthsToPay.length} bulan (${monthsToPay.join(', ')})`;
                         
                         const sisaUang = remainingAmount - (monthsAvailable * IURAN_PER_BULAN);
                         detailPembayaran += ` + KELEBIHAN bayar Rp ${sisaUang.toLocaleString('id-ID')}.`;
@@ -755,7 +755,7 @@
                     } else {
                         // Normal: bayar sejumlah bulan 2026
                         detailPembayaran += (detailPembayaran ? ' & ' : '') + 
-                                            `LUNAS Iuran 2026: ${monthsToPay.length} bulan (${monthsToPay.join(', ')})`;
+                                            `Bayar Iuran 2026: ${monthsToPay.length} bulan (${monthsToPay.join(', ')})`;
                     }
 
                 } else if (remainingAmount > 0 && remainingAmount < IURAN_PER_BULAN) {
