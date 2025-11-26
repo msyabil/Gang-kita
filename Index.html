@@ -202,7 +202,7 @@
             
         }
         .qris-display img {
-            max-width: 90%;
+            max-width: 100%;
             height: auto;
             border-radius: 5px;
         }
@@ -341,13 +341,13 @@
                     <div class="form-group" style="text-align: left; margin-top: 20px;">
                         <label for="manual-amount">Jumlah Pembayaran (Rp) Total Yang Disetor</label>
                         <input type="number" id="manual-amount" name="amount" min="1" step="1" required placeholder="Contoh: 25000" value="">
-                        <p style="margin-top:3px; font-style:italic;" > priode 2025-2026</p>
+                        <p style="margin-top:3px; font-style:italic;" > </p>
                     </div>
 
                     <div class="form-group" style="text-align: left;">
                         <label for="manual-month">Detail Pelunasan</label>
                         <input type="text" id="manual-month" name="month" required readonly placeholder="Diisi otomatis..." style="background-color: #eee;">
-                        <p style="margin-top:1px; font-style:italic;" >Menunjukkan pelunasan Tunggakan 2025, dan Bulan 2026 yang dilunasi.</p>
+                        <p style="margin-top:1px; font-style:italic;" ></p></p>
                     </div>
 
                     <div class="form-group" style="text-align: left;">
@@ -399,7 +399,7 @@
             {
                 id: 'E21-51',
                 nama: 'ROHMAN',
-                tunggakan_2025: 0, // Sudah lunas
+               tunggakan_2025: 0, // Sudah lunas
                 iuran: [
                     { bulan: 'JANUARI',nominal:   25000, status: 'LUNAS'}, // Diubah LUNAS
                     { bulan: 'FEBRUARI',nominal:25000, status: 'BLUM BAYAR'},
