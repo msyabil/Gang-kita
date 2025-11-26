@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Iuran Warga & Pembayaran Kas (Terintegrasi)</title>
+    <title>Aplikasi Iuran Warga & Pembayaran Kas (Petugas)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ======================================= */
@@ -42,37 +42,170 @@
         }
         
         /* ======================================= */
-        /* === Search & Result Styling === */
+        /* === LOGIN STYLING (TETAP) === */
         /* ======================================= */
-        #search-form {
+        #login-container {
             display: flex;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f4f8; 
+            padding: 0;
+            margin: 0;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+        }
+        .login-box h2 {
+            color: #007bff;
             margin-bottom: 30px;
         }
-        #search-form input[type="text"] {
-            flex-grow: 1; 
-            max-width: 50%;
+        .login-box input[type="text"],
+        .login-box input[type="password"] {
+            width: 100%;
             padding: 12px;
-            border: 2px solid #ccc;
-            border-radius: 8px 0 0 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
             font-size: 1em;
         }
-        #search-form button {
-            width: 100px;
+        .login-box button {
+            width: 100%;
             padding: 12px;
-            background-color: #007bff;
+            background-color: #ff5722;
             color: white;
             border: none;
-            border-radius: 0 8px 8px 0;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.3s;
         }
-        #result-container {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+        .login-box button:hover {
+            background-color: #e64a19;
+        }
+        #login-message {
+            color: #dc3545;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* ======================================= */
+        /* === Home Menu (TETAP) === */
+        /* ======================================= */
+        #home-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+        }
+        #home-menu h2 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        #home-menu button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #home-menu button:hover {
+            background-color: #c82333;
+        }
+        
+        /* ======================================= */
+        /* === DASHBOARD PETUGAS (REVISI) === */
+        /* ======================================= */
+        #admin-dashboard {
+            display: none; /* Default hidden */
+            text-align: left;
+        }
+        .saldo-box {
+            background-color: #28a745;
+            color: white;
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+        .saldo-box h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .saldo-running-text {
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .saldo-running-text span {
+            display: inline-block;
+            padding-left: 100%;
+            font-size: 1.7em; 
+            font-weight: bold;
+            animation: marquee 15s linear infinite;
+        }
+        @keyframes marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .menu-item {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .menu-item:hover {
+            transform: translateY(-5px);
+            background-color: #0056b3;
+        }
+        .menu-item i {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .menu-item p {
+            margin: 0;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+
+        /* ======================================= */
+        /* === RESULT STYLING (TETAP) === */
+        /* ======================================= */
+        #result-container, #instruction-container {
+            display: none; /* Pastikan default hidden */
             text-align: left;
         }
         .data-item {
@@ -91,7 +224,6 @@
             border-radius: 4px;
             text-align: center;
         }
-        /* Style untuk pesan lunas */
         #lunas-message {
             padding: 15px;
             margin-top: 20px;
@@ -104,30 +236,36 @@
         }
         
         /* ======================================= */
-        /* === Manual Payment Integration === */
+        /* === MODIFIKASI TOMBOL BAYAR (BARU) === */
         /* ======================================= */
-        #btn-show-manual {
+        #btn-show-manual-from-detail {
             width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            background-color: red;
+            padding: 18px 12px; /* Ditingkatkan */
+            margin-top: 25px; /* Margin diperlebar */
+            background-color: #ff5722;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px; /* Lebih Bulat */
             cursor: pointer;
             font-weight: bold;
-            transition: background-color 0.3s;
+            font-size: 1.2em; /* Font lebih besar */
+            letter-spacing: 1px;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4); /* Efek Bayangan */
         }
-        #btn-show-manual:hover {
-            background-color: blue;
+        #btn-show-manual-from-detail:hover {
+            background-color: #e64a19;
+            transform: translateY(-3px); /* Efek Naik */
+            box-shadow: 0 6px 20px rgba(255, 87, 34, 0.6);
         }
+
         #manual-payment-section {
-            margin-top: 25px;
+            display: none; /* Pastikan default hidden */
+            margin-top: 0;
             padding: 20px;
             border: 1px dashed #007bff;
             border-radius: 8px;
             background-color: #f8fafd;
-            display: none;
             text-align: center;
         }
         #payment-form-manual input[type="number"],
@@ -139,9 +277,7 @@
             border-radius: 5px;
             box-sizing: border-box;
         }
-        
-        /* TOMBOL LANJUTKAN PEMBAYARAN */
-        #payment-form-manual button {
+        #payment-form-manual button[type="submit"] {
             width: 100%;
             padding: 15px; 
             margin-top: 25px; 
@@ -155,22 +291,20 @@
             font-size: 1.1em; 
             transition: background-color 0.3s, transform 0.2s;
         }
-
-        #payment-form-manual button:hover {
+        #payment-form-manual button[type="submit"]:hover {
             background-color: #e64a19; 
             transform: translateY(-1px); 
         }
         
-        #payment-result-manual { 
-            margin-top: 20px;
-            padding: 15px;
+        /* Instruksi Pembayaran (BARU) */
+        #instruction-container { 
+            display: none; 
+            padding: 20px;
             border: 1px dashed #28a745;
             background-color: #e6ffed;
             text-align: left;
-            display: none;
+            border-radius: 8px;
         }
-        
-        /* Tombol WA yang disembunyikan/dinonaktifkan */
         #btn-whatsapp-proof {
             margin-top: 15px;
             width: 100%;
@@ -188,8 +322,6 @@
             background-color: #25d366; 
             cursor: pointer;
         }
-
-        /* Style QRIS Image Container */
         .qris-display {
             display: flex;
             justify-content: center;
@@ -206,7 +338,6 @@
             height: auto;
             border-radius: 5px;
         }
-        /* Style untuk Checkbox Konfirmasi */
         #confirmation-container {
             margin: 15px 0;
             padding: 10px;
@@ -221,8 +352,6 @@
             margin-right: 10px;
             transform: scale(1.3);
         }
-
-        /* Style Khusus untuk Instruksi Offline */
         .offline-instructions {
             padding: 15px;
             background-color: #fce4ec; 
@@ -232,14 +361,15 @@
             color: #880e4f;
             text-align: left;
         }
-        
-        /* Style untuk Detail Tunggakan */
-                #tunggakan-detail {
-            font-size: 0.6em;
+        #tunggakan-detail {
+            font-size: 0.9em; 
             text-align: left;
-            margin-top: 5px;
-            line-height: 1.5;
-            color: #6c757d;
+            margin-top: 10px; 
+            line-height: 1.8; 
+            color: #495057; 
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
         }
         .tunggakan-line {
             display: flex;
@@ -251,51 +381,187 @@
             padding-top: 5px;
             margin-top: 5px;
             font-weight: bold;
-            color: #dc3545; /* Merah untuk total */
+            color: #dc3545; 
+            font-size: 1.1em;
+        }
+        
+        .data-anggota-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .data-anggota-table th, .data-anggota-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .data-anggota-table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .data-anggota-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        /* ======================================= */
+        /* === LAPORAN KAS STYLING (BARU) === */
+        /* ======================================= */
+        #cash-report-container {
+            display: none; /* Default hidden */
+            text-align: left;
+            margin-top: 20px;
+        }
+        .report-summary-box {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .summary-card {
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 30%;
+        }
+        .summary-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1em;
+        }
+        .summary-card p {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 0;
+        }
+        .card-pemasukan {
+            background-color: #e6ffed;
+            color: #1e7e34;
+            border: 1px solid #c3e6cb;
+        }
+        .card-pengeluaran {
+            background-color: #fcecec;
+            color: #dc3545;
+            border: 1px solid #f5c6cb;
+        }
+        .card-saldo {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .cash-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .cash-table th, .cash-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .cash-table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .cash-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* MODIFIKASI: Tombol Edit/Aksi */
+        .edit-button {
+            background-color: #007bff; 
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8em;
+            transition: background-color 0.2s;
+            margin-left: 10px;
+        }
+        .edit-button:hover {
+            background-color: #0056b3;
         }
 
 
-
-        /* ======================================= */
-        /* === KOMPONEN TAMBAHAN === */
-        /* ======================================= */
-        .reset-button {
-            position: fixed;
+        /* Tombol Kembali (MODIFIKASI) */
+        .btn-back {
+            position: absolute;
             bottom: 10px;
-            right: 10px;
+            left: 15px;
             padding: 10px 15px;
-            background-color: #6c757d; 
+            background-color: #6c757d;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 0.9em;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            z-index: 50;
+            display: none; /* Default hidden */
         }
+        
     </style>
 </head>
 <body>
 
-    <div class="container" id="container-iuran">
-        <div class="content-wrapper">
-            <h1>🔍 CEK & BAYAR KAS GANG E21-25 </h1>
-            <p>silahkan cek data anda dengan memasukan nama / Blok-NO Rumah</p>
-            <p style="font-size: 0.9em; color: #888;">Contoh: ROHMAN atau E21-51 </p>
-
-            <form id="search-form">
-                <input type="text" 
-                id="search-input" 
-                placeholder="Gang E21-25" required>
-                <button type="submit"><i class="fas fa-search"></i> CARI</button>
+    <div id="login-container">
+        <div class="login-box">
+            <h2><i class="fas fa-user-tag"></i> Login Petugas Kas</h2>
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> Masuk</button>
             </form>
+            <p id="login-message" style="display:none;">Username atau Password salah!</p>
+        </div>
+    </div>
 
-            <div class="loader" id="loader"></div>
 
-            <div id="result-container" style="display:none;">
+    <div class="container" id="container-iuran" style="display:none;">
+        <div class="content-wrapper">
+            
+            <div id="home-menu">
+                <h2 id="current-user-info"><i class="fas fa-user-shield"></i> Hi, Petugas!</h2>
+                <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+
+            <h1>🏡 APLIKASI KAS GANG E21-25 </h1>
+            <div class="loader" id="loader" style="display:none;"></div>
+            
+            <div id="admin-dashboard">
+                <div class="saldo-box">
+                    <h3><i class="fas fa-money-check-alt"></i> SISA SALDO KAS TERKINI</h3>
+                    <div class="saldo-running-text">
+                        <span id="current-saldo-text">Rp 12,345,678. Saldo ini adalah akumulasi dana iuran, kas RT, dan BSK.</span>
+                    </div>
+                </div>
+                
+                <h3 style="color:#007bff; margin-top: 30px;"><i class="fas fa-th-large"></i> Menu Utama Petugas</h3>
+                <div class="menu-grid">
+                    <div class="menu-item" onclick="showDataUser(currentUserId)">
+                        <i class="fas fa-id-card-alt"></i>
+                        <p>Kartu Iuran Saya</p>
+                        <p style="font-size:0.8em; margin-top: 5px;">(Blok: E25-23)</p>
+                    </div>
+                    <div class="menu-item" onclick="showDataAnggota()">
+                        <i class="fas fa-users"></i>
+                        <p>Data Anggota Kas</p>
+                    </div>
+                    <div class="menu-item" id="menu-laporan-kas" onclick="showCashReport()"> 
+                        <i class="fas fa-chart-line"></i>
+                        <p>Laporan Kas</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="result-container">
                 <div id="status-message" class="status-message"></div>
 
                 <div id="content-display">
-                    <h3 style="color:#007bff;">Detail Iuran Kas: <span id="user-name"></span></h3>
+                    <h3 style="color:#007bff;"><i class="fas fa-receipt"></i> Detail Iuran Kas: <span id="user-name"></span></h3>
                     
                     <div id="data-display"></div>
 
@@ -310,22 +576,26 @@
                     </div>
                     
                     <div id="lunas-message">
-                        <i class="fas fa-handshake"></i> Terima kasih, --Anda sudah membayar kas dengan lancar!---
+                        <i class="fas fa-handshake"></i> Terima kasih, Anda sudah membayar kas dengan lancar!
                     </div>
                   
                      <div id="tunggakan-options">
                         <p style="margin-top:15px; font-style:italic;"></p> 
 
-                        <button id="btn-show-manual" onclick="toggleManualPayment()">
-                            <i class="fas fa-calendar-check"></i> BAYAR KAS SEKARANG
+                        <button id="btn-show-manual-from-detail" onclick="showManualPayment(currentUserId)">
+                            <i class="fas fa-calendar-check"></i> LANJUTKAN KE PEMBAYARAN
                         </button>
                     </div>
                 </div>
             </div>
 
+            <div id="anggota-data-container" style="display:none; text-align:left;">
+                 <div id="anggota-table-display"></div>
+            </div>
+
             <div id="manual-payment-section">
-                <h3>💵 Pembayaran Kas Gang E21-25</h3>
-                <p>Bayar iuran spesifik untuk beberapa bulan sekaligus.</p>
+                <h3>💵 Form Pembayaran Kas Gang E21-25</h3>
+                <p>Pembayaran untuk iuran spesifik beberapa bulan sekaligus.</p>
                 <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0;">
                 <p style="font-weight: bold;">Untuk: <span id="manual-user-detail" style="color:#ff5722;"></span></p>
                 <p style="font-size: 0.9em; color: #6c757d;">(Iuran per bulan termasuk kas gang, kas RT, dan BSK : Rp 25.000)</p>
@@ -341,13 +611,13 @@
                     <div class="form-group" style="text-align: left; margin-top: 20px;">
                         <label for="manual-amount">Jumlah Pembayaran (Rp) Total Yang Disetor</label>
                         <input type="number" id="manual-amount" name="amount" min="1" step="1" required placeholder="Contoh: 25000" value="">
-                        <p style="margin-top:3px; font-style:italic;" > </p>
+                        <p style="margin-top:1px; font-style:italic;" > </p>
                     </div>
 
                     <div class="form-group" style="text-align: left;">
                         <label for="manual-month">Detail Pelunasan</label>
                         <input type="text" id="manual-month" name="month" required readonly placeholder="Diisi otomatis..." style="background-color: #eee;">
-                        <p style="margin-top:1px; font-style:italic;" ></p></p>
+                        <p style="margin-top:0,5px; font-style:italic;" ></p>
                     </div>
 
                     <div class="form-group" style="text-align: left;">
@@ -365,12 +635,14 @@
                         </div>
                     </div>
 
-                    <button type="submit"><i class="fas fa-hand-holding-usd"></i>Lanjutkan Pembayaran
+                    <button type="submit"><i class="fas fa-file-invoice"></i> Buat Instruksi Pembayaran
                     </button>
                 </form>
 
-                <div id="payment-result-manual">
-                    <div id="payment-instruction-content"></div>
+            </div>
+            
+            <div id="instruction-container">
+                 <div id="payment-instruction-content"></div>
 
                     <hr style="margin: 20px 0;">
 
@@ -382,26 +654,532 @@
                     <button id="btn-whatsapp-proof" disabled>
                         <i class="fab fa-whatsapp"></i> Konfirmasi & Kirim Bukti Pembayaran
                     </button>
-                </div>
-                <button onclick="toggleManualPayment()" style="margin-top: 15px; padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    <i class="fas fa-chevron-left"></i> Kembali ke Data 
-                </button>
-                
             </div>
-
+            
+            <div id="cash-report-container">
+                <h3 style="color:#007bff; margin-top: 10px;"><i class="fas fa-chart-line"></i> Laporan Kas Bulanan 
+                    <span id="cash-report-admin-tools">
+                        </span>
+                </h3>
+                <div id="report-content"></div>
+            </div>
+            <button id="btn-back-to-detail" class="btn-back" onclick="showDataUser(currentUserId)">
+                <i class="fas fa-chevron-left"></i> Kembali ke Data Iuran
+            </button>
+            <button id="btn-back-to-manual-form" class="btn-back" onclick="showManualPayment(currentUserId)">
+                <i class="fas fa-chevron-left"></i> Kembali ke Form Pembayaran
+            </button>
+            <button id="btn-back-to-dashboard" class="btn-back" onclick="showDashboard()">
+                <i class="fas fa-chevron-left"></i> Kembali ke Menu Utama
+            </button>
 
         </div>
+    </div>
       
     <script>
-        // Data Dummy Sederhana (MODIFIKASI: Menambahkan tunggakan_2025)
-        const DUMMY_DATA =
+        // =======================================
+        // === KONFIGURASI USER PETUGAS (REVISI) ===
+        // =======================================
+        const PETUGAS_USERS = [
+            // dataId: Blok Warga yang diawasi/menjadi data utama
+            { username: 'admin', password: '123', name: 'Admin Utama', dataId: 'E21-25', isAdmin: true }, // Waluyo
+            { username: 'Nana', password: '2148', name: 'Nana rusmana', dataId: 'E21-48', isAdmin: false }, // Nana Rusmana
+            { username: 'rohman', password: '2151', name: 'Rohman', dataId: 'E21-51', isAdmin: false }, // Rohman
+            { username: 'hadi', password: 'lunas', name: 'Hadi', dataId: 'E25-26', isAdmin: false } // Hadi
+            { username: 'Aji', password: '2150', name: 'AJI', dataId: 'E21-50', isAdmin: false }// AJI
+        ];
+
+        const KAS_SALDO_DUMMY = 12345678; // Saldo kas dummy
+
+        // =======================================
+        // === FUNGSI LOGIN & LOGOUT (MODIFIKASI) ===
+        // =======================================
+        const loginContainer = document.getElementById('login-container');
+        const loginForm = document.getElementById('login-form');
+        const appContainer = document.getElementById('container-iuran');
+        const loginMessage = document.getElementById('login-message');
+        const currentUserInfo = document.getElementById('current-user-info');
+        
+        // Elemen Halaman
+        const adminDashboard = document.getElementById('admin-dashboard');
+        const resultContainer = document.getElementById('result-container'); 
+        const manualPaymentSection = document.getElementById('manual-payment-section');
+        const instructionContainer = document.getElementById('instruction-container');
+        const anggotaDataContainer = document.getElementById('anggota-data-container');
+        const cashReportContainer = document.getElementById('cash-report-container'); 
+        const reportContentDiv = document.getElementById('report-content'); 
+        const menuLaporanKas = document.getElementById('menu-laporan-kas'); 
+        
+        // Tombol Kembali
+        const btnBackToDetail = document.getElementById('btn-back-to-detail');
+        const btnBackToManualForm = document.getElementById('btn-back-to-manual-form');
+        const btnBackToDashboard = document.getElementById('btn-back-to-dashboard');
+        
+        let currentUserId = ''; // ID (Blok) Warga yang sedang login/dilihat datanya
+        let currentUserName = ''; 
+        let isAdmin = false; // Status Admin
+
+        function checkLoginStatus() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                const user = JSON.parse(loggedInUser);
+                currentUserId = user.dataId; // Set ID Warga yang terkait dengan Petugas
+                currentUserName = user.name;
+                isAdmin = user.isAdmin; // Set status admin
+                showApp(user);
+            } else {
+                showLogin();
+            }
+        }
+
+        function showApp(user) {
+            loginContainer.style.display = 'none';
+            appContainer.style.display = 'block';
+            currentUserInfo.innerHTML = `<i class="fas fa-user-shield"></i> Hi, ${user.name}${user.isAdmin ? ' (Admin)' : ''}!`;
+            showDashboard();
+            
+            // Menu Laporan Kas visible by default now, as access control is inside showCashReport
+        }
+        
+        // FUNGSI BARU: Kontrol Halaman
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            adminDashboard.style.display = 'none';
+            resultContainer.style.display = 'none';
+            manualPaymentSection.style.display = 'none';
+            instructionContainer.style.display = 'none';
+            anggotaDataContainer.style.display = 'none';
+            cashReportContainer.style.display = 'none'; 
+            
+            // Sembunyikan semua tombol kembali
+            btnBackToDetail.style.display = 'none';
+            btnBackToManualForm.style.display = 'none';
+            btnBackToDashboard.style.display = 'none';
+
+            if (pageId === 'dashboard') {
+                adminDashboard.style.display = 'block';
+            } else if (pageId === 'detail') {
+                resultContainer.style.display = 'block';
+                btnBackToDashboard.style.display = 'block';
+            } else if (pageId === 'payment-form') {
+                manualPaymentSection.style.display = 'block';
+                btnBackToDashboard.style.display = 'block'; // Kembali ke dashboard
+            } else if (pageId === 'instruction') {
+                instructionContainer.style.display = 'block';
+                btnBackToManualForm.style.display = 'block'; // Kembali ke form pembayaran
+            } else if (pageId === 'anggota') {
+                anggotaDataContainer.style.display = 'block';
+                btnBackToDashboard.style.display = 'block'; 
+            } else if (pageId === 'report') { 
+                cashReportContainer.style.display = 'block';
+                btnBackToDashboard.style.display = 'block';
+            }
+        }
+        
+        function showDashboard() {
+            showPage('dashboard');
+            document.getElementById('current-saldo-text').textContent = `Rp ${KAS_SALDO_DUMMY.toLocaleString('id-ID')}. Saldo ini adalah akumulasi dana iuran, kas RT, dan BSK.`;
+
+            // === UPDATE KARTU IURAN SAYA (BARU) ===
+            document.querySelector('#admin-dashboard .menu-grid .menu-item:first-child').innerHTML = `
+                <i class="fas fa-id-card-alt"></i>
+                <p>Kartu Iuran Saya</p>
+                <p style="font-size:0.8em; margin-top: 5px;">(Blok: ${currentUserId})</p>
+            `;
+            // ======================================
+        }
+        
+        function showLogin() {
+            loginContainer.style.display = 'flex';
+            appContainer.style.display = 'none';
+            loginMessage.style.display = 'none';
+            loginForm.reset();
+            
+        }
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const user = PETUGAS_USERS.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+
+            if (user) {
+                localStorage.setItem('loggedInUser', JSON.stringify(user));
+                currentUserId = user.dataId;
+                currentUserName = user.name;
+                isAdmin = user.isAdmin;
+                showApp(user);
+            } else {
+                loginMessage.style.display = 'block';
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            alert('Anda telah logout.');
+            showLogin();
+        }
+        
+        // FUNGSI BARU: Pindah ke Tampilan Detail Data Iuran
+        function showDataUser(id) {
+            const foundUser = DUMMY_DATA.find(user => user.id === id);
+            
+            showPage('detail');
+            document.getElementById('content-display').style.display = 'block'; 
+
+            if (foundUser) {
+                displayUserData(foundUser); 
+            } else {
+                statusMessageDiv.className = 'status-message status-not-found';
+                statusMessageDiv.innerHTML = `❌ Data Iuran untuk **${id}** Tidak Ditemukan. Hubungi Bendahara.`;
+                document.getElementById('content-display').style.display = 'none';
+            }
+        }
+        
+        // FUNGSI BARU: Pindah ke Tampilan Pembayaran Manual
+        function showManualPayment(id) {
+            showPage('payment-form');
+            
+            // Logic mengisi form payment
+            const userData = DUMMY_DATA.find(user => user.id === id);
+            if (userData) {
+                const tunggakan2025 = userData.tunggakan_2025 || 0;
+                
+                // Cek tunggakan bulan 2026
+                const tunggakan2026List = userData.iuran.filter(item => item.status === 'BLUM BAYAR');
+                
+                if(tunggakan2025 > 0) {
+                    manualAmountInput.value = tunggakan2025 + IURAN_PER_BULAN; 
+                } else if (tunggakan2026List.length > 0) {
+                    manualAmountInput.value = IURAN_PER_BULAN;
+                } else {
+                    manualAmountInput.value = 0; 
+                }
+                manualAmountInput.dispatchEvent(new Event('input')); // Trigger input event
+            }
+            
+            // Reset status konfirmasi
+            if(proofConfirmationCheckbox) proofConfirmationCheckbox.checked = false; 
+            btnWhatsappProof.disabled = true;
+            btnWhatsappProof.classList.remove('active');
+            confirmActionSpan.textContent = 'transfer'; 
+        }
+        
+        // FUNGSI BARU: Tampilkan Data Anggota + FUNGSI ADMIN EDIT
+        function showDataAnggota() {
+            showPage('anggota');
+            
+            let html = `
+                <h3 style="color:#007bff; margin-top: 10px;"><i class="fas fa-users"></i> Data Anggota Kas Gang E21-25
+                ${isAdmin ? `<button class="edit-button" onclick="addAnggotaData()" style="background-color: #28a745; margin-left: 10px;"><i class="fas fa-plus-circle"></i> Tambah Anggota</button>` : ''}
+                </h3>
+                <div id="anggota-table-display">
+                    <table class="data-anggota-table">
+                        <thead>
+                            <tr>
+                                <th>BLOK</th>
+                                <th>NAMA Warga</th>
+                                <th>Tunggakan 2025 (Rp)</th>
+                                <th>Status Iuran 2026</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            DUMMY_DATA.forEach(user => {
+                const tunggakan2025IDR = user.tunggakan_2025.toLocaleString('id-ID');
+                const tunggakan2026Count = user.iuran.filter(i => i.status === 'BLUM BAYAR').length;
+                let status2026 = (tunggakan2026Count === 0) ? '<span class="lunas">Lunas</span>' : 
+                                 `<span class="belum">${tunggakan2026Count} bulan</span>`;
+
+                // Kontrol tombol Aksi
+                let aksiButtons = '—';
+                if (isAdmin) {
+                    aksiButtons = `
+                       <button class="edit-button" onclick="editAnggotaData('${user.id}')" style="margin-left: 0;"><i class="fas fa-edit"></i> Ubah Status</button>
+                       <button class="edit-button" onclick="deleteAnggotaData('${user.id}')" style="background-color: #dc3545;"><i class="fas fa-trash"></i> Hapus</button>
+                    `;
+                }
+
+                html += `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.nama}</td>
+                        <td>${tunggakan2025IDR}</td>
+                        <td>${status2026}</td>
+                        <td>${aksiButtons}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            document.getElementById('anggota-data-container').innerHTML = html;
+        }
+        
+        // FUNGSI ADMIN: EDIT DATA ANGGOTA
+        function editAnggotaData(userId) {
+            if (!isAdmin) {
+                alert('Anda tidak memiliki izin untuk mengubah data anggota.');
+                return;
+            }
+            const userIndex = DUMMY_DATA.findIndex(user => user.id === userId);
+            if (userIndex === -1) return;
+
+            const user = DUMMY_DATA[userIndex];
+            
+            let currentMonths = user.iuran.map(i => i.bulan + ": " + i.status).join(', ');
+            
+            const newTunggakan2025 = prompt(`Edit Tunggakan 2025 (saat ini: Rp ${user.tunggakan_2025.toLocaleString('id-ID')}):`, user.tunggakan_2025);
+            
+            if (newTunggakan2025 !== null && !isNaN(parseInt(newTunggakan2025))) {
+                user.tunggakan_2025 = parseInt(newTunggakan2025);
+            }
+            
+            const newMonthsStatus = prompt(`Edit Status Iuran 2026 (Format: Bulan:LUNAS/BLUM BAYAR, ...)\n\nContoh: JANUARI:LUNAS, FEBRUARI:BLUM BAYAR\n\nStatus saat ini:\n${currentMonths}`, currentMonths);
+            
+            if (newMonthsStatus !== null) {
+                 const monthUpdates = newMonthsStatus.split(',').map(s => s.trim()).filter(s => s.includes(':'));
+                 monthUpdates.forEach(update => {
+                     const [month, status] = update.split(':').map(s => s.trim().toUpperCase());
+                     const iuranItem = user.iuran.find(item => item.bulan === month);
+                     if (iuranItem && (status === 'LUNAS' || status === 'BLUM BAYAR')) {
+                         iuranItem.status = status;
+                     }
+                 });
+            }
+            
+            DUMMY_DATA[userIndex] = user;
+            alert(`Data untuk ${user.nama} (${userId}) berhasil diperbarui.`);
+            showDataAnggota(); // Refresh tampilan
+        }
+        
+        // FUNGSI ADMIN: TAMBAH DATA ANGGOTA BARU (BARU)
+        function addAnggotaData() {
+            if (!isAdmin) {
+                alert('Anda tidak memiliki izin untuk menambah data anggota.');
+                return;
+            }
+            
+            const newId = prompt('Masukkan BLOK Warga Baru (Contoh: E25-10):');
+            if (!newId) return;
+            
+            // Cek duplikasi ID
+            if (DUMMY_DATA.find(user => user.id === newId.toUpperCase())) {
+                alert(`ID Blok ${newId} sudah ada.`);
+                return;
+            }
+            
+            const newName = prompt(`Masukkan NAMA Warga untuk BLOK ${newId}:`);
+            if (!newName) return;
+            
+            const defaultIuran = [];
+            const months = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
+            
+            months.forEach(month => {
+                defaultIuran.push({ bulan: month, nominal: IURAN_PER_BULAN, status: 'BLUM BAYAR' });
+            });
+
+            const newUser = {
+                id: newId.toUpperCase(),
+                nama: newName.toUpperCase(),
+                tunggakan_2025: 0, 
+                iuran: defaultIuran
+            };
+            
+            DUMMY_DATA.push(newUser);
+            alert(`Anggota ${newName} (${newId}) berhasil ditambahkan.`);
+            showDataAnggota(); 
+        }
+        
+        // FUNGSI ADMIN: HAPUS DATA ANGGOTA (BARU)
+        function deleteAnggotaData(userId) {
+            if (!isAdmin) {
+                alert('Anda tidak memiliki izin untuk menghapus data anggota.');
+                return;
+            }
+            
+            if (confirm(`Apakah Anda yakin ingin menghapus data anggota dengan BLOK ${userId}? Tindakan ini tidak dapat dibatalkan.`)) {
+                const initialLength = DUMMY_DATA.length;
+                DUMMY_DATA = DUMMY_DATA.filter(user => user.id !== userId);
+                
+                if (DUMMY_DATA.length < initialLength) {
+                    alert(`Data anggota ${userId} berhasil dihapus.`);
+                    showDataAnggota();
+                } else {
+                    alert(`Data anggota ${userId} tidak ditemukan.`);
+                }
+            }
+        }
+
+
+        // FUNGSI BARU: Tampilkan Laporan Kas + FUNGSI ADMIN EDIT
+        function showCashReport() {
+            showPage('report');
+            
+            // Tampilkan tombol Admin Tools hanya jika user adalah admin
+            const adminToolsSpan = document.getElementById('cash-report-admin-tools');
+            if (isAdmin) {
+                 adminToolsSpan.innerHTML = `<button class="edit-button" onclick="editCashReport()"><i class="fas fa-edit"></i> Ubah Data</button>`;
+            } else {
+                 adminToolsSpan.innerHTML = '';
+                 // Jika bukan admin, kasih pesan warning jika fungsi edit dipanggil
+            }
+            
+            displayCashReport();
+        }
+        
+        function displayCashReport() {
+            const data = DUMMY_CASH_REPORT;
+            let totalPemasukan = data.pemasukan.reduce((sum, item) => sum + item.nominal, 0);
+            let totalPengeluaran = data.pengeluaran.reduce((sum, item) => sum + item.nominal, 0);
+            let saldoAkhir = data.saldo_awal + totalPemasukan - totalPengeluaran;
+
+            const formatIDR = (num) => 'Rp ' + num.toLocaleString('id-ID');
+
+            let html = `
+                <div class="report-summary-box">
+                    <div class="summary-card card-pemasukan">
+                        <h4><i class="fas fa-arrow-alt-circle-up"></i> Total Pemasukan</h4>
+                        <p>${formatIDR(totalPemasukan)}</p>
+                    </div>
+                    <div class="summary-card card-pengeluaran">
+                        <h4><i class="fas fa-arrow-alt-circle-down"></i> Total Pengeluaran</h4>
+                        <p>${formatIDR(totalPengeluaran)}</p>
+                    </div>
+                    <div class="summary-card card-saldo">
+                        <h4><i class="fas fa-balance-scale"></i> Saldo Akhir</h4>
+                        <p>${formatIDR(saldoAkhir)}</p>
+                    </div>
+                </div>
+
+                <h4 style="color:#007bff;"><i class="fas fa-plus-square"></i> Detail Pemasukan</h4>
+                <table class="cash-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Deskripsi</th>
+                            <th>Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            data.pemasukan.forEach((item, index) => {
+                html += `
+                    <tr id="pemasukan-${index}">
+                        <td>${item.tanggal}</td>
+                        <td>${item.deskripsi}</td>
+                        <td style="color:#1e7e34; font-weight:bold;">${formatIDR(item.nominal)}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+                
+                <h4 style="color:#ff5722; margin-top: 30px;"><i class="fas fa-minus-square"></i> Detail Pengeluaran</h4>
+                <table class="cash-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Deskripsi</th>
+                            <th>Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            data.pengeluaran.forEach((item, index) => {
+                html += `
+                    <tr id="pengeluaran-${index}">
+                        <td>${item.tanggal}</td>
+                        <td>${item.deskripsi}</td>
+                        <td style="color:#dc3545; font-weight:bold;">${formatIDR(item.nominal)}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            reportContentDiv.innerHTML = html;
+        }
+
+        // FUNGSI ADMIN: EDIT LAPORAN KAS
+        function editCashReport() {
+            if (!isAdmin) {
+                alert('Anda tidak memiliki izin untuk mengubah laporan kas.');
+                return;
+            }
+            
+            const action = prompt('Pilih aksi:\n1. Tambah Pemasukan\n2. Tambah Pengeluaran\n3. Edit Saldo Awal\n4. (Aksi Lainnya)', '1');
+            
+            if (action === '3') {
+                const newSaldoAwal = prompt(`Edit Saldo Awal (Saat ini: ${DUMMY_CASH_REPORT.saldo_awal.toLocaleString('id-ID')})`, DUMMY_CASH_REPORT.saldo_awal);
+                if (newSaldoAwal !== null && !isNaN(parseInt(newSaldoAwal))) {
+                    DUMMY_CASH_REPORT.saldo_awal = parseInt(newSaldoAwal);
+                    alert('Saldo Awal berhasil diubah.');
+                }
+            } else if (action === '1' || action === '2') {
+                const type = action === '1' ? 'Pemasukan' : 'Pengeluaran';
+                const tanggal = prompt(`Masukkan Tanggal ${type} (YYYY-MM-DD):`);
+                if (!tanggal) return;
+                const deskripsi = prompt(`Masukkan Deskripsi ${type}:`);
+                if (!deskripsi) return;
+                const nominal = prompt(`Masukkan Nominal ${type} (Angka):`);
+                const nominalInt = parseInt(nominal);
+                
+                if (tanggal && deskripsi && !isNaN(nominalInt) && nominalInt > 0) {
+                    const newItem = {
+                        tanggal: tanggal,
+                        deskripsi: deskripsi,
+                        nominal: nominalInt
+                    };
+                    
+                    if (action === '1') {
+                        DUMMY_CASH_REPORT.pemasukan.push(newItem);
+                    } else {
+                        DUMMY_CASH_REPORT.pengeluaran.push(newItem);
+                    }
+                    alert(`${type} berhasil ditambahkan.`);
+                } else {
+                    alert('Input tidak valid.');
+                }
+            } else {
+                alert('Aksi dibatalkan atau tidak valid.');
+            }
+            
+            displayCashReport(); // Refresh tampilan
+        }
+
+
+        // Jalankan pengecekan status login saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+
+        // =======================================
+        // === KODE APLIKASI IURAN (DATA DUMMY TETAP) ===
+        // =======================================
+
+        // Data Dummy Sederhana 
+        let DUMMY_DATA =
         [
             {
                 id: 'E21-51',
                 nama: 'ROHMAN',
-               tunggakan_2025: 0, // Sudah lunas
+                tunggakan_2025: 0, 
                 iuran: [
-                    { bulan: 'JANUARI',nominal:   25000, status: 'LUNAS'}, // Diubah LUNAS
+                    { bulan: 'JANUARI',nominal:   25000, status: 'LUNAS'}, 
                     { bulan: 'FEBRUARI',nominal:25000, status: 'BLUM BAYAR'},
                     { bulan: 'MARET',nominal:25000, status: 'BLUM BAYAR'},
                     { bulan: 'APRIL',nominal:     25000, status: 'BLUM BAYAR'}, 
@@ -418,7 +1196,7 @@
             {
                 id: 'E21-48',
                 nama: 'NANA RUSMANA',
-                tunggakan_2025: 75000, // Ada tunggakan 3 bulan (2025)
+                tunggakan_2025: 75000, 
                 iuran: [
                     { bulan: 'JANUARI',nominal:   25000, status: 'BLUM BAYAR'},
                     { bulan: 'FEBRUARI',nominal:25000, status: 'BLUM BAYAR'},
@@ -437,7 +1215,7 @@
             {
                 id: 'E25-23',
                 nama: 'WALUYO',
-                tunggakan_2025: 125000, // Ada tunggakan 5 bulan (2025)
+                tunggakan_2025: 125000, 
                 iuran: [
                     { bulan: 'JANUARI',nominal:   25000, status: 'LUNAS'},
                     { bulan: 'FEBRUARI',nominal:25000, status: 'LUNAS'},
@@ -494,22 +1272,30 @@
             
         ];
 
+        // --- DATA DUMMY LAPORAN KAS (BARU) ---
+        const DUMMY_CASH_REPORT = {
+            saldo_awal: 11500000, 
+            pemasukan: [
+                { tanggal: '2026-01-05', deskripsi: 'Iuran Kas Januari (10 warga)', nominal: 250000 },
+                { tanggal: '2026-01-12', deskripsi: 'Iuran Kas Januari (15 warga)', nominal: 375000 },
+                { tanggal: '2026-01-20', deskripsi: 'Iuran Kas Februari (5 warga)', nominal: 125000 },
+            ],
+            pengeluaran: [
+                { tanggal: '2026-01-15', deskripsi: 'Pembelian lampu jalan E25', nominal: 150000 },
+                { tanggal: '2026-01-25', deskripsi: 'Biaya kebersihan bulanan', nominal: 100000 },
+            ]
+        };
+        // ------------------------------------
+
         // --- VARIABEL DOM & STATE ---
         const IURAN_PER_BULAN = 25000; 
-        const searchForm = document.getElementById('search-form');
-        const loader = document.getElementById('loader');
-        const resultContainer = document.getElementById('result-container'); 
-        const contentDisplay = document.getElementById('content-display');
         const dataDisplay = document.getElementById('data-display');
         const userNameSpan = document.getElementById('user-name');
         const totalTunggakanSpan = document.getElementById('total-tunggakan');
         const statusMessageDiv = document.getElementById('status-message');
         const lunasMessageDiv = document.getElementById('lunas-message');
         const tunggakanOptionsDiv = document.getElementById('tunggakan-options');
-        const btnShowManual = document.getElementById('btn-show-manual');
-        const manualPaymentSection = document.getElementById('manual-payment-section'); 
         const manualPaymentForm = document.getElementById('payment-form-manual');
-        const manualResultDiv = document.getElementById('payment-result-manual');
         const manualUserDetailSpan = document.getElementById('manual-user-detail');
         const manualAmountInput = document.getElementById('manual-amount'); 
         const manualMonthInput = document.getElementById('manual-month'); 
@@ -519,69 +1305,25 @@
         const btnWhatsappProof = document.getElementById('btn-whatsapp-proof');
         const confirmActionSpan = document.getElementById('confirm-action'); 
         
-        // Elemen baru untuk detail tunggakan
         const tunggakanDetailDiv = document.getElementById('tunggakan-detail');
-        
-        // Elemen baru untuk Tunggakan 2025 di form manual
         const tunggakan2025Group = document.getElementById('group-tunggakan-2025');
         const tunggakan2025Input = document.getElementById('tunggakan-2025-amount');
 
 
         let currentTunggakanAmount = 0; 
-        let currentUserId = ''; 
-        let currentUserName = ''; 
         let currentTunggakanList = []; 
         
-        // --- FUNGSI UTAMA PENCARIAN ---
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            const query = document.getElementById('search-input').value.trim().toUpperCase();
-            
-            loader.style.display = 'block';
-            resultContainer.style.display = 'none';
-            manualPaymentSection.style.display = 'none'; 
-            manualResultDiv.style.display = 'none';
-            lunasMessageDiv.style.display = 'none'; 
-
-            currentUserId = '';
-            currentUserName = '';
-            currentTunggakanList = [];
-            
-            if(proofConfirmationCheckbox) proofConfirmationCheckbox.checked = false; 
-            btnWhatsappProof.disabled = true;
-            btnWhatsappProof.classList.remove('active');
-
-            setTimeout(() => {
-                loader.style.display = 'none';
-
-                const foundUser = DUMMY_DATA.find(user => 
-                    user.id.toUpperCase() === query || user.nama.toUpperCase().includes(query)
-                );
-                
-                if (foundUser) {
-                    currentUserId = foundUser.id;
-                    currentUserName = foundUser.nama;
-                    displayUserData(foundUser);
-                } else {
-                    displayNotFound(query);
-                }
-                
-                resultContainer.style.display = 'block'; 
-            }, 1500); 
-        });
-
-        // --- FUNGSI MENAMPILKAN DATA (MODIFIKASI: Menghitung & Menampilkan Tunggakan 2025) ---
+        // --- FUNGSI MENAMPILKAN DATA ---
         function displayUserData(user) {
             statusMessageDiv.className = 'status-message status-found';
-            statusMessageDiv.innerHTML = `✅ Data Warga atas nama: ${user.nama} Ditemukan!`;
-            contentDisplay.style.display = 'block';
+            statusMessageDiv.innerHTML = `✅ Data Iuran untuk: **${user.nama}** Ditemukan!`;
            
 
             userNameSpan.textContent = user.nama + ' (' + user.id + ')';
             manualUserDetailSpan.textContent = user.nama + ' (' + user.id + ')'; 
 
             let htmlContent = '';
-            currentTunggakanList = []; // Reset bulan 2026 yang belum bayar
+            currentTunggakanList = []; 
             
             // 1. Tampilkan status LUNAS 
             user.iuran.filter(item => item.status === 'LUNAS').forEach(item => {
@@ -610,7 +1352,7 @@
                     <div class="data-item">
                         <span><strong>${firstTunggakanMonth} (2026):</strong></span>
                         <span>Rp ${nominalIDR}</span>
-                        <span class="belum">BELUM BAYAR</span>
+                        <span class="belum">BELUM BAYAR (${currentTunggakanList.length} bln lainnya...)</span>
                     </div>
                 `;
             }
@@ -622,7 +1364,7 @@
             const tunggakan2025 = user.tunggakan_2025 || 0;
             let totalTunggakanSummary = tunggakan2025 + tunggakan2026;
             
-            const totalInfoDiv = document.querySelector('.total-info');
+            const totalInfoDiv = document.querySelector('#result-container .total-info');
             
             // 5. Update Tampilan Summary
             totalTunggakanSpan.textContent = 'Rp ' + totalTunggakanSummary.toLocaleString('id-ID');
@@ -647,7 +1389,7 @@
             
             detailHtml += `
                 <div class="tunggakan-line">
-                    <span>Bayar Periode 2026:</span> 
+                    <span>Tunggakan Periode 2026:</span> 
                     <span>Rp ${tunggakan2026.toLocaleString('id-ID')} (${currentTunggakanList.length} bulan)</span>
                 </div>
                 <div class="tunggakan-total tunggakan-line">
@@ -662,12 +1404,11 @@
             if (tunggakan2025 > 0) {
                 tunggakan2025Input.value = `Rp ${tunggakan2025.toLocaleString('id-ID')}`;
                 tunggakan2025Group.style.display = 'block';
-                // Min bayar adalah tunggakan 2025, kecuali jika tunggakan 2026 ada
                 manualAmountInput.min = (tunggakan2025 > 0) ? tunggakan2025 : IURAN_PER_BULAN; 
             } else {
                 tunggakan2025Input.value = 'Rp 0 (LUNAS)';
                 tunggakan2025Group.style.display = 'none';
-                manualAmountInput.min = IURAN_PER_BULAN; // Minimal bayar 1 bulan 2026
+                manualAmountInput.min = IURAN_PER_BULAN; 
             }
 
             
@@ -678,13 +1419,13 @@
                 totalInfoDiv.style.backgroundColor = '#ffe8e8';
                 totalInfoDiv.style.color = '#dc3545';
                 
-                // Set default amount untuk pembayaran manual
+                // Atur nilai default di form pembayaran saat kembali dari detail
                 if(tunggakan2025 > 0) {
-                    manualAmountInput.value = tunggakan2025 + IURAN_PER_BULAN; // Default 1 bulan 2026 + Tunggakan 2025
+                    manualAmountInput.value = tunggakan2025 + IURAN_PER_BULAN; 
                 } else if (tunggakan2026 > 0) {
                     manualAmountInput.value = IURAN_PER_BULAN;
                 }
-                manualAmountInput.dispatchEvent(new Event('input')); // Trigger update bulan
+                manualAmountInput.dispatchEvent(new Event('input')); 
 
             } else {
                 // Semua Lunas
@@ -693,123 +1434,76 @@
                 totalTunggakanSpan.textContent = 'Rp 0 (Semua Iuran Lunas!)';
                 totalInfoDiv.style.backgroundColor = '#e6ffed';
                 totalInfoDiv.style.color = '#1e7e34';
-                tunggakanDetailDiv.innerHTML = ''; // Kosongkan detail jika lunas
+                tunggakanDetailDiv.innerHTML = ''; 
             }
         }
-
-        // --- Event Listener untuk Input Nominal (MODIFIKASI: Prioritas Tunggakan 2025) ---
+        
+        // --- Event Listener untuk Input Nominal ---
         manualAmountInput.addEventListener('input', function() {
             const amount = parseInt(manualAmountInput.value);
             
             const userData = DUMMY_DATA.find(user => user.id === currentUserId);
             if (!userData) return;
             
-            // Total tunggakan 2025 yang harus dibayar
             const tunggakan2025 = userData.tunggakan_2025 || 0;
             
-            // 1. Validasi Input
             if (isNaN(amount) || amount < 1) {
                 manualMonthInput.value = 'Masukkan jumlah pembayaran yang valid.';
                 return;
             }
             
-            // 2. Prioritas Tunggakan 2025
             let remainingAmount = amount;
             let detailPembayaran = '';
             let isTunggakan2025Paid = false;
             
             if (tunggakan2025 > 0) {
                 if (amount >= tunggakan2025) {
-                    // Bayar lunas tunggakan 2025
                     remainingAmount -= tunggakan2025;
-                    detailPembayaran += `Lunas Tunggakan 2025 (Rp ${tunggakan2025.toLocaleString('id-ID')})`;
+                    detailPembayaran += `LUNAS Tunggakan 2025 (Rp ${tunggakan2025.toLocaleString('id-ID')})`;
                     isTunggakan2025Paid = true;
                 } else {
-                    // Bayar sebagian tunggakan 2025
                     detailPembayaran += `BAYAR Sebagian Tunggakan 2025 (Rp ${amount.toLocaleString('id-ID')} dari Rp ${tunggakan2025.toLocaleString('id-ID')})`;
                     manualMonthInput.value = detailPembayaran;
                     return;
                 }
             } else {
-                isTunggakan2025Paid = true; // Sudah lunas dari awal
+                isTunggakan2025Paid = true; 
             }
 
-            // 3. Pelunasan Iuran 2026 (hanya jika tunggakan 2025 sudah lunas atau tidak ada)
             if (isTunggakan2025Paid) {
                 const monthsPaidFor2026 = Math.floor(remainingAmount / IURAN_PER_BULAN);
                 const excessAmount = remainingAmount % IURAN_PER_BULAN;
 
-                if (monthsPaidFor2026 > 0) {
-                    const monthsToPay = currentTunggakanList.slice(0, monthsPaidFor2026);
-                    
-                    if (monthsToPay.length < monthsPaidFor2026) {
-                        // Kelebihan bayar melebihi total bulan 2026 yang tersedia
-                        const monthsAvailable = currentTunggakanList.length;
-                        
-                        detailPembayaran += (detailPembayaran ? ' & ' : '') + 
-                                            `Bayar Iuran 2026: ${monthsToPay.length} bulan (${monthsToPay.join(', ')})`;
-                        
-                        const sisaUang = remainingAmount - (monthsAvailable * IURAN_PER_BULAN);
-                        detailPembayaran += ` + KELEBIHAN bayar Rp ${sisaUang.toLocaleString('id-ID')}.`;
-                        
-                    } else {
-                        // Normal: bayar sejumlah bulan 2026
-                        detailPembayaran += (detailPembayaran ? ' & ' : '') + 
-                                            `Bayar Iuran 2026: ${monthsToPay.length} bulan (${monthsToPay.join(', ')})`;
-                    }
-
-                } else if (remainingAmount > 0 && remainingAmount < IURAN_PER_BULAN) {
-                    detailPembayaran += (detailPembayaran ? ' & ' : '') + 
-                                        `Tidak cukup untuk Iuran 2026. SISA Rp ${remainingAmount.toLocaleString('id-ID')}.`;
-                }
+                const monthsAvailable = currentTunggakanList.length;
+                const monthsToPay = currentTunggakanList.slice(0, Math.min(monthsPaidFor2026, monthsAvailable));
+                const paidMonthsCount = monthsToPay.length;
                 
-                // Tampilkan sisa/kelebihan bayar jika ada (kecuali kasus bayar sebagian 2026)
-                if (excessAmount > 0 && monthsPaidFor2026 > 0) {
-                     // Check if monthsToPay length is equal to monthsPaidFor2026, meaning no excess months, only cash excess
-                     if (monthsToPay.length === monthsPaidFor2026) {
-                        detailPembayaran += ` + SISA/LEBIH bayar Rp ${excessAmount.toLocaleString('id-ID')}.`;
-                     }
+                if (paidMonthsCount > 0) {
+                    detailPembayaran += (detailPembayaran ? ' & ' : '') + 
+                                        `LUNAS Iuran 2026: ${paidMonthsCount} bulan (${monthsToPay.join(', ')})`;
                 }
+
+                if (remainingAmount > 0 && paidMonthsCount === 0 && monthsAvailable > 0) {
+                    detailPembayaran += (detailPembayaran ? ' & ' : '') + 
+                                        `BELUM LUNAS Iuran 2026: Rp ${remainingAmount.toLocaleString('id-ID')} (Kekurangan Rp ${(IURAN_PER_BULAN - remainingAmount).toLocaleString('id-ID')}).`;
+                }
+
+                if (paidMonthsCount > 0 && monthsPaidFor2026 > monthsAvailable) {
+                    const sisaUang = remainingAmount - (monthsAvailable * IURAN_PER_BULAN);
+                    detailPembayaran += ` + KELEBIHAN bayar Rp ${sisaUang.toLocaleString('id-ID')} (Sisa Iuran Lunas).`;
+                } else if (paidMonthsCount === monthsPaidFor2026 && excessAmount > 0) {
+                    detailPembayaran += ` + SISA/LEBIH bayar Rp ${excessAmount.toLocaleString('id-ID')}.`;
+                } else if (paidMonthsCount < monthsPaidFor2026) {
+                    const sisaBulan = monthsPaidFor2026 - paidMonthsCount;
+                    detailPembayaran += ` (Lunas ${paidMonthsCount} bln, SISA ${sisaBulan} bln berikutnya).`;
+                }
+
             }
             
             manualMonthInput.value = detailPembayaran;
         });
         
-        // --- FUNGSI MENAMPILKAN/MENYEMBUNYIKAN FORM MANUAL (tetap sama) ---
-        function toggleManualPayment() {
-            const isManualVisible = manualPaymentSection.style.display === 'block';
-
-            if (isManualVisible) {
-                manualPaymentSection.style.display = 'none';
-                resultContainer.style.display = 'block'; 
-            } else {
-                manualPaymentSection.style.display = 'block';
-                resultContainer.style.display = 'none';
-                
-                // Reset amount input dan trigger update detail saat dibuka
-                const userData = DUMMY_DATA.find(user => user.id === currentUserId);
-                if (userData) {
-                    const tunggakan2025 = userData.tunggakan_2025 || 0;
-                    if(tunggakan2025 > 0) {
-                        manualAmountInput.value = tunggakan2025 + IURAN_PER_BULAN; 
-                    } else if (currentTunggakanList.length > 0) {
-                        manualAmountInput.value = IURAN_PER_BULAN;
-                    } else {
-                        manualAmountInput.value = 0; // Jika sudah lunas semua
-                    }
-                    manualAmountInput.dispatchEvent(new Event('input'));
-                }
-            }
-
-            manualResultDiv.style.display = 'none';
-
-            if(proofConfirmationCheckbox) proofConfirmationCheckbox.checked = false; 
-            btnWhatsappProof.disabled = true;
-            btnWhatsappProof.classList.remove('active');
-            confirmActionSpan.textContent = 'transfer'; 
-        }
-        
-        // --- EVENT LISTENER UNTUK PILIHAN METODE PEMBAYARAN (tetap sama) ---
+        // --- FUNGSI LAINNYA ---
         document.querySelectorAll('#manual-payment-section input[name="method"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 if (this.value.includes('Offline')) {
@@ -824,8 +1518,6 @@
             });
         });
 
-
-        // --- EVENT LISTENER UNTUK CHECKBOX KONFIRMASI (tetap sama) ---
         proofConfirmationCheckbox.addEventListener('change', function() {
             if (proofConfirmationCheckbox.checked) {
                 btnWhatsappProof.disabled = false;
@@ -836,8 +1528,7 @@
             }
         });
 
-
-        // --- FUNGSI SUBMIT PEMBAYARAN MANUAL (MODIFIKASI: Menggunakan Detail Pelunasan) ---
+        // Event Listener Form Pembayaran Manual -> Instruksi
         manualPaymentForm.addEventListener('submit', function(e) {
             e.preventDefault(); 
             
@@ -851,6 +1542,9 @@
                  return;
             }
             
+            // Pindah ke Halaman Instruksi
+            showPage('instruction');
+            
             if(proofConfirmationCheckbox) proofConfirmationCheckbox.checked = false; 
             btnWhatsappProof.disabled = true;
             btnWhatsappProof.classList.remove('active');
@@ -859,24 +1553,20 @@
             const detailPembayaran = document.getElementById('manual-month').value; 
             const method = document.querySelector('#manual-payment-section input[name="method"]:checked').value;
             
-            // Tentukan bulan 2026 mana saja yang akan dilunasi (untuk update data dummy)
             let monthsToMarkLunas = [];
             const match = detailPembayaran.match(/Iuran 2026: \d+ bulan \((.*?)\)/);
             if (match && match[1]) {
                 monthsToMarkLunas = match[1].split(',').map(m => m.trim());
             }
 
-            // Set attribute untuk fungsi WA
             btnWhatsappProof.setAttribute('data-target-months-list', monthsToMarkLunas.join('.')); 
             btnWhatsappProof.setAttribute('data-detail-pembayaran', detailPembayaran); 
 
-            manualResultDiv.style.display = 'block';
-            
             const amountIDR = new Intl.NumberFormat('id-ID').format(amount);
             
             let htmlContent = `
                 <h3><i class="fas fa-check-circle"></i> Instruksi Pembayaran Dibuat</h3>
-                <p><strong>Warga:</strong> ${currentUserName} (${currentUserId})</p>
+                <p><strong>Warga:</strong> ${userData.nama} (${currentUserId})</p>
                 <p><strong>Detail Pelunasan:</strong> <span style="font-weight: bold; color:#007bff;">${detailPembayaran}</span></p>
                 <p><strong>Metode:</strong> ${method}</p>
                 <p><strong>Jumlah:</strong> <span style="font-size: 1.2em; color: #dc3545; font-weight: bold;">Rp ${amountIDR}</span></p>
@@ -887,22 +1577,21 @@
                  htmlContent += `
                     <p style="text-align: center;">Scan QRIS di bawah ini menggunakan aplikasi pembayaran Anda (Dana, GoPay, Mobile Banking, dll.)</p>
                     <div class="qris-display">
-                        <img src="qrcode.jpg" alt="QRIS Kas Gang E21/25" class="qrcode-image">
+                        [attachment_0](attachment)
                     </div>
-                     <a href="qrcode.jpg" download="QRIS_Kas_Gang_E21-25.jpg" style="
-                display: block; 
-                width: 100%; 
-                padding: 10px; 
-                margin-top: 10px; 
-                background-color: #28a745; 
-                color: white; 
-                text-decoration: none; 
-                border-radius: 5px; 
-                font-weight: bold;
-            ">
-                <i class="fas fa-download"></i> Download  QRIS
-            </a>
-            
+                    <a href="qrcode.jpg" download="QRIS_Kas_Gang_E21-25.jpg" style="
+                        display: block; 
+                        width: 100%; 
+                        padding: 10px; 
+                        margin-top: 10px; 
+                        background-color: #28a745; 
+                        color: white; 
+                        text-decoration: none; 
+                        border-radius: 5px; 
+                        font-weight: bold;
+                    ">
+                        <i class="fas fa-download"></i> Download Gambar QRIS
+                    </a>
                 `;
             } else if (method === 'Transfer Bank') {
                 htmlContent += `
@@ -935,7 +1624,7 @@
 
             instructionContentDiv.innerHTML = htmlContent;
             
-            btnWhatsappProof.setAttribute('data-name', currentUserName);
+            btnWhatsappProof.setAttribute('data-name', userData.nama);
             btnWhatsappProof.setAttribute('data-id', currentUserId);
             btnWhatsappProof.setAttribute('data-amount', amountIDR);
             btnWhatsappProof.setAttribute('data-month', detailPembayaran); 
@@ -953,7 +1642,6 @@
             };
         });
 
-        // --- FUNGSI WA INTEGRATION (MODIFIKASI: Update Data Dummy & Pesan WA) ---
         function sendProofViaWhatsApp(name, id, amountIDR, detailPembayaran, method, targetMonthsList) {
             
             if (!proofConfirmationCheckbox.checked) {
@@ -961,32 +1649,31 @@
                  return;
             }
 
-            const monthsToMarkLunas = targetMonthsList.split('.').filter(m => m !== ''); // Filter bulan 2026
-            const amount = parseInt(amountIDR.replace(/[^0-9]/g, '')); // Bersihkan format IDR
+            const monthsToMarkLunas = targetMonthsList.split('.').filter(m => m !== ''); 
+            const amount = parseInt(amountIDR.replace(/[^0-9]/g, '')); 
 
-            // 1. UPDATE DUMMY_DATA 
             const userIndex = DUMMY_DATA.findIndex(user => user.id === id);
             if (userIndex !== -1) {
                 const userData = DUMMY_DATA[userIndex];
                 let totalDibayar = amount;
                 
-                // Cek pelunasan Tunggakan 2025
+                // 1. Lunasi Tunggakan 2025
                 if (userData.tunggakan_2025 > 0) {
                     if (totalDibayar >= userData.tunggakan_2025) {
                         totalDibayar -= userData.tunggakan_2025;
-                        userData.tunggakan_2025 = 0; // Lunas Tunggakan 2025
+                        userData.tunggakan_2025 = 0; 
                     } else {
-                        userData.tunggakan_2025 -= totalDibayar; // Bayar sebagian
+                        userData.tunggakan_2025 -= totalDibayar; 
                         totalDibayar = 0;
                     }
                 }
                 
-                // Pelunasan Iuran 2026 (berdasarkan bulan yang teridentifikasi)
+                // 2. Lunasi Bulan 2026
                 if (totalDibayar >= IURAN_PER_BULAN && monthsToMarkLunas.length > 0) {
                     monthsToMarkLunas.forEach(targetMonth => {
                         const iuranItem = userData.iuran.find(item => item.bulan === targetMonth && item.status === 'BLUM BAYAR');
                         if (iuranItem) {
-                            iuranItem.status = 'LUNAS'; // Tandai sebagai sudah dibayar/menunggu verifikasi
+                            iuranItem.status = 'LUNAS'; 
                         }
                     });
                 }
@@ -994,16 +1681,10 @@
                 DUMMY_DATA[userIndex] = userData;
             }
 
-            // 2. RE-RENDER TAMPILAN
-            const updatedUser = DUMMY_DATA.find(user => user.id === id);
-            if (updatedUser) {
-                displayUserData(updatedUser); 
-            }
-            
-            toggleManualPayment();
+            // Kembali ke Detail Iuran setelah submit
+            showDataUser(id); 
 
-            // 3. KIRIM PESAN WHATSAPP 
-            const phoneNumber = '6285781256570'; 
+            const phoneNumber = '6285781256570'; // Nomor WA Bendahara
             
             let paymentActionText = 'bukti transfer';
             if (method === 'Offline (Tunai)') {
@@ -1023,51 +1704,17 @@
             window.open(whatsappURL, '_blank');
         }
 
-
-        // --- FUNGSI NOT FOUND (tetap sama) ---
-        function displayNotFound(query) {
-            statusMessageDiv.className = 'status-message status-not-found';
-            statusMessageDiv.innerHTML = `❌ Data untuk ${query} Tidak Ditemukan.`;
-            contentDisplay.style.display = 'none';
-            dataDisplay.innerHTML = '';
-            tunggakanOptionsDiv.style.display = 'none';
-            lunasMessageDiv.style.display = 'none';
-        }
-
-        // --- FUNGSI RESET UNIVERSAL (tetap sama) ---
-        function resetContainer(containerId) {
-            if (containerId === 'container-iuran') {
-                document.getElementById('search-form').reset();
-                document.getElementById('search-input').value = '';
-                document.getElementById('result-container').style.display = 'none';
-                document.getElementById('loader').style.display = 'none';
-                manualPaymentSection.style.display = 'none';
-                manualResultDiv.style.display = 'none';
-                tunggakanOptionsDiv.style.display = 'none';
-                lunasMessageDiv.style.display = 'none';
-                
-                currentTunggakanAmount = 0;
-                currentUserId = '';
-                currentUserName = '';
-                currentTunggakanList = [];
-                
-                if(proofConfirmationCheckbox) proofConfirmationCheckbox.checked = false; 
-                btnWhatsappProof.disabled = true;
-                btnWhatsappProof.classList.remove('active');
-                
-                window.location.reload(); 
-            }
-        }
-
-        // Panggil event input saat form manual pertama kali dibuka
+        // Auto-fill saat form pembayaran difokuskan
         manualAmountInput.addEventListener('focus', function() {
-            if (manualAmountInput.value === '') {
+            if (manualAmountInput.value === '' || parseInt(manualAmountInput.value) < IURAN_PER_BULAN) {
                 const userData = DUMMY_DATA.find(user => user.id === currentUserId);
                 if (userData) {
                     const tunggakan2025 = userData.tunggakan_2025 || 0;
+                    const tunggakan2026List = userData.iuran.filter(item => item.status === 'BLUM BAYAR');
+                    
                     if(tunggakan2025 > 0) {
                         manualAmountInput.value = tunggakan2025 + IURAN_PER_BULAN; 
-                    } else if (currentTunggakanList.length > 0) {
+                    } else if (tunggakan2026List.length > 0) {
                         manualAmountInput.value = IURAN_PER_BULAN;
                     } else {
                         manualAmountInput.value = 0;
