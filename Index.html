@@ -9,11 +9,10 @@
         /* ======================================= */
         /* === CSS UMUM & FULL LAYAR (REVISI) === */
         /* ======================================= */
-        /* Target elemen <html> dan <body> untuk menghilangkan margin/padding bawaan */
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%; /* Pastikan body mengambil tinggi penuh */
+            height: 100%;
             width: 100%;
         }
 
@@ -23,33 +22,30 @@
             text-align: center;
         }
 
-        /* CONTAINER: Diubah menjadi 100% width untuk layout full-screen/mobile, */
         .container {
-            width: 100%; /* Selalu 100% agar tidak ada batas putih di kiri/kanan */
+            width: 100%;
             min-height: 100vh;
             margin: 0 auto;
-            background: white; /* Ini akan menjadi warna latar di layar lebar */
-            padding: 0; /* Hapus padding di container, pindahkan ke content-wrapper */
+            background: white;
+            padding: 0;
             box-shadow: none; 
             position: relative;
         }
 
-        /* CONTENT-WRAPPER: Inilah elemen yang seharusnya membatasi konten dan memiliki box-shadow */
         .content-wrapper {
             max-width: 800px;
-            margin: 0 auto; /* Tengah di layar lebar */
+            margin: 0 auto;
             background: white;
-            padding: 20px; /* Padding yang mengontrol ruang di dalam konten */
+            padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         
-        /* Tambahan: Responsivitas untuk tampilan seluler pada content-wrapper */
         @media (max-width: 600px) {
             .content-wrapper {
-                border-radius: 0; /* Hapus border-radius di layar kecil agar menyatu */
-                padding: 15px 10px; /* Padding lebih kecil untuk mobile */
-                box-shadow: none; /* Hapus bayangan agar tampak seperti aplikasi native */
+                border-radius: 0;
+                padding: 15px 10px;
+                box-shadow: none;
             }
         }
 
@@ -154,7 +150,7 @@
         /* === DASHBOARD PETUGAS (REVISI) === */
         /* ======================================= */
         #admin-dashboard {
-            display: none; /* Default hidden */
+            display: none;
             text-align: left;
         }
         .saldo-box {
@@ -190,13 +186,11 @@
         
         .menu-grid {
             display: grid;
-            /* REVISI: Mengubah minmax agar lebih responsif di mobile */
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
             gap: 15px;
             margin-top: 25px;
         }
         
-        /* MODIFIKASI: Menu Item 3D */
         .menu-item {
             background-color: #007bff;
             color: white;
@@ -204,20 +198,17 @@
             border-radius: 10px;
             text-align: center;
             cursor: pointer;
-            
-            /* MODIFIKASI 3D EFFECT START */
-            box-shadow: 0 5px #0056b3, 0 8px 15px rgba(0, 0, 0, 0.3); /* Bayangan 3D */
+            box-shadow: 0 5px #0056b3, 0 8px 15px rgba(0, 0, 0, 0.3);
             border-bottom: 5px solid #0056b3;
             transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
-            /* MODIFIKASI 3D EFFECT END */
         }
         .menu-item:hover {
             background-color: #0056b3;
-            transform: translateY(-2px); /* Efek mengangkat sedikit */
+            transform: translateY(-2px);
             box-shadow: 0 7px #0056b3, 0 10px 20px rgba(0, 0, 0, 0.4);
         }
         .menu-item:active {
-            transform: translateY(3px); /* Efek menekan tombol */
+            transform: translateY(3px);
             box-shadow: 0 2px #0056b3, 0 5px 10px rgba(0, 0, 0, 0.2);
             border-bottom: 2px solid #0056b3;
         }
@@ -237,16 +228,16 @@
         /* === REVISI: STYLE KHUSUS 'DATA KAS SAYA' === */
         /* ======================================= */
         .menu-item.data-kas-saya i {
-            font-size: 2em; /* Perkecil ikon */
-            margin-bottom: 5px; /* Perkecil margin bawah ikon */
+            font-size: 2em;
+            margin-bottom: 5px;
         }
         .menu-item.data-kas-saya p:first-of-type {
-            font-size: 1em; /* Perkecil font nama menu */
+            font-size: 1em;
             font-weight: bold;
         }
         .menu-item.data-kas-saya p:last-of-type {
-            font-size: 0.7em; /* Perkecil font blok */
-            margin-top: 3px; /* Perkecil margin atas blok */
+            font-size: 0.7em;
+            margin-top: 3px;
             font-weight: normal;
         }
 
@@ -255,28 +246,25 @@
         /* === RESULT STYLING (REVISI) === */
         /* ======================================= */
         #result-container, #instruction-container {
-            display: none; /* Default hidden */
+            display: none;
             text-align: left;
         }
         
-        /* Hapus style data-item lama */
         .data-item {
-            display: none; /* Sembunyikan style lama */
+            display: none;
         }
 
-        /* Container utama untuk tampilan seperti tabel */
         #data-display-table {
             width: 100%;
             margin-top: 15px;
-            border: 1px solid #ccc; /* Border luar */
+            border: 1px solid #ccc;
             border-radius: 6px;
-            overflow: hidden; /* Pastikan border-radius diterapkan */
+            overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .data-header, .data-row {
             display: grid;
-            /* Kolom: Bulan (40%), Nominal (30%), Status/Ket (30%) */
             grid-template-columns: 40% 30% 30%; 
             text-align: center;
             padding: 10px 5px;
@@ -296,7 +284,7 @@
         }
 
         .data-row:nth-child(even) {
-            background-color: #f8fafd; /* Warna selang-seling */
+            background-color: #f8fafd;
         }
 
         .data-row:last-child {
@@ -312,11 +300,9 @@
         .data-row .lunas { color: #28a745; font-weight: bold; }
         .data-row .belum { color: #dc3545; font-weight: bold; }
         
-        /* END MODIFIKASI: DETAIL IURAN BULANAN */
-
         .total-info {
             margin-top: 20px;
-            padding: 0; /* Dihilangkan padding utama */
+            padding: 0;
             font-size: 1.1em;
             font-weight: bold;
             border-radius: 4px;
@@ -338,27 +324,27 @@
         /* ======================================= */
         #btn-show-manual-from-detail {
             width: 100%;
-            padding: 18px 12px; /* Ditingkatkan */
-            margin-top: 25px; /* Margin diperlebar */
+            padding: 18px 12px;
+            margin-top: 25px;
             background-color: #ff5722;
             color: white;
             border: none;
-            border-radius: 10px; /* Lebih Bulat */
+            border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.2em; /* Font lebih besar */
+            font-size: 1.2em;
             letter-spacing: 1px;
             transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4); /* Efek Bayangan */
+            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
         }
         #btn-show-manual-from-detail:hover {
             background-color: #e64a19;
-            transform: translateY(-3px); /* Efek Naik */
+            transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(255, 87, 34, 0.6);
         }
 
         #manual-payment-section {
-            display: none; /* Pastikan default hidden */
+            display: none;
             margin-top: 0;
             padding: 20px;
             border: 1px dashed #007bff;
@@ -403,6 +389,19 @@
             text-align: left;
             border-radius: 8px;
         }
+
+        /* MODIFIKASI: Perkecil Font di Halaman Instruksi Pembayaran */
+        #instruction-container p, 
+        #instruction-container ul, 
+        #instruction-container li, 
+        #instruction-container strong,
+        #instruction-container label {
+            font-size: 0.9em; /* Ukuran font diperkecil */
+        }
+        #instruction-container h3 {
+            font-size: 1.2em;
+        }
+
         #btn-whatsapp-proof {
             margin-top: 15px;
             width: 100%;
@@ -425,7 +424,7 @@
             justify-content: center;
             align-items: center;
             margin: 15px 0;
-            padding: 10px;
+            padding: 5px; /* Padding QRIS dikecilkan */
             background-color: white;
             border-radius: 8px;
             border: 1px solid #ccc;
@@ -451,7 +450,7 @@
             transform: scale(1.3);
         }
         .offline-instructions {
-            padding: 15px;
+            padding: 10px; /* Padding dikecilkan */
             background-color: #fce4ec; 
             border: 1px solid #f8bbd0;
             border-radius: 5px;
@@ -522,8 +521,6 @@
             font-size: 1.2em;
             color: #dc3545;
         }
-        /* END STYLE KHUSUS TOTAL TUNGGAKAN */
-
 
         
 .data-anggota-table {
@@ -545,27 +542,16 @@
     background-color: #f2f2f2;
 }
 
-/* --- Tambahan untuk Teks Merah pada Kolom Ketiga (Tunggakan) --- */
-
-/* Mengubah warna teks pada sel data (td) kolom ketiga */
 .data-anggota-table td:nth-child(3) {
     color: red; 
-    font-weight: bold; /* Opsional */
+    font-weight: bold;
 }
-
-/* Opsional: Jika Anda ingin header (th) kolom ketiga juga berwarna merah */
-.data-anggota-table th:nth-child(3) {
-    /* Hanya warna teks pada header */
-    /* color: red;  */
-    /* Atau, jika Anda hanya ingin warna teks di *data* yang merah, hapus bagian ini */
-}
-
         
         /* ======================================= */
         /* === LAPORAN KAS STYLING (REVISI) === */
         /* ======================================= */
         #cash-report-container {
-            display: none; /* Default hidden */
+            display: none;
             text-align: left;
             margin-top: 20px;
         }
@@ -579,7 +565,7 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            width: 45%; /* Diubah agar hanya 2 card */
+            width: 45%;
         }
         .summary-card h4 {
             margin: 0 0 10px 0;
@@ -600,7 +586,6 @@
             color: #dc3545;
             border: 1px solid #f5c6cb;
         }
-        /* .card-saldo dihapus */
 
         .cash-table {
             width: 100%;
@@ -614,7 +599,7 @@
             font-size: 0.9em;
         }
         .cash-table th {
-            background-color: #ff5722; /* Diubah warnanya */
+            background-color: #ff5722;
             color: white;
         }
         .cash-table tr:nth-child(even) {
@@ -638,7 +623,6 @@
             background-color: #0056b3;
         }
 
-
         /* Tombol Kembali (MODIFIKASI) */
         .btn-back {
             position: absolute;
@@ -652,7 +636,38 @@
             cursor: pointer;
             font-weight: bold;
             z-index: 50;
-            display: none; /* Default hidden */
+            display: none;
+        }
+        
+        /* MODIFIKASI BARU: Styling Tombol Copy Kecil */
+        .copy-button-small {
+            padding: 3px 8px;
+            margin-left: 10px;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #f0f4f8;
+            color: #007bff;
+            font-size: 0.8em;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .copy-button-small:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .copy-button-small:active {
+            transform: translateY(1px);
+        }
+        
+        /* MODIFIKASI BARU: Teks Peringatan Merah Miring */
+        .warning-text {
+            color: #dc3545;
+            font-style: italic;
+            font-size: 0.8em;
+            display: block;
+            margin-top: 5px;
+            line-height: 1.3;
         }
         
     </style>
@@ -806,7 +821,7 @@
                     </div>
                     
                     <button id="btn-whatsapp-proof" disabled>
-                        <i class="fab fa-whatsapp"></i> Konfirmasi & Kirim Bukti Pembayaran
+                        <i class="fab fa-whatsapp"></i> Kirim via WhatsApp
                     </button>
             </div>
             
@@ -839,7 +854,7 @@
             { username: 'admin', password: '123', name: 'Admin Utama', dataId: 'E25-25', isAdmin: true }, 
             
             // --- DAFTAR PETUGAS BARU ---
-  { username: 'novry', password: '2138', name: 'Novry', dataId: 'E21-38', isAdmin: false },
+            { username: 'novry', password: '2138', name: 'Novry', dataId: 'E21-38', isAdmin: false },
             { username: 'fathur', password: '2139', name: 'Fathur', dataId: 'E21-39', isAdmin: false },
             { username: 'hanif', password: '2141', name: 'Hanif', dataId: 'E21-41', isAdmin: false },
             { username: 'eka adi', password: '2142', name: 'Eka Adi', dataId: 'E21-42', isAdmin: false },
@@ -865,160 +880,30 @@
             { username: 'bayu ade', password: '2172', name: 'Bayu Ade', dataId: 'E21-72', isAdmin: false },
             { username: 'firly', password: '2173', name: 'Firly', dataId: 'E21-73', isAdmin: false },
 
-    // Data contoh yang Anda berikan (dijadikan sebagai referensi format)
-
-    { 
-        username: 'krisna', 
-        password: '2503', 
-        name: 'KRISNA', 
-        dataId: 'E25-03', 
-        isAdmin: false 
-    },
-    { 
-        username: 'deny', 
-        password: '2508', 
-        name: 'DENY', 
-        dataId: 'E25-08', 
-        isAdmin: false 
-    },
-    { 
-        username: 'chandra', 
-        password: '2509', 
-        name: 'CHANDRA', 
-        dataId: 'E25-09', 
-        isAdmin: false 
-    },
-    { 
-        username: 'alfian', 
-        password: '2510', 
-        name: 'ALFIAN', 
-        dataId: 'E25-10', 
-        isAdmin: false 
-    },
-    { 
-        username: 'tedi', 
-        password: '2511', 
-        name: 'TEDI', 
-        dataId: 'E25-11', 
-        isAdmin: false 
-    },
-    { 
-        username: 'deri', 
-        password: '2515', 
-        name: 'DERI', 
-        dataId: 'E25-15', 
-        isAdmin: false 
-    },
-    { 
-        username: 'paulus', 
-        password: '2518', 
-        name: 'PAULUS', 
-        dataId: 'E25-18', 
-        isAdmin: false 
-    },
-    { 
-        username: 'dede dwi', 
-        password: '2519', 
-        name: 'DEDE DWI', 
-        dataId: 'E25-19', 
-        isAdmin: false 
-    },
-    { 
-        username: 'anang', 
-        password: '2520', 
-        name: 'ANANG', 
-        dataId: 'E25-20', 
-        isAdmin: false 
-    },
-    { 
-        username: 'parulian', 
-        password: '2521', 
-        name: 'PARULIAN', 
-        dataId: 'E25-21', 
-        isAdmin: false 
-    },
-    { 
-        username: 'bayu nur', 
-        password: '2522', 
-        name: 'BAYU NUR', 
-        dataId: 'E25-22', 
-        isAdmin: false 
-    },
-    { 
-        username: 'waluyo', 
-        password: '2523', 
-        name: 'WALUYO', 
-        dataId: 'E25-23', 
-        isAdmin: false 
-    },
-    { 
-        username: 'hadi', 
-        password: '2527', 
-        name: 'HADI', 
-        dataId: 'E25-27', 
-        isAdmin: false 
-    },
-    { 
-        username: 'pakdeh agung', 
-        password: '2528', 
-        name: 'Pakdeh Agung', 
-        dataId: 'E25-28', 
-        isAdmin: false 
-    },
-    { 
-        username: 'budi almawan', 
-        password: '2530', 
-        name: 'BUDI ALMAWAN', 
-        dataId: 'E25-30', 
-        isAdmin: false 
-    },
-    { 
-        username: 'bagus', 
-        password: '2531', 
-        name: 'BAGUS', 
-        dataId: 'E25-31', 
-        isAdmin: false 
-    },
-    { 
-        username: 'asep', 
-        password: '2532', 
-        name: 'ASEP', 
-        dataId: 'E25-32', 
-        isAdmin: false 
-    },
-    { 
-        username: 'dede gunawan', 
-        password: '2533', 
-        name: 'DEDE GUNAWAN', 
-        dataId: 'E25-33', 
-        isAdmin: false 
-    },
-    { 
-        username: 'kardan', 
-        password: '2535', 
-        name: 'KARDAN', 
-        dataId: 'E25-35', 
-        isAdmin: false 
-    },
-    { 
-        username: 'rendy', 
-        password: '2536', 
-        name: 'RENDY', 
-        dataId: 'E25-36', 
-        isAdmin: false 
-    },
-    { 
-        username: 'vera', 
-        password: '2537', 
-        name: 'VERA', 
-        dataId: 'E25-37', 
-        isAdmin: false 
-    }
-
-
+            { username: 'krisna', password: '2503', name: 'KRISNA', dataId: 'E25-03', isAdmin: false },
+            { username: 'deny', password: '2508', name: 'DENY', dataId: 'E25-08', isAdmin: false },
+            { username: 'chandra', password: '2509', name: 'CHANDRA', dataId: 'E25-09', isAdmin: false },
+            { username: 'alfian', password: '2510', name: 'ALFIAN', dataId: 'E25-10', isAdmin: false },
+            { username: 'tedi', password: '2511', name: 'TEDI', dataId: 'E25-11', isAdmin: false },
+            { username: 'deri', password: '2515', name: 'DERI', dataId: 'E25-15', isAdmin: false },
+            { username: 'paulus', password: '2518', name: 'PAULUS', dataId: 'E25-18', isAdmin: false },
+            { username: 'dede dwi', password: '2519', name: 'DEDE DWI', dataId: 'E25-19', isAdmin: false },
+            { username: 'anang', password: '2520', name: 'ANANG', dataId: 'E25-20', isAdmin: false },
+            { username: 'parulian', password: '2521', name: 'PARULIAN', dataId: 'E25-21', isAdmin: false },
+            { username: 'bayu nur', password: '2522', name: 'BAYU NUR', dataId: 'E25-22', isAdmin: false },
+            { username: 'waluyo', password: '2523', name: 'WALUYO', dataId: 'E25-23', isAdmin: false },
+            { username: 'hadi', password: '2527', name: 'HADI', dataId: 'E25-27', isAdmin: false },
+            { username: 'pakdeh agung', password: '2528', name: 'Pakdeh Agung', dataId: 'E25-28', isAdmin: false },
+            { username: 'budi almawan', password: '2530', name: 'BUDI ALMAWAN', dataId: 'E25-30', isAdmin: false },
+            { username: 'bagus', password: '2531', name: 'BAGUS', dataId: 'E25-31', isAdmin: false },
+            { username: 'asep', password: '2532', name: 'ASEP', dataId: 'E25-32', isAdmin: false },
+            { username: 'dede gunawan', password: '2533', name: 'DEDE GUNAWAN', dataId: 'E25-33', isAdmin: false },
+            { username: 'kardan', password: '2535', name: 'KARDAN', dataId: 'E25-35', isAdmin: false },
+            { username: 'rendy', password: '2536', name: 'RENDY', dataId: 'E25-36', isAdmin: false },
+            { username: 'vera', password: '2537', name: 'VERA', dataId: 'E25-37', isAdmin: false }
         ];
 
-        const KAS_SALDO_DUMMY = 3500000; // Saldo kas dummy
+        const KAS_SALDO_DUMMY = 3500000;
 
         // =======================================
         // === FUNGSI LOGIN & LOGOUT (MODIFIKASI) ===
@@ -1029,7 +914,6 @@
         const loginMessage = document.getElementById('login-message');
         const currentUserInfo = document.getElementById('current-user-info');
         
-        // Elemen Halaman
         const adminDashboard = document.getElementById('admin-dashboard');
         const resultContainer = document.getElementById('result-container'); 
         const manualPaymentSection = document.getElementById('manual-payment-section');
@@ -1041,22 +925,21 @@
         const iuranBulananManual = document.getElementById('iuran-bulanan-manual');
 
         
-        // Tombol Kembali
         const btnBackToDetail = document.getElementById('btn-back-to-detail');
         const btnBackToManualForm = document.getElementById('btn-back-to-manual-form');
         const btnBackToDashboard = document.getElementById('btn-back-to-dashboard');
         
-        let currentUserId = ''; // ID (Blok) Warga yang sedang login/dilihat datanya
+        let currentUserId = '';
         let currentUserName = ''; 
-        let isAdmin = false; // Status Admin
+        let isAdmin = false;
 
         function checkLoginStatus() {
             const loggedInUser = localStorage.getItem('loggedInUser');
             if (loggedInUser) {
                 const user = JSON.parse(loggedInUser);
-                currentUserId = user.dataId; // Set ID Warga yang terkait dengan Petugas
+                currentUserId = user.dataId;
                 currentUserName = user.name;
-                isAdmin = user.isAdmin; // Set status admin
+                isAdmin = user.isAdmin;
                 showApp(user);
             } else {
                 showLogin();
@@ -1066,16 +949,11 @@
         function showApp(user) {
             loginContainer.style.display = 'none';
             appContainer.style.display = 'block';
-            // MODIFIKASI: Mengubah teks dari 'Hi' menjadi 'Selamat Datang'
             currentUserInfo.innerHTML = `<i class="fas fa-user-shield"></i> Selamat Datang, ${user.name}${user.isAdmin ? ' (Admin)' : ''}!`;
             showDashboard();
-            
-            // Menu Laporan Kas visible by default now, as access control is inside showCashReport
         }
         
-        // FUNGSI BARU: Kontrol Halaman
         function showPage(pageId) {
-            // Sembunyikan semua halaman
             adminDashboard.style.display = 'none';
             resultContainer.style.display = 'none';
             manualPaymentSection.style.display = 'none';
@@ -1083,7 +961,6 @@
             anggotaDataContainer.style.display = 'none';
             cashReportContainer.style.display = 'none'; 
             
-            // Sembunyikan semua tombol kembali
             btnBackToDetail.style.display = 'none';
             btnBackToManualForm.style.display = 'none';
             btnBackToDashboard.style.display = 'none';
@@ -1095,10 +972,10 @@
                 btnBackToDashboard.style.display = 'block';
             } else if (pageId === 'payment-form') {
                 manualPaymentSection.style.display = 'block';
-                btnBackToDashboard.style.display = 'block'; // Kembali ke dashboard
+                btnBackToDashboard.style.display = 'block';
             } else if (pageId === 'instruction') {
                 instructionContainer.style.display = 'block';
-                btnBackToManualForm.style.display = 'block'; // Kembali ke form pembayaran
+                btnBackToManualForm.style.display = 'block';
             } else if (pageId === 'anggota') {
                 anggotaDataContainer.style.display = 'block';
                 btnBackToDashboard.style.display = 'block'; 
@@ -1112,13 +989,11 @@
             showPage('dashboard');
             document.getElementById('current-saldo-text').textContent = `Rp ${KAS_SALDO_DUMMY.toLocaleString('id-ID')}. Saldo kas gnag E21-25 saat ini.`;
 
-            // === UPDATE KARTU IURAN SAYA (BARU) ===
             document.querySelector('#admin-dashboard .menu-grid .menu-item:first-child').innerHTML = `
                 <i class="fas fa-id-card-alt"></i>
                 <p>Data Kas Saya</p>
                 <p style="font-size:0.7em; margin-top: 3px;">(Blok: ${currentUserId})</p>
             `;
-            // ======================================
         }
         
         function showLogin() {
@@ -1153,7 +1028,6 @@
             showLogin();
         }
         
-        // FUNGSI BARU: Pindah ke Tampilan Detail Data Iuran
         function showDataUser(id) {
             const foundUser = DUMMY_DATA.find(user => user.id === id);
             
@@ -1169,43 +1043,35 @@
             }
         }
         
-        // FUNGSI BARU: Pindah ke Tampilan Pembayaran Manual
         function showManualPayment(id) {
             showPage('payment-form');
             
             const userData = DUMMY_DATA.find(user => user.id === id);
             if (!userData) return;
             
-            // Tentukan iuran bulanan yang benar
             const iuranBulanan = userData.iuran_bulanan || IURAN_NORMAL;
             iuranBulananManual.textContent = `Rp ${iuranBulanan.toLocaleString('id-ID')}`;
 
-            // Logic mengisi form payment
             const tunggakan2025 = userData.tunggakan_2025 || 0;
             const tunggakan2026List = userData.iuran.filter(item => item.status === 'BLUM BAYAR');
             
             if(tunggakan2025 > 0) {
-                // Default bayar tunggakan 2025 + 1 bulan 2026
                 manualAmountInput.value = tunggakan2025 + iuranBulanan; 
             } else if (tunggakan2026List.length > 0) {
-                // Default bayar 1 bulan 2026
                 manualAmountInput.value = iuranBulanan;
             } else {
                 manualAmountInput.value = 0; 
             }
-            manualAmountInput.dispatchEvent(new Event('input')); // Trigger input event
+            manualAmountInput.dispatchEvent(new Event('input'));
             
-            // Atur minimal input berdasarkan tunggakan 2025
             manualAmountInput.min = (tunggakan2025 > 0) ? tunggakan2025 : iuranBulanan;
 
-            // Reset status konfirmasi
             if(proofConfirmationCheckbox) proofConfirmationCheckbox.checked = false; 
             btnWhatsappProof.disabled = true;
             btnWhatsappProof.classList.remove('active');
             confirmActionSpan.textContent = 'transfer'; 
         }
         
-        // FUNGSI BARU: Tampilkan Data Anggota + FUNGSI ADMIN EDIT
         function showDataAnggota() {
             showPage('anggota');
             
@@ -1233,12 +1099,10 @@
                 let status2026 = (tunggakan2026Count === 0) ? '<span class="lunas">Lunas</span>' : 
                                  `<span class="belum">${tunggakan2026Count} bulan</span>`;
 
-                // Kontrol tombol Aksi
                 let aksiButtons = '—';
                 if (isAdmin) {
                     aksiButtons = `
-                       <button class="edit-button" onclick="editAnggotaData('${user.id}')" style="margin-left: 0;"><i class="fas fa-edit"></i> Ubah Status</button>
-                       <button class="edit-button" onclick="deleteAnggotaData('${user.id}')" style="background-color: #dc3545;"><i class="fas fa-trash"></i> Hapus</button>
+                       <button class="edit-button" onclick="showDataUser('${user.id}')" style="margin-left: 0; background-color: #ff5722;"><i class="fas fa-file-invoice"></i> Detail Bayar</button>
                     `;
                 }
 
@@ -1262,7 +1126,6 @@
             document.getElementById('anggota-data-container').innerHTML = html;
         }
         
-        // FUNGSI ADMIN: EDIT DATA ANGGOTA
         function editAnggotaData(userId) {
             if (!isAdmin) {
                 alert('Anda tidak memiliki izin untuk mengubah data anggota.');
@@ -1296,10 +1159,9 @@
             
             DUMMY_DATA[userIndex] = user;
             alert(`Data untuk ${user.nama} (${userId}) berhasil diperbarui.`);
-            showDataAnggota(); // Refresh tampilan
+            showDataAnggota();
         }
         
-        // FUNGSI ADMIN: TAMBAH DATA ANGGOTA BARU (BARU)
         function addAnggotaData() {
             if (!isAdmin) {
                 alert('Anda tidak memiliki izin untuk menambah data anggota.');
@@ -1309,7 +1171,6 @@
             const newId = prompt('Masukkan BLOK Warga Baru (Contoh: E25-10):');
             if (!newId) return;
             
-            // Cek duplikasi ID
             if (DUMMY_DATA.find(user => user.id === newId.toUpperCase())) {
                 alert(`ID Blok ${newId} sudah ada.`);
                 return;
@@ -1335,7 +1196,6 @@
             showDataAnggota(); 
         }
         
-        // FUNGSI ADMIN: HAPUS DATA ANGGOTA (BARU)
         function deleteAnggotaData(userId) {
             if (!isAdmin) {
                 alert('Anda tidak memiliki izin untuk menghapus data anggota.');
@@ -1356,17 +1216,14 @@
         }
 
 
-        // FUNGSI BARU: Tampilkan Laporan Kas + FUNGSI ADMIN EDIT
         function showCashReport() {
             showPage('report');
             
-            // Tampilkan tombol Admin Tools hanya jika user adalah admin
             const adminToolsSpan = document.getElementById('cash-report-admin-tools');
             if (isAdmin) {
                  adminToolsSpan.innerHTML = `<button class="edit-button" onclick="editCashReport()"><i class="fas fa-edit"></i> Ubah Data</button>`;
             } else {
                  adminToolsSpan.innerHTML = '';
-                 // Jika bukan admin, kasih pesan warning jika fungsi edit dipanggil
             }
             
             displayCashReport();
@@ -1403,7 +1260,6 @@
                     <tbody>
             `;
             
-            // Hanya menampilkan PENGELUARAN
             data.pengeluaran.forEach((item, index) => {
                 html += `
                     <tr id="pengeluaran-${index}">
@@ -1422,7 +1278,6 @@
             reportContentDiv.innerHTML = html;
         }
 
-        // FUNGSI ADMIN: EDIT LAPORAN KAS
         function editCashReport() {
             if (!isAdmin) {
                 alert('Anda tidak memiliki izin untuk mengubah laporan kas.');
@@ -1466,11 +1321,9 @@
                 alert('Aksi dibatalkan atau tidak valid.');
             }
             
-            displayCashReport(); // Refresh tampilan
+            displayCashReport();
         }
 
-
-        // Jalankan pengecekan status login saat halaman dimuat
         document.addEventListener('DOMContentLoaded', checkLoginStatus);
 
 
@@ -1479,22 +1332,15 @@
         // =======================================
 
         const IURAN_NORMAL = 25000; 
-        const SUBSIDI_AMOUNT = 15000; 
-        const IURAN_SUBSIDI = IURAN_NORMAL - SUBSIDI_AMOUNT; // 15000
+        const SUBSIDI_AMOUNT = 10000; 
+        const IURAN_SUBSIDI = 15000; 
 
-        /**
-         * Fungsi pembantu untuk membuat data iuran 12 bulan
-         * @param {number} paidMonthsCount - Jumlah bulan yang akan disetel LUNAS (0-12)
-         * @param {number} nominal - Nominal iuran per bulan (misalnya IURAN_NORMAL atau IURAN_SUBSIDI)
-         * @returns {Array} Array objek iuran untuk 12 bulan
-         */
         function createIuranData(paidMonthsCount = 0, nominal = IURAN_NORMAL) {
             const months = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
             
             return months.map((month, index) => {
                 let status = (index < paidMonthsCount) ? 'LUNAS' : 'BLUM BAYAR';
                 
-                // Memastikan status 'BLUM BAYAR' jika paidMonthsCount di luar range yang diharapkan
                 if (paidMonthsCount < 0 || paidMonthsCount > 12) {
                      status = 'BLUM BAYAR';
                 }
@@ -1507,299 +1353,302 @@
             });
         }
 
-        // Data Dummy Sederhana 
         let DUMMY_DATA =
         [
- // GANG E21 (Iuran Normal: 25000)
-    { 
-    id: 'E21-38', 
-    nama: 'NOVRY', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-39', 
-    nama: 'FATHUR', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-41', 
-    nama: 'HANIF', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-42', 
-    nama: 'EKA ADI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-43', 
-    nama: 'LARASATI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-46', 
-    nama: 'RAHMAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-47', 
-    nama: 'RAKEL', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-48', 
-    nama: 'HENDRA', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-49', 
-    nama: 'NANA', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-57', 
-    nama: 'AJI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-51', 
-    nama: 'ROHMAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-53', 
-    nama: 'VIKO', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-55', 
-    nama: 'HENDRI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-56', 
-    nama: 'RIYANDI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-60', 
-    nama: 'ANGGA', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-61', 
-    nama: 'IWAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-65', 
-    nama: 'MARIO', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-66', 
-    nama: 'KOKO', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-67', 
-    nama: 'RICO', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-68', 
-    nama: 'IRWAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-69', 
-    nama: 'TORO', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-70', 
-    nama: 'TOPAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-71', 
-    nama: 'HERI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-72', 
-    nama: 'BAYU ADE', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E21-73', 
-    nama: 'FIRLY', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
+         let DUMMY_DATA =
+        [
+            // GANG E21 (Iuran Normal: 25000)
+            { 
+                id: 'E21-38',
+                nama: 'NOVRY', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-39', 
+                nama: 'FATHUR', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-41', 
+                nama: 'HANIF', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-42', 
+                nama: 'EKA ADI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-43', 
+                nama: 'LARASATI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-46', 
+                nama: 'RAHMAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-47', 
+                nama: 'RAKEL', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-48', 
+                nama: 'HENDRA', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-49', 
+                nama: 'NANA', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-57', 
+                nama: 'AJI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-51', 
+                nama: 'ROHMAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-53', 
+                nama: 'VIKO', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-55', 
+                nama: 'HENDRI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-56', 
+                nama: 'RIYANDI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-60', 
+                nama: 'ANGGA', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-61', 
+                nama: 'IWAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-65', 
+                nama: 'MARIO', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-66', 
+                nama: 'KOKO', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-67', 
+                nama: 'RICO', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-68', 
+                nama: 'IRWAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-69', 
+                nama: 'TORO', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-70', 
+                nama: 'TOPAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-71', 
+                nama: 'HERI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-72', 
+                nama: 'BAYU ADE', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E21-73', 
+                nama: 'FIRLY', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
 
 
-    // GANG E25 (Iuran Normal: 25000)
-    { id: 'E25-03',
-    nama: 'KRISNA',
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    
-    { id: 'E25-08',
-    nama: 'DENY',
-    tunggakan_2025: 0,
-    iuran: createIuranData(0, IURAN_NORMAL) },
-    
-    { id: 'E25-09', 
-    nama: 'CHANDRA', 
-    tunggakan_2025: 0,
-    iuran: createIuranData(0, IURAN_NORMAL) },
-    
-    { id: 'E25-10', 
-    nama: 'ALFIAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) },
+            // GANG E25 (Iuran Normal: 25000)
+            { 
+                id: 'E25-03', 
+                nama: 'KRISNA', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-08', 
+                nama: 'DENY', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-09', 
+                nama: 'CHANDRA', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-10', 
+                nama: 'ALFIAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
 
-    // Warga Subsidi (Iuran Subsidi: 15000)
-    { 
-        id: 'E25-11',
-        nama: 'TEDI',
-        tunggakan_2025: 0, 
-        iuran: createIuranData(0, IURAN_SUBSIDI), 
-        subsidi: true, 
-        iuran_bulanan: IURAN_SUBSIDI
-    },
-    { 
-    id: 'E25-32', 
-    nama: 'ASEP', 
-tunggakan_2025: 0, 
-        iuran: createIuranData(0, IURAN_SUBSIDI), 
-        subsidi: true, 
-        iuran_bulanan: IURAN_SUBSIDI
-    },
-    
+            // Warga Subsidi (Iuran Subsidi: 10000)
+            { 
+                id: 'E25-11', 
+                nama: 'TEDI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_SUBSIDI), 
+                subsidi: true, 
+                iuran_bulanan: IURAN_SUBSIDI 
+            },
+            { 
+                id: 'E25-32', 
+                nama: 'ASEP', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_SUBSIDI), 
+                subsidi: true, 
+                iuran_bulanan: IURAN_SUBSIDI 
+            },
+            
 
-// GANG E25 (Iuran Normal: 25000)
-    { 
-    id: 'E25-15', 
-    nama: 'DERI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-18', 
-    nama: 'PAULUS', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-19', 
-    nama: 'DEDE DWI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-20', 
-    nama: 'ANANG', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-21', 
-    nama: 'PARULIAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-22', 
-    nama: 'BAYU NUR', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-23', 
-    nama: 'WALUYO', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-27', 
-    nama: 'HADI', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-28', 
-    nama: 'Pakdeh Agung', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-30', 
-    nama: 'BUDI ALMAWAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-31', 
-    nama: 'BAGUS', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-33', 
-    nama: 'DEDE GUNAWAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-35', 
-    nama: 'KARDAN', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-36', 
-    nama: 'RENDY', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    },
-    { 
-    id: 'E25-37', 
-    nama: 'VERA', 
-    tunggakan_2025: 0, 
-    iuran: createIuranData(0, IURAN_NORMAL) 
-    }
+            // GANG E25 (Iuran Normal: 25000)
+            { 
+                id: 'E25-15', 
+                nama: 'DERI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-18', 
+                nama: 'PAULUS', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-19', 
+                nama: 'DEDE DWI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-20', 
+                nama: 'ANANG', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-21', 
+                nama: 'PARULIAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-22', 
+                nama: 'BAYU NUR', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-23', 
+                nama: 'WALUYO', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-27', 
+                nama: 'HADI', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-28', 
+                nama: 'Pakdeh Agung', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-30', 
+                nama: 'BUDI ALMAWAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-31', 
+                nama: 'BAGUS', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-33', 
+                nama: 'DEDE GUNAWAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-35', 
+                nama: 'KARDAN', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-36', 
+                nama: 'RENDY', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            },
+            { 
+                id: 'E25-37', 
+                nama: 'VERA', 
+                tunggakan_2025: 0, 
+                iuran: createIuranData(0, IURAN_NORMAL) 
+            }
         ]
 
 
-
-        // --- DATA DUMMY LAPORAN KAS (TETAP) ---
         const DUMMY_CASH_REPORT = {
             saldo_awal: 5000000, 
             pemasukan: [
@@ -1808,18 +1657,11 @@ tunggakan_2025: 0,
                 { tanggal: '2026-01-20', deskripsi: 'Iuran Kas Februari (5 warga)', nominal: 125000 },
             ],
             pengeluaran: [
-                { tanggal: '2026-01-15', 
-                 deskripsi: 'Pembelian lampu jalan E25',
-                 nominal: 150000 },
-                
-                { tanggal: '2026-01-25', 
-                 deskripsi: 'Biaya kebersihan bulanan', 
-                 nominal: 100000 },
+                { tanggal: '2026-01-15', deskripsi: 'Pembelian lampu jalan E25', nominal: 150000 },
+                { tanggal: '2026-01-25', deskripsi: 'Biaya kebersihan bulanan', nominal: 100000 },
             ]
         };
-        // ------------------------------------
 
-        // --- VARIABEL DOM & STATE ---
         const dataDisplay = document.getElementById('data-display');
         const userNameSpan = document.getElementById('user-name');
         const totalTunggakanSpan = document.getElementById('total-tunggakan');
@@ -1854,33 +1696,26 @@ tunggakan_2025: 0,
             userNameSpan.textContent = user.nama + ' (' + user.id + ')';
             manualUserDetailSpan.textContent = user.nama + ' (' + user.id + ')'; 
             
-            // Dapatkan nominal iuran bulanan yang benar
             const userIuranBulanan = user.iuran_bulanan || IURAN_NORMAL;
 
             currentTunggakanList = []; 
             
-            // Hitung Total Tunggakan Keseluruhan
             const tunggakan2025 = user.tunggakan_2025 || 0;
             
-            // Pisahkan bulan yang LUNAS dan BLUM BAYAR
             const paidMonths = user.iuran.filter(item => item.status === 'LUNAS');
             const unpaidMonths = user.iuran.filter(item => item.status === 'BLUM BAYAR');
             
-            // Ambil bulan pertama yang belum bayar
             const firstUnpaidMonth = unpaidMonths.length > 0 ? unpaidMonths[0] : null;
             
-            // Sisa bulan yang belum bayar (selain yang pertama)
             const otherUnpaidMonths = unpaidMonths.slice(1);
             
             let totalTunggakan2026 = unpaidMonths.reduce((sum, item) => {
                 currentTunggakanList.push(item.bulan);
-                // Pastikan nominal yang dipakai untuk perhitungan adalah nominal pada item iuran (bisa jadi subsidi)
                 return sum + item.nominal; 
             }, 0);
             
             let totalTunggakanSummary = tunggakan2025 + totalTunggakan2026;
 
-            // --- LOGIKA TAMPILAN BULAN ---
             let htmlContent = `
                 <div id="data-display-table">
                     <div class="data-header">
@@ -1890,7 +1725,6 @@ tunggakan_2025: 0,
                     </div>
             `;
             
-            // 1. Tampilkan Bulan yang LUNAS
             paidMonths.forEach(item => {
                 const nominalIDR = item.nominal.toLocaleString('id-ID');
                 htmlContent += `
@@ -1902,7 +1736,6 @@ tunggakan_2025: 0,
                 `;
             });
             
-            // 2. Tampilkan 1 Bulan Pertama yang BELUM BAYAR (jika ada)
             if (firstUnpaidMonth) {
                 const nominalIDR = firstUnpaidMonth.nominal.toLocaleString('id-ID');
                 htmlContent += `
@@ -1914,7 +1747,6 @@ tunggakan_2025: 0,
                 `;
             }
             
-            // 3. Tambahkan DIV untuk bulan-bulan yang disembunyikan (jika ada)
             if (otherUnpaidMonths.length > 0) {
                 htmlContent += `
                     <div id="hidden-unpaid-months" style="display:none;">
@@ -1931,9 +1763,8 @@ tunggakan_2025: 0,
                     `;
                 });
                 
-                htmlContent += `</div>`; // Tutup #hidden-unpaid-months
+                htmlContent += `</div>`;
 
-                // Tombol untuk menampilkan/menyembunyikan sisa tunggakan
                 htmlContent += `
                     <div style="text-align: center; margin-top: 10px;">
                         <button id="btn-toggle-tunggakan" onclick="toggleUnpaidMonths()" style="
@@ -1953,15 +1784,13 @@ tunggakan_2025: 0,
                 `;
             }
             
-            htmlContent += `</div>`; // Tutup #data-display-table
+            htmlContent += `</div>`;
             
             dataDisplay.innerHTML = htmlContent;
             
-            // 2. Update Tampilan Summary
             totalTunggakanSpan.textContent = 'Rp ' + totalTunggakanSummary.toLocaleString('id-ID');
-            currentTunggakanAmount = totalTunggakanSummary; // Update global state
+            currentTunggakanAmount = totalTunggakanSummary;
             
-            // --- LOGIC TAMPILAN DETAIL TUNGGAKAN (FORMAT EXCEL) ---
             let detailHtml = `
                 <div class="tunggakan-header">
                     <div class="col-deskripsi">Keterangan</div>
@@ -2006,9 +1835,7 @@ tunggakan_2025: 0,
             `;
             
             tunggakanDetailDiv.innerHTML = detailHtml;
-            // -------------------------------------------------------------
             
-            // 4. Update tampilan Tunggakan 2025 di Form Manual
             if (tunggakan2025 > 0) {
                 tunggakan2025Input.value = `Rp ${tunggakan2025.toLocaleString('id-ID')}`;
                 tunggakan2025Group.style.display = 'block';
@@ -2019,17 +1846,14 @@ tunggakan_2025: 0,
                 manualAmountInput.min = userIuranBulanan; 
             }
             
-            // Update iuran bulanan di form manual
             iuranBulananManual.textContent = `Rp ${userIuranBulanan.toLocaleString('id-ID')}`;
             
-            // 5. Tentukan Tampilan Pilihan Bayar
             if (totalTunggakanSummary > 0) {
                 tunggakanOptionsDiv.style.display = 'block'; 
                 lunasMessageDiv.style.display = 'none';
                 totalInfoDiv.style.backgroundColor = '#fff'; 
                 totalInfoDiv.style.color = '#333';
                 
-                // Atur nilai default di form pembayaran saat kembali dari detail
                 if(tunggakan2025 > 0) {
                     manualAmountInput.value = tunggakan2025 + userIuranBulanan; 
                 } else if (totalTunggakan2026 > 0) {
@@ -2040,7 +1864,6 @@ tunggakan_2025: 0,
                 manualAmountInput.dispatchEvent(new Event('input')); 
 
             } else {
-                // Semua Lunas
                 tunggakanOptionsDiv.style.display = 'none'; 
                 lunasMessageDiv.style.display = 'block';
                 totalTunggakanSpan.textContent = 'Rp 0 (Semua Iuran Lunas!)';
@@ -2062,12 +1885,12 @@ tunggakan_2025: 0,
             if (hiddenDiv.style.display === 'none') {
                 hiddenDiv.style.display = 'block';
                 toggleButton.innerHTML = '<i class="fas fa-eye"></i> Sembunyikan Tunggakan Lainnya';
-                toggleButton.style.backgroundColor = '#6c757d'; // Warna abu-abu saat terbuka
+                toggleButton.style.backgroundColor = '#6c757d';
             } else {
                 hiddenDiv.style.display = 'none';
                 const otherUnpaidCount = hiddenDiv.children.length; 
                 toggleButton.innerHTML = `<i class="fas fa-eye-slash"></i> Tampilkan ${otherUnpaidCount} Tunggakan Lainnya`;
-                toggleButton.style.backgroundColor = '#ff5722'; // Warna oranye saat tertutup
+                toggleButton.style.backgroundColor = '#ff5722';
             }
         }
 
@@ -2109,7 +1932,6 @@ tunggakan_2025: 0,
             }
 
             if (isTunggakan2025Paid) {
-                // Berapa bulan 2026 yang bisa dilunasi dengan sisa uang
                 const monthsPaidFor2026 = Math.floor(remainingAmount / userIuranBulanan);
                 const excessAmount = remainingAmount % userIuranBulanan;
 
@@ -2133,7 +1955,6 @@ tunggakan_2025: 0,
                 } else if (paidMonthsCount > 0 && paidMonthsCount === monthsPaidFor2026 && excessAmount > 0) {
                     detailPembayaran += ` + SISA/LEBIH bayar Rp ${excessAmount.toLocaleString('id-ID')}.`;
                 } else if (paidMonthsCount < monthsPaidFor2026 && monthsAvailable === paidMonthsCount) {
-                    // Semua bulan tunggakan terbayar, tapi ada kelebihan yang tidak mencapai 1 bulan penuh berikutnya
                     detailPembayaran += ` + SISA/LEBIH bayar Rp ${remainingAmount.toLocaleString('id-ID')}.`;
                 } else if (paidMonthsCount < monthsPaidFor2026) {
                     const sisaBulan = monthsPaidFor2026 - paidMonthsCount;
@@ -2185,7 +2006,6 @@ tunggakan_2025: 0,
                  return;
             }
             
-            // Pindah ke Halaman Instruksi
             showPage('instruction');
             
             if(proofConfirmationCheckbox) proofConfirmationCheckbox.checked = false; 
@@ -2197,7 +2017,6 @@ tunggakan_2025: 0,
             const method = document.querySelector('#manual-payment-section input[name="method"]:checked').value;
             
             let monthsToMarkLunas = [];
-            // Ambil daftar bulan yang dilunasi
             const match = detailPembayaran.match(/Iuran 2026: \d+ bulan \((.*?)\)\./);
             if (match && match[1]) {
                 monthsToMarkLunas = match[1].split(',').map(m => m.trim());
@@ -2223,34 +2042,53 @@ tunggakan_2025: 0,
                     <div class="qris-display">
                         <img src="qrcode.jpg" alt="QRIS Kas Gang E21/25" class="qrcode-image">
                     </div>
- <a href="qrcode.jpg" download="QRIS_Kas_Gang_E21-25.jpg" style="
-                display: block; 
-                width: 100%; 
-                padding: 10px; 
-                margin-top: 10px; 
-                background-color: #28a745; 
-                color: white; 
-                text-decoration: none; 
-                border-radius: 5px; 
-                font-weight: bold;
-            ">
-                <i class="fas fa-download"></i> Download Gambar QRIS
-            </a>
-            
+                    <a href="qrcode.jpg" download="QRIS_Kas_Gang_E21-25.jpg" style="
+                        display: block; 
+                        width: 100%; 
+                        padding: 10px; 
+                        margin-top: 10px; 
+                        background-color: #28a745; 
+                        color: white; 
+                        text-decoration: none; 
+                        border-radius: 5px; 
+                        font-weight: bold;
+                    ">
+                        <i class="fas fa-download"></i> Download Gambar QRIS
+                    </a>
+                    <span class="warning-text">Penting, setelah melakukan pembayaran centang konfirmasi, dan klik kirim via WhatsApp dengan melampirkan bukti pembayaran.</span>
                 `;
             } else if (method === 'Transfer Bank') {
+                const mandiriRek = '1234567890';
+                const danaNo = '08987645321'; 
+                
+                // MODIFIKASI: Menambahkan tombol Salin
                 htmlContent += `
                     <div style="text-align: left;">
                         <p style="font-weight: bold; margin-top: 10px;">Pilih Salah Satu Rekening:</p>
-                        <p><strong>Bank:</strong> MANDIRI</p>
-                        <p><strong>Nomor Rekening:</strong> 1234-567-890</p>
-                        <p><strong>Atas Nama:</strong> CANDRA</p>
+                        
+                        <p style="margin-bottom: 5px;">
+                            <strong>Bank:</strong> MANDIRI <br>
+                            <strong>Nomor Rekening:</strong> <span id="rek-mandiri-val" style="font-weight: bold; color: #007bff;">${mandiriRek}</span>
+                            <button onclick="copyToClipboard('${mandiriRek}', this)" class="copy-button-small">
+                                <i class="fas fa-copy"></i> Salin
+                            </button>
+                        </p>
+                        <p style="margin-top: 0;"><strong>Atas Nama:</strong> BENDAHARA</p>
+                        
                         <hr style="border: 0; border-top: 1px dashed #ccc; margin: 10px 0;">
-                        <p><strong>Bank:</strong> DANA (Transfer Virtual)</p>
-                        <p><strong>Nomor Rekening:</strong> 0857-8125-6570</p>
-                        <p><strong>Atas Nama:</strong> CANDRA</p>
+                        
+                        <p style="margin-bottom: 5px;">
+                            <strong>Bank:</strong> DANA (Transfer Virtual) <br>
+                            <strong>Nomor Rekening:</strong> <span id="rek-dana-val" style="font-weight: bold; color: #007bff;">${danaNo.slice(0, 4)}-${danaNo.slice(4, 8)}-${danaNo.slice(8, 12)}</span>
+                            <button onclick="copyToClipboard('${danaNo}', this)" class="copy-button-small">
+                                <i class="fas fa-copy"></i> Salin
+                            </button>
+                        </p>
+                        <p style="margin-top: 0;"><strong>Atas Nama:</strong> BENDAHARA</p>
+                        
                     </div>
-                    <p style="color: red; font-weight: bold; margin-top: 15px;">**Penting:** untuk pembayaran dari semua akun bank ke DANA maka pembayaran di tambah 1000 </p>
+                    <p style="color: red; font-weight: bold; margin-top: 15px;">**Penting:** Untuk pembayaran dari semua akun bank ke DANA, maka pembayaran **ditambah Rp 1.000** (biaya admin).</p>
+                    <span class="warning-text">Penting, setelah melakukan pembayaran centang konfirmasi, dan klik kirim via WhatsApp dengan melampirkan bukti pembayaran.</span>
                 `; 
             } else if (method === 'Offline (Tunai)') {
                  htmlContent += `
@@ -2303,7 +2141,6 @@ tunggakan_2025: 0,
                 const userIuranBulanan = userData.iuran_bulanan || IURAN_NORMAL;
                 let totalDibayar = amount;
                 
-                // 1. Lunasi Tunggakan 2025
                 if (userData.tunggakan_2025 > 0) {
                     if (totalDibayar >= userData.tunggakan_2025) {
                         totalDibayar -= userData.tunggakan_2025;
@@ -2314,11 +2151,9 @@ tunggakan_2025: 0,
                     }
                 }
                 
-                // 2. Lunasi Bulan 2026
                 if (totalDibayar >= userIuranBulanan && monthsToMarkLunas.length > 0) {
                     monthsToMarkLunas.forEach(targetMonth => {
                         const iuranItem = userData.iuran.find(item => item.bulan === targetMonth && item.status === 'BLUM BAYAR');
-                        // Hanya tandai LUNAS jika nominal di item iuran sesuai dengan nominal yang seharusnya dibayar
                         if (iuranItem && iuranItem.nominal === userIuranBulanan) {
                             iuranItem.status = 'LUNAS'; 
                         }
@@ -2328,10 +2163,9 @@ tunggakan_2025: 0,
                 DUMMY_DATA[userIndex] = userData;
             }
 
-            // Kembali ke Detail Iuran setelah submit
             showDataUser(id); 
 
-            const phoneNumber = '6285781256570'; // Nomor WA Bendahara
+            const phoneNumber = '6285781256570';
             
             let paymentActionText = 'bukti transfer';
             if (method === 'Offline (Tunai)') {
@@ -2373,6 +2207,42 @@ tunggakan_2025: 0,
                 manualAmountInput.dispatchEvent(new Event('input'));
             }
         });
+        
+        // ===============================================
+        // === FUNGSI COPY TO CLIPBOARD (BARU) ===
+        // ===============================================
+        function copyToClipboard(textToCopy, buttonElement) {
+            const originalText = buttonElement.textContent;
+            const originalColor = buttonElement.style.backgroundColor;
+            const originalTextColor = buttonElement.style.color;
+
+            const cleanText = String(textToCopy).replace(/-/g, '').trim(); 
+
+            navigator.clipboard.writeText(cleanText).then(function() {
+                
+                buttonElement.textContent = "✅ Tersalin!";
+                buttonElement.style.backgroundColor = "#28a745"; 
+                buttonElement.style.color = "white"; 
+
+                setTimeout(function() {
+                    buttonElement.textContent = originalText;
+                    buttonElement.style.backgroundColor = originalColor;
+                    buttonElement.style.color = originalTextColor;
+                }, 1500); 
+
+            }).catch(function(err) {
+                console.error('Gagal menyalin: ', err);
+                buttonElement.textContent = "❌ Gagal!";
+                buttonElement.style.backgroundColor = "#dc3545"; 
+                buttonElement.style.color = "white";
+                
+                setTimeout(function() {
+                    buttonElement.textContent = originalText;
+                    buttonElement.style.backgroundColor = originalColor;
+                    buttonElement.style.color = originalTextColor;
+                }, 1500); 
+            });
+        }
     </script>
 
 </body>
