@@ -2398,29 +2398,24 @@ let DUMMY_DATA =
         `;
 
         if (method === 'QR Code (QRIS)') {
-             htmlContent += `
-                <p style="text-align: center; font-weight: 600;">Scan QRIS di bawah ini menggunakan aplikasi pembayaran Anda (Dana, GoPay, Mobile Banking, dll.)</p>
-                <div class="qris-display">
-                    
-                </div>
-                <a href="qrcode.jpg" download="QRIS_Kas_Gang_E21-25.jpg" style="
-                    display: block; 
-                    width: 100%; 
-                    padding: 15px; 
-                    margin-top: 20px; 
-                    background-color: #28a745; 
-                    color: white; 
-                    text-decoration: none; 
-                    border-radius: 10px; 
-                    font-weight: bold;
-                    text-align: center;
-                    font-size: 1.1em;
-                    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-                ">
-                    <i class="fas fa-download"></i> Download Gambar QRIS
-                </a>
-                <span class="warning-text">Penting, setelah melakukan pembayaran centang konfirmasi, dan klik kirim via WhatsApp dengan melampirkan bukti pembayaran.</span>
-            `;
+                 htmlContent += `
+                    <p style="text-align: center;">Scan QRIS di bawah ini menggunakan aplikasi pembayaran Anda (Dana, GoPay, Mobile Banking, dll.)</p>
+                    <div class="qris-display">
+                        <img src="qrcode.jpg" alt="QRIS Kas Gang E21/25" class="qrcode-image">
+                    </div>
+ <a href="qrcode.jpg" download="QRIS_Kas_Gang_E21-25.jpg" style="
+                display: block; 
+                width: 100%; 
+                padding: 10px; 
+                margin-top: 10px; 
+                background-color: #28a745; 
+                color: white; 
+                text-decoration: none; 
+                border-radius: 5px; 
+                font-weight: bold;
+            ">
+                <i class="fas fa-download"></i> Download Gambar QRIS
+            </a>
         } else if (method === 'Transfer Bank') {
             const mandiriRek = '1234567890';
             const danaNo = '08987645321'; 
