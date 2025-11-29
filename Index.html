@@ -1843,31 +1843,37 @@ let DUMMY_DATA =
   tunggakan_2025: 0,
   iuran: createIuranData
   (0, IURAN_NORMAL) },
+    
 { id: 'E21-65', 
   nama: 'MARIO',
   tunggakan_2025: 0,
   iuran: createIuranData
   (0, IURAN_NORMAL) },
+    
 { id: 'E21-66', 
   nama: 'KOKO',
   tunggakan_2025: 0,
   iuran: createIuranData
   (0, IURAN_NORMAL) },
+    
 { id: 'E21-67', 
   nama: 'RICO',
   tunggakan_2025: 0,
   iuran: createIuranData
   (0, IURAN_NORMAL) },
+    
 { id: 'E21-68', 
   nama: 'IRWAN',
   tunggakan_2025: 0,
   iuran: createIuranData
   (0, IURAN_NORMAL) },
+    
 { id: 'E21-69', 
   nama: 'TORO',
   tunggakan_2025: 0,
   iuran: createIuranData
   (0, IURAN_NORMAL) },
+    
 { id: 'E21-70', 
   nama: 'TOPAN',
   tunggakan_2025: 0,
@@ -2397,7 +2403,7 @@ let DUMMY_DATA =
             <hr style="margin: 10px 0;">
         `;
 
-        if (method === 'QR Code (QRIS)') {
+            if (method === 'QR Code (QRIS)') {
                  htmlContent += `
                     <p style="text-align: center;">Scan QRIS di bawah ini menggunakan aplikasi pembayaran Anda (Dana, GoPay, Mobile Banking, dll.)</p>
                     <div class="qris-display">
@@ -2416,7 +2422,8 @@ let DUMMY_DATA =
             ">
                 <i class="fas fa-download"></i> Download Gambar QRIS
             </a>
-            ';
+            
+                `;
         } else if (method === 'Transfer Bank') {
             const mandiriRek = '1234567890';
             const danaNo = '08987645321'; 
