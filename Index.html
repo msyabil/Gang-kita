@@ -772,10 +772,13 @@
             color: var(--neon-color-header);
         }
 
+        /* --- PERBAIKAN CSS LOADING TEXT CONTAINER --- */
         .loading-text-container {
             overflow: hidden;
-            height: 1.5em; /* Sesuaikan dengan font size .loading-text */
+            /* Hapus atau atur tinggi ke 'auto' agar teks penuh muncul */
+            height: auto; 
         }
+        /* ------------------------------------------ */
 
         .loading-text {
             font-size: 1.5em;
@@ -785,10 +788,221 @@
             /* Animasi teks dari dalam keluar */
             animation: text-reveal 1.5s ease-out forwards;
         }
+        
+        /* ====================================================== */
+        /* 9. PERBAIKAN RUNNING TEXT */
+        /* ====================================================== */
+        .running-text marquee {
+            /* Pastikan marquee tidak berhenti saat tidak aktif */
+            display: block;
+            width: 100%;
+        }
+
 
     </style>
 </head>
 <body class="dark-mode">
+<button id="fabBackAdminButton" class="fab back-button" onclick="handleFabClick()">
+    <i class="fas fa-arrow-left"></i>
+</button>
+<div id="adminPage" class="page" style="display: none; opacity: 0;">
+    <h2 class="section-title">👑 Kontrol Admin</h2>
+    
+    <button class="action-button" onclick="addNewWargaFromAdmin()" style="background-color: var(--ok-button); margin-bottom: 15px;">
+        ➕ Tambah Warga Baru
+    </button>
+    
+    <div id="adminTableWrapper" class="profile-card" style="padding: 15px;">
+        <h3>Daftar & Edit Data Warga</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama</th>
+                        <th>Blok</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="adminWargaTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+    
+    </div>
+
+<button id="fabBackAdminButton" class="fab-back-button" onclick="handleFabClick()" style="display: none;">
+    &larr; Kembali
+</button>
+<div id="modalEditUser" class="modal" onclick="if(event.target === this) hideEditUserModal()" style="display: none; opacity: 0;">
+    <div class="modal-content">
+        <span class="close-button" onclick="hideEditUserModal()">&times;</span>
+        <h3 id="modalEditUserTitle">Edit Data Warga</h3>
+<div style="margin-top: 25px; text-align: center;">
+    <button class="action-button" onclick="showEditReportModal()" style="background-color: #f39c12; color: white; box-shadow: 0 3px 0 #d35400; font-size: 0.9em; padding: 10px 15px;">
+        ✍️ Edit Konten Halaman Laporan
+    </button>
+</div>
+ 
+<div id="reportPage" class="page" style="display: none; opacity: 0;">
+    <h2 class="section-title">📊 Laporan Keuangan</h2>
+    
+    <div class="profile-card" style="padding: 20px;">
+        <div id="reportContentDisplay">
+            <p style="text-align: center; opacity: 0.7;">Memuat laporan...</p>
+        </div>
+    </div>
+</div>
+
+<div id="modalEditReport" class="modal" onclick="if(event.target === this) hideEditReportModal()" style="display: none; opacity: 0;">
+    <div class="modal-content" style="max-width: 90%; width: 600px;">
+        <span class="close-button" onclick="hideEditReportModal()">&times;</span>
+        <h3>✍️ Edit Konten Halaman Laporan</h3>
+        
+        <p style="font-size: 0.85em; opacity: 0.8;">Anda dapat mengedit konten laporan. Gunakan format Markdown sederhana (misalnya, `### Judul` untuk judul bagian, `- Item` untuk daftar).</p>
+        
+        <form onsubmit="event.preventDefault(); saveEditedReport()">
+            <label for="editReportTextarea" style="display: block; margin-bottom: 5px;">Konten Laporan:</label>
+            <textarea id="editReportTextarea" rows="15" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid var(--shadow-dark); border-radius: 8px; background-color: var(--input-bg); color: var(--text-color);"></textarea>
+            
+            <button type="submit" class="action-button" style="background-color: var(--ok-button); margin-top: 15px;">
+                💾 Simpan Konten Laporan
+            </button>
+        </form>
+    </div>
+</div>
+
+        
+        <form onsubmit="event.preventDefault(); saveEditedUser()">
+            <input type="hidden" id="editUserId">
+            
+            <fieldset>
+                <legend>Data Dasar & Iuran</legend>
+                <label for="editUserName">Nama Lengkap:</label>
+                <input type="text" id="editUserName" required>
+                
+                <label for="editUserBlock">Blok/Nomor:</label>
+                <input type="text" id="editUserBlock" required>
+                
+                <label for="editUserRate">Rate Iuran (Rp):</label>
+                <input type="number" id="editUserRate" required>
+            </fieldset>
+
+            <fieldset style="margin-top: 15px;">
+                <legend>Status Pembayaran (TAHUNAN)</legend>
+                <label for="editArrears2025">Tunggakan (Bulan - Tahun 2025):</label>
+                <input type="number" id="editArrears2025" min="0" required>
+                
+                <label for="editPaid2026">Bulan Lunas (Bulan - Tahun 2026):</label>
+                <input type="number" id="editPaid2026" min="0" max="12" required>
+            </fieldset>
+            
+            <fieldset style="margin-top: 15px;">
+                <legend>Data Login</legend>
+                <label for="editUserUsername">Username:</label>
+                <input type="text" id="editUserUsername" required>
+                
+                <label for="editUserPassword">Password:</label>
+                <input type="text" id="editUserPassword" required>
+            </fieldset>
+            
+            <button type="submit" class="action-button" style="background-color: var(--ok-button); margin-top: 15px;">
+                💾 Simpan Perubahan
+            </button>
+        </form>
+    </div>
+</div>
+
+
+
+<div id="modalAdminInvoice" class="modal" onclick="if(event.target === this) hideAdminInvoiceModal()" style="display: none; opacity: 0;">
+    <div class="modal-content" style="max-width: 90%; width: 800px;">
+        <span class="close-button" onclick="hideAdminInvoiceModal()">&times;</span>
+        <h3>📄 Kelola Semua Invoice Warga</h3>
+        
+        <div style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
+            <div class="table-container">
+                 <table>
+                    <thead>
+                        <tr>
+                            <th>ID Invoice</th>
+                            <th>Warga</th>
+                            <th>Tanggal</th>
+                            <th>Total</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminInvoiceListBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <h4>➕ Tambah Invoice Manual</h4>
+        <form id="addInvoiceForm" onsubmit="event.preventDefault(); addAdminInvoiceManual(document.getElementById('addInvoiceID').value, document.getElementById('addInvoiceUserID').value, document.getElementById('addInvoiceTotal').value, document.getElementById('addInvoiceMethod').value, document.getElementById('addInvoiceAllocation').value)">
+            <label for="addInvoiceID">ID Invoice (Contoh: INV-999):</label>
+            <input type="text" id="addInvoiceID" required>
+            
+            <label for="addInvoiceUserID">ID Warga (Angka):</label>
+            <input type="number" id="addInvoiceUserID" min="1" required>
+            
+            <label for="addInvoiceTotal">Total Pembayaran (Rp):</label>
+            <input type="number" id="addInvoiceTotal" min="1" required>
+            
+            <label for="addInvoiceMethod">Metode Pembayaran:</label>
+            <input type="text" id="addInvoiceMethod" required>
+
+            <label for="addInvoiceAllocation">Alokasi (Contoh: Lunas 2025):</label>
+            <input type="text" id="addInvoiceAllocation" required>
+            
+            <button type="submit" class="action-button" style="background-color: var(--ok-button); margin-top: 15px;">
+                ✅ Tambahkan Invoice
+            </button>
+            <p style="font-size: 0.8em; color: #f39c12; margin-top: 10px;">*PENTING: Setelah menambah invoice, Anda harus mengedit status tunggakan warga secara manual di menu "Edit Data Warga".</p>
+        </form>
+    </div>
+</div>
+
+
+<div id="modalEditUser" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3 id="modalEditUserTitle">Edit Data Warga</h3>
+        <span class="close-button" onclick="hideEditUserModal()">&times;</span>
+
+        <form onsubmit="event.preventDefault(); saveEditedUser();">
+            <input type="hidden" id="editUserId">
+
+            <label for="editUserName">Nama Lengkap</label>
+            <input type="text" id="editUserName" required>
+
+            <label for="editUserBlock">Blok/Nomor</label>
+            <input type="text" id="editUserBlock" required>
+            
+            <label for="editUserRate">Iuran Bulanan (Rp)</label>
+            <input type="number" id="editUserRate" required>
+
+            <label for="editArrears2025">Tunggakan 2025 (Bulan)</label>
+            <input type="number" id="editArrears2025" min="0" max="12" required>
+
+            <label for="editPaid2026">Iuran Dibayar 2026 (Bulan)</label>
+            <input type="number" id="editPaid2026" min="0" max="12" required>
+            
+            <label for="editUserUsername">Username Login</label>
+            <input type="text" id="editUserUsername" required>
+
+            <label for="editUserPassword">Password Login</label>
+            <input type="text" id="editUserPassword" required>
+
+            <button type="submit" class="main-button" style="margin-top: 15px;">Simpan Perubahan</button>
+        </form>
+    </div>
+</div>
+
+
 
     <div id="loadingPage">
         <span class="wallet-icon"> 🏡 </span>
@@ -913,10 +1127,11 @@
                 <div class="method-selection" id="methodSelection">
                     <div class="method-item" data-method="transfer" onclick="showPaymentFlow('transfer')">
                         <span>💳</span> Transfer Bank
-                    </div>
+</div>
                     <div class="method-item" data-method="qris" onclick="showPaymentFlow('qris')">
-                        <span>📱</span> QRIS
+                        <span>&#x23F9;;</span> QRIS
                     </div>
+
                     <div class="method-item" data-method="cash" onclick="showPaymentFlow('cash')">
                         <span>💵</span> Bayar Tunai
                     </div>
@@ -962,7 +1177,7 @@
                 </p>
 
                 <button class="pro-button" id="confirmWAButton" onclick="simulatePaymentConfirmation('QRIS')">
-                    <span style="font-size: 1.1em; vertical-align: middle;">📨</span> Upload Bukti & Konfirmasi (WhatsApp Admin)
+                    <span style="font-size: 1.1em; vertical-align: middle;">📨</span> Upload Bukti & Konfirmasi 
                 </button>
             </div>
             
@@ -1004,7 +1219,7 @@
                 </p>
 
                 <button class="pro-button" id="confirmTransferWAButton" onclick="simulatePaymentConfirmation('Transfer Bank')">
-                    <span style="font-size: 1.1em; vertical-align: middle;">📨</span> Kirim Bukti Transfer & Konfirmasi (WhatsApp Admin)
+                    <span style="font-size: 1.1em; vertical-align: middle;">📨</span> Kirim Bukti Transfer & Konfirmasi 
                 </button>
             </div>
             
@@ -1051,7 +1266,7 @@
                 </p>
                 
                 <button class="pro-button" id="confirmEwalletCash" onclick="simulatePaymentConfirmation(document.getElementById('paymentTypeHeader').textContent)">
-                    <span style="font-size: 1.1em; vertical-align: middle;"> 📨</span> Konfirmasi Pembayaran Selesai (WhatsApp Admin)
+                    <span style="font-size: 1.1em; vertical-align: middle;"> 📨</span> komfirmasi & Kirim bukti pembayaran
                 </button>
             </div>
             
@@ -1241,7 +1456,8 @@
             <h1 class="section-title">📊 Laporan Keuangan Kas (Des 2025)</h1>
             
             <div class="profile-card">
-                
+
+
                 <div style="display: flex; justify-content: space-around; gap: 10px; margin-bottom: 25px;">
                     <div style="text-align: center; flex: 1; padding: 15px 5px; border-radius: 12px; box-shadow: var(--inset-shadow); background-color: var(--bg-main);">
                         <h3 style="margin: 0 0 5px; font-size: 0.9em; font-weight: 500; color: var(--neon-color-header);">PEMASUKAN KAS</h3>
@@ -1291,7 +1507,7 @@
 
     <div class="login-page" id="loginPage" style="display: none; opacity: 0;">
         <div class="login-card">
-            <h1>Kas Warga Login</h1>
+            <h1>LOGIN KAS GANG</h1>
             <form id="loginForm">
                 <input type="text" id="usernameInput" class="login-input" placeholder="ID Pengguna" required>
                 <input type="password" id="passwordInput" class="login-input" placeholder="Kata Sandi" required>
@@ -1325,7 +1541,7 @@
         </div>
     </div>
 
-    <script>
+<script>
         // ======================================================
         // 1. DATA WARGA DAN PENGGUNA (GABUNGAN)
         // ======================================================
@@ -1336,577 +1552,616 @@
         const CURRENT_YEAR = 2025; 
         const NEXT_YEAR = 2026;   
         const TOTAL_MONTHS_YEAR = 12;
+        const USERS_STORAGE_KEY = 'kasWargaUsersData'; // Kunci untuk data warga/pembayaran di localStorage
         
-        // Data DANA (BARU)
+        // Data DANA
         const DANA_ACCOUNT = {
             number: '08111435512',
             name: 'Candra Purbaya'
         };
 
 
-        // Data Warga LENGKAP (20 data) - Sekarang juga menampung info login
-        const allUsersAndWarga = [
-            // Data Warga dengan Akun Login (username, password, dan isAccount: true)
-            // Rohman: Lunas 2025 (0 arrears), Bayar 0 bulan 2026
-            { id: 1, name: 'Rohman', block: 'E21/51', rate: 25000, 
+        // Data Awal Warga LENGKAP (50 data, termasuk Admin) - FORMAT BARU
+        // CATATAN: Perubahan pada data STATIS (name, block, rate, username, password, isAdmin) 
+        // di array ini AKAN MENIMPA data di localStorage saat inisialisasi.
+        const initialUsersAndWarga = [
+            // BARU: Akun Admin
+            { 
+            id: 0, 
+            name: 'Admin RT', 
+            block: 'ADM/00', 
+            rate: 0, 
             arrears2025: 0, 
-            paid2026: 0,
+            paid2026: 0, 
+            username: 'admin', 
+            password: '1111',
+            isAccount: true, 
+            isAdmin: true, 
+            invoices: [] 
+            }, 
+            
+            // --- DATA ANGGOTA SIMULASI ---
+
+             // --- DATA ANGGOTA BARU TAMBAHAN (46 Warga) ---
+            { 
+            id: 4, 
+            name: 'Novry', 
+            block: 'E21-38', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'novry', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 5, 
+            name: 'Fathur', 
+            block: 'E21-39', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'fathur', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 6, 
+            name: 'Hanif', 
+            block: 'E21-41', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'hanif', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 7, 
+            name: 'Eka Adi', 
+            block: 'E21-42', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'eka adi', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 8, 
+            name: 'Larasati', 
+            block: 'E21-43', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'larasati', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 9, 
+            name: 'Rahman', 
+            block: 'E21-46', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'rahman', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 10, 
+            name: 'Rakel', 
+            block: 'E21-47', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'rakel', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 11, 
+            name: 'Hendra', 
+            block: 'E21-48', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'hendra', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 12, 
+            name: 'Nana Rusmana', 
+            block: 'E21-49', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'nana', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 13, 
+            name: 'Aji', 
+            block: 'E21-50', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'aji', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 1, 
+            name: 'Rohman', 
+            block: 'E21-51', 
+         rate: 25000, 
+          //  arrears2025: 0, 
+      //      paid2026: 0, 
             username: 'rohman', 
             password: '2151',
-            isAccount: true, invoices: [] }, 
+            isAccount: true, 
+            invoices: [] 
+            },
             
-            { id: 1, 
-            name: 'Nana rusmana', block: 'E21/51', rate: 25000, 
+            
+            { 
+            id: 14, 
+            name: 'Darmadi', 
+            block: 'E21-52', 
+            rate: 25000, 
             arrears2025: 0, 
-            paid2026: 0,
-            username: 'nana', 
-            password: '2149',
-            isAccount: true, invoices: [] }, 
-
-
-  {
-    "id": 2,
-    "name": "NOVRY",
-    "block": "E21-38",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "novry",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 3,
-    "name": "FATHUR",
-    "block": "E21-39",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "fathur",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 4,
-    "name": "HANIF",
-    "block": "E21-41",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "hanif",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 5,
-    "name": "EKA ADI",
-    "block": "E21-42",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "ekaadi",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 6,
-    "name": "LARASATI",
-    "block": "E21-43",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "larasati",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 7,
-    "name": "RAHMAN",
-    "block": "E21-46",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "rahman",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 8,
-    "name": "RAKEL",
-    "block": "E21-47",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "rakel",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 9,
-    "name": "HENDRA",
-    "block": "E21-48",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "hendra",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 10,
-    "name": "AJI",
-    "block": "E21-57",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "aji",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 11,
-    "name": "VIKO",
-    "block": "E21-53",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "viko",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 12,
-    "name": "HENDRI",
-    "block": "E21-55",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "hendri",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 13,
-    "name": "RIYANDI",
-    "block": "E21-56",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "riyandi",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 14,
-    "name": "ANGGA",
-    "block": "E21-60",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "angga",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 15,
-    "name": "IWAN",
-    "block": "E21-61",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "iwan",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 16,
-    "name": "MARIO",
-    "block": "E21-65",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "mario",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 17,
-    "name": "KOKO",
-    "block": "E21-66",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "koko",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 18,
-    "name": "RICO",
-    "block": "E21-67",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "rico",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 19,
-    "name": "IRWAN",
-    "block": "E21-68",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "irwan",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 20,
-    "name": "TORO",
-    "block": "E21-69",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "toro",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 21,
-    "name": "TOPAN",
-    "block": "E21-79",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "topan",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 22,
-    "name": "HERI",
-    "block": "E21-71",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "heri",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 23,
-    "name": "BAYU ADE",
-    "block": "E21-72",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "bayuade",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 24,
-    "name": "FIRLY",
-    "block": "E21-73",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "firly",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 25,
-    "name": "KRISNA",
-    "block": "E25-03",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "krisna",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 26,
-    "name": "DENY",
-    "block": "E25-08",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "deny",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 27,
-    "name": "CHANDRA",
-    "block": "E25-09",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "chandra",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 28,
-    "name": "ALFIAN",
-    "block": "E25-10",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "alfian",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 29,
-    "name": "TEDI",
-    "block": "E25-11",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "tedi",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 30,
-    "name": "DERI",
-    "block": "E25-15",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "deri",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 31,
-    "name": "PAULUS",
-    "block": "E25-18",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "paulus",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 32,
-    "name": "DEDE DWI",
-    "block": "E25-19",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "dededwi",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 33,
-    "name": "ANANG",
-    "block": "E25-20",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "anang",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 34,
-    "name": "PARULIAN",
-    "block": "E25-21",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "parulian",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 35,
-    "name": "BAYU NUR",
-    "block": "E25-22",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "bayunur",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 36,
-    "name": "WALUYO",
-    "block": "E25-23",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "waluyo",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 37,
-    "name": "HADI",
-    "block": "E25-27",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "hadi",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 38,
-    "name": "Pakdeh Agung",
-    "block": "E25-28",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "pakdehagung",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 39,
-    "name": "BUDI ALMAWAN",
-    "block": "E25-30",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "budialmawan",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 40,
-    "name": "BAGUS",
-    "block": "E25-31",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "bagus",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 41,
-    "name": "ASEP",
-    "block": "E25-32",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "asep",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 42,
-    "name": "DEDE GUNAWAN",
-    "block": "E25-33",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "dedegunawan", // USER NAME
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 43,
-    "name": "KARDAN",
-    "block": "E25-35",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "kardan",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 44,
-    "name": "RENDY",
-    "block": "E25-36",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "rendy",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  },
-  {
-    "id": 45,
-    "name": "VERA",
-    "block": "E25-37",
-    "rate": 25000,
-    "arrears2025": 0,
-    "paid2026": 0,
-    "username": "vera",
-    "password": "0000",
-    "isAccount": true,
-    "invoices": []
-  }
-
-
+            paid2026: 0, 
+            username: 'darmadi', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 15, 
+            name: 'Viko', 
+            block: 'E21-53', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'viko', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 16, 
+            name: 'Hendri', 
+            block: 'E21-55', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'hendri', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 17, 
+            name: 'Riyandi', 
+            block: 'E21-56', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'riyandi', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 18, 
+            name: 'Angga', 
+            block: 'E21-60', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'angga', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 19, 
+            name: 'Iwan', 
+            block: 'E21-61', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'iwan', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 20, 
+            name: 'Mario', 
+            block: 'E21-65', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'mario', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 21, 
+            name: 'Koko', 
+            block: 'E21-66', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'koko', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 22, 
+            name: 'Rico', 
+            block: 'E21-67', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'rico', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 23, 
+            name: 'Irwan', 
+            block: 'E21-68', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'irwan', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 24, 
+            name: 'Toro', 
+            block: 'E21-69', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'toro', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 25, 
+            name: 'Topan', 
+            block: 'E21-79', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'topan', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 26, 
+            name: 'Heri', 
+            block: 'E21-71', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'heri', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 27, 
+            name: 'Bayu Ade', 
+            block: 'E21-72', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'bayu ade', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 28, 
+            name: 'Firly', 
+            block: 'E21-73', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'firly', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 29, 
+            name: 'Krisna', 
+            block: 'E25-03', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'krisna', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 30, 
+            name: 'Deny', 
+            block: 'E25-08', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'deny', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 31, 
+            name: 'Chandra', 
+            block: 'E25-09', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'chandra', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 32, 
+            name: 'Alfian', 
+            block: 'E25-10', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'alfian', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 33, 
+            name: 'Tedi', 
+            block: 'E25-11', 
+            rate: 15000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'tedi', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 34, 
+            name: 'Deri', 
+            block: 'E25-15', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'deri', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 35, 
+            name: 'Paulus', 
+            block: 'E25-18', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'paulus', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 36, 
+            name: 'Dede Dwi', 
+            block: 'E25-19', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'dede dwi', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 37, 
+            name: 'Anang', 
+            block: 'E25-20', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'anang', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 38, 
+            name: 'Parulian', 
+            block: 'E25-21', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'parulian', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 39, 
+            name: 'Bayu Nur', 
+            block: 'E25-22', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'bayu nur', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 40, 
+            name: 'Waluyo', 
+            block: 'E25-23', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'waluyo', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 41, 
+            name: 'Hadi', 
+            block: 'E25-27', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'hadi', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 42, 
+            name: 'Pakdeh Agung', 
+            block: 'E25-28', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'pakdeh agung', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 43, 
+            name: 'Budi Almawan', 
+            block: 'E25-30', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'budi almawan', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 44, 
+            name: 'Bagus', 
+            block: 'E25-31', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'bagus', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 45, 
+            name: 'Asep', 
+            block: 'E25-32', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'asep', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 46, 
+            name: 'Dede Gunawan', 
+            block: 'E25-33', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'dede gunawan', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 47, 
+            name: 'Kardan', 
+            block: 'E25-35', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'kardan', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 48, 
+            name: 'Rendy', 
+            block: 'E25-36', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'rendy', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            },
+            { 
+            id: 49, 
+            name: 'Vera', 
+            block: 'E25-37', 
+            rate: 25000, 
+            arrears2025: 0, 
+            paid2026: 0, 
+            username: 'vera', 
+            password: '0000', 
+            isAccount: true, 
+            invoices: [] 
+            }
         ];
         
-        // Data untuk Tabel Warga (menggunakan nama allWargaData agar fungsi renderWargaTable() tidak perlu diubah)
-        const allWargaData = allUsersAndWarga; 
+        // Data Warga kini diambil dari localStorage atau diinisialisasi
+        let allUsersAndWarga = []; 
+        let allWargaData = []; 
 
-        // User yang login default (Rohman, ID 1)
-        let currentUser = allUsersAndWarga[0];
+        // User yang login 
+        let currentUser = null; 
         let selectedMethod = null;
         let finalPaymentSummary = {}; 
-        // currentStep = 8 untuk Halaman Notifikasi, 9: InvoicePage, 10: ReportPage
-        let currentStep = 0; // 0: Dashboard, 1: Step1, 2: Step2, 3: Step3 (QRIS), 4: Step4 (Transfer), 5: Step5 (Tunai/E-Wallet), 6: DataWarga, 7: MyProfile, 8: NotificationPage, 9: InvoicePage, 10: ReportPage
-        let isTableExpanded = false; // Status untuk tabel Data Warga
-        let selectedInvoice = null; // Menyimpan invoice yang sedang dilihat
+        let currentStep = 0; 
+        let isTableExpanded = false; 
+        let selectedInvoice = null; 
         
         // Variabel Notifikasi Global
         const NOTIFICATION_KEY = 'kasWargaNotifications';
@@ -1920,86 +2175,167 @@
         const paymentPage = document.getElementById('paymentPage');
         const dataWargaPage = document.getElementById('dataWargaPage'); 
         const myProfilePage = document.getElementById('myProfilePage'); 
-        // Notifikasi DOM
         const notificationPage = document.getElementById('notificationPage');
         const fabBackNotifButton = document.getElementById('fabBackNotifButton'); 
         const notificationsList = document.getElementById('notificationsList');
-        // Invoice DOM
         const invoicePage = document.getElementById('invoicePage');
         const fabBackInvoiceButton = document.getElementById('fabBackInvoiceButton');
-        const invoiceListContainer = document.getElementById('invoiceListContainer'); // Kontainer baru untuk daftar invoice
-        const singleInvoiceDisplay = document.getElementById('singleInvoiceDisplay'); // Kontainer untuk detail satu invoice
-        const invoiceListWrapper = document.getElementById('invoiceListWrapper'); // Wrapper untuk daftar invoice
-        // Laporan DOM
+        const invoiceListContainer = document.getElementById('invoiceListContainer'); 
+        const singleInvoiceDisplay = document.getElementById('singleInvoiceDisplay'); 
+        const invoiceListWrapper = document.getElementById('invoiceListWrapper'); 
         const reportPage = document.getElementById('reportPage');
         const fabBackReportButton = document.getElementById('fabBackReportButton');
-        
-        // Loading Page DOM
         const loadingPage = document.getElementById('loadingPage');
+        
+        // Elemen Admin Control
+        const adminPage = document.getElementById('adminPage'); 
+        const fabBackAdminButton = document.getElementById('fabBackAdminButton');
+        const adminWargaTableBody = document.getElementById('adminWargaTableBody');
+        const adminTableWrapper = document.getElementById('adminTableWrapper'); 
+        const modalEditUser = document.getElementById('modalEditUser');
+        
+        // BARU: Elemen Admin Invoice Control
+        const modalAdminInvoice = document.getElementById('modalAdminInvoice');
+        const adminInvoiceListBody = document.getElementById('adminInvoiceListBody');
 
-        // Elemen-elemen yang sudah ada
-        const paymentStep1 = document.getElementById('paymentStep1');
-        const paymentStep2 = document.getElementById('paymentStep2');
-        const paymentStep3 = document.getElementById('paymentStep3');
-        const paymentStep4 = document.getElementById('paymentStep4'); 
-        const paymentStep5 = document.getElementById('paymentStep5'); 
-        const welcomeUserText = document.getElementById('welcomeUserText');
-        const loginForm = document.getElementById('loginForm');
+        // Elemen Form Payment
         const nominalInput = document.getElementById('nominalInput');
-        const paymentUserName = document.getElementById('paymentUserName');
-        const paymentUserBlock = document.getElementById('paymentUserBlock');
-        const paymentUserRate = document.getElementById('paymentUserRate');
-        const tunggakanInfo = document.getElementById('tunggakanInfo');
-        const tunggakanPaid = document.getElementById('tunggakanPaid');
-        const paidMonths = document.getElementById('paidMonths');
-        const paymentPeriod = document.getElementById('paymentPeriod');
-        const totalPayment = document.getElementById('totalPayment');
-        const minPaymentText = document.getElementById('minPaymentText');
-        const continueButton = document.getElementById('continueButton'); 
-        const finalTotalDisplay = document.getElementById('finalTotalDisplay');
-        const finalPaidSummary = document.getElementById('finalPaidSummary');
-        const fabBackButton = document.getElementById('fabBackButton');
-        const fabBackWargaButton = document.getElementById('fabBackWargaButton'); 
-        const fabBackProfileButton = document.getElementById('fabBackProfileButton');
-        // Step 3 (QRIS) DOM
-        const qrUserName = document.getElementById('qrUserName');
-        const qrUserBlock = document.getElementById('qrUserBlock');
-        const qrTotalDisplay = document.getElementById('qrTotalDisplay');
-        const qrPaidSummary = document.getElementById('qrPaidSummary');
-        // Step 4 (Transfer) DOM
-        const transferUserName = document.getElementById('transferUserName');
-        const transferUserBlock = document.getElementById('transferUserBlock');
-        const transferTotalDisplay = document.getElementById('transferTotalDisplay');
-        const transferPaidSummary = document.getElementById('transferPaidSummary');
-        // Step 5 (Other) DOM
-        const paymentTypeHeader = document.getElementById('paymentTypeHeader');
-        const otherUserName = document.getElementById('otherUserName');
-        const otherUserBlock = document.getElementById('otherUserBlock');
-        const otherTotalDisplay = document.getElementById('otherTotalDisplay');
-        const otherPaidSummary = document.getElementById('otherPaidSummary');
-        const otherInstructionText = document.getElementById('otherInstructionText');
-        const danaDetails = document.getElementById('danaDetails'); // Kontainer DANA baru
-        // Data Warga DOM
-        const wargaTableBody = document.getElementById('wargaTableBody');
-        const toggleWargaButton = document.getElementById('toggleWargaButton');
-        // My Profile DOM - Riwayat (Lama)
-        const profileUserName = document.getElementById('profileUserName');
-        const profileUserBlock = document.getElementById('profileUserBlock');
-        const profileUserRate = document.getElementById('profileUserRate');
-        const paymentHistoryBody = document.getElementById('paymentHistoryBody');
-        const profileArrearsTotal = document.getElementById('profileArrearsTotal');
-        const profileUnpaid2026Total = document.getElementById('profileUnpaid2026Total');
-        const profileSubtotalTotal = document.getElementById('profileSubtotalTotal');
-        // Single Invoice DOM
-        const invoiceID = document.getElementById('invoiceID');
-        const invoiceDate = document.getElementById('invoiceDate');
-        const invoiceUserNameBlock = document.getElementById('invoiceUserNameBlock');
-        const invoiceMethod = document.getElementById('invoiceMethod');
-        const invoiceAllocation = document.getElementById('invoiceAllocation');
-        const invoiceTotal = document.getElementById('invoiceTotal');
-        // Elemen tombol hapus invoice
-        const deleteInvoiceButton = document.getElementById('deleteInvoiceButton');
 
+
+        // ======================================================
+        // 1.5 FUNGSI DATA STORAGE (LOKAL) & CRUD PERMANEN
+        // ======================================================
+        
+        /**
+         * Mengambil data pengguna dari localStorage atau menginisialisasi dari initialUsersAndWarga.
+         * Melakukan sinkronisasi: Data statis (nama, rate, dll) diperbarui dari kode sumber, 
+         * sementara data dinamis (arrears, paid2026, invoices) dipertahankan dari localStorage.
+         */
+        function getSavedUsersData() {
+            const storedData = localStorage.getItem(USERS_STORAGE_KEY);
+            let currentData = storedData ? JSON.parse(storedData) : [];
+            
+            const currentDataMap = new Map(currentData.map(user => [user.id, user]));
+            let updatedData = [...currentData]; 
+
+            // Sinkronisasi data awal (dari kode JS) dengan data tersimpan (localStorage)
+            initialUsersAndWarga.forEach(initialUser => {
+                const storedUser = currentDataMap.get(initialUser.id);
+                
+                if (!storedUser) {
+                    // Jika ID belum ada di localStorage, tambahkan data awal lengkap
+                    updatedData.push(initialUser);
+                } else {
+                    // Update info dasar/statis dari initialUser (untuk edit manual via kode)
+                    Object.assign(storedUser, {
+                        name: initialUser.name,
+                        block: initialUser.block,
+                        rate: initialUser.rate,
+                        username: initialUser.username,
+                        password: initialUser.password,
+                        isAccount: initialUser.isAccount,
+                        isAdmin: initialUser.isAdmin || false,
+                        // arrears2025, paid2026, invoices tetap dari storedUser
+                    });
+                    
+                    const index = updatedData.findIndex(u => u.id === initialUser.id);
+                    if (index !== -1) {
+                        updatedData[index] = storedUser;
+                    }
+                }
+            });
+
+            // Filter data yang mungkin dihapus dari initialUsersAndWarga
+            const initialIds = new Set(initialUsersAndWarga.map(u => u.id));
+            updatedData = updatedData.filter(user => initialIds.has(user.id));
+
+            updatedData.sort((a, b) => a.id - b.id);
+            
+            saveUsersData(updatedData);
+            
+            return updatedData;
+        }
+
+        function saveUsersData(users) {
+            const dataToSave = users.map(user => ({
+                id: user.id,
+                name: user.name,
+                block: user.block,
+                rate: user.rate,
+                arrears2025: user.arrears2025,
+                paid2026: user.paid2026,
+                username: user.username,
+                password: user.password,
+                isAccount: user.isAccount,
+                isAdmin: user.isAdmin || false,
+                invoices: user.invoices || [] 
+            }));
+            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(dataToSave));
+        }
+
+        function deleteWargaData(userId) {
+            if (userId === 0) {
+                alert("Tidak dapat menghapus akun Admin utama.");
+                return;
+            }
+            if (!confirm(`Apakah Anda yakin ingin menghapus data warga ID ${userId}? Semua riwayat pembayaran dan login akan hilang.`)) {
+                return;
+            }
+
+            const initialLength = allUsersAndWarga.length;
+            
+            allUsersAndWarga = allUsersAndWarga.filter(user => user.id !== userId);
+            
+            if (allUsersAndWarga.length < initialLength) {
+                saveUsersData(allUsersAndWarga); 
+                // Filter admin dari data warga untuk tampilan publik
+                allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+                
+                alert(`Data warga ID ${userId} berhasil dihapus.`);
+                
+                if (currentStep === 11) { // Jika di halaman Admin
+                    renderAdminWargaTable();
+                } else if (currentStep === 6) { // Jika di halaman Data Warga
+                    renderWargaTable();
+                }
+                
+            } else {
+                alert(`Gagal menghapus: Warga dengan ID ${userId} tidak ditemukan.`);
+            }
+        }
+        
+        function addNewWarga(name, block, rate, username, password) {
+            if (!name || !block || !rate || !username || !password) {
+                alert("Semua kolom (Nama, Blok, Rate, Username, Password) harus diisi.");
+                return;
+            }
+
+            const maxId = allUsersAndWarga.reduce((max, user) => Math.max(max, user.id), 0);
+            const newId = maxId + 1;
+
+            const newWarga = {
+                id: newId,
+                name: name,
+                block: block,
+                rate: parseInt(rate), 
+                arrears2025: 0, 
+                paid2026: 0,    
+                username: username.toLowerCase(),
+                password: password,
+                isAccount: true,
+                isAdmin: false,
+                invoices: []
+            };
+
+            allUsersAndWarga.push(newWarga);
+            
+            saveUsersData(allUsersAndWarga);
+            allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+
+            alert(`Warga baru (${name}, ID: ${newId}) berhasil ditambahkan!`);
+            
+            return newWarga;
+        }
 
         // ======================================================
         // 2. FUNGSI NOTIFIKASI
@@ -2011,49 +2347,39 @@
         }
 
         function saveNotifications(notifications) {
-            localStorage.setItem(NOTIFICATION_KEY, JSON.stringify(notifications));
-            // Panggil renderMenu setiap kali notifikasi diubah untuk memperbarui badge
+            const limitedNotifications = notifications.slice(0, 50);
+            localStorage.setItem(NOTIFICATION_KEY, JSON.stringify(limitedNotifications));
             if (currentUser) { 
                 renderMenu(); 
             }
         }
 
         function addNotification(type, message, targetUserId = 'all') {
-            // Perubahan: Hanya notifikasi 'payment' yang akan disimpan
             if (type !== 'payment') {
                 return; 
             }
             
-            // Perubahan: Notifikasi hanya dikirim ke user yang login (ID) atau 'all' jika targetnya 'all'
-            // if (targetUserId !== 'all' && targetUserId !== currentUser.id) {
-            //     return;
-            // }
-
             const notifications = getNotifications();
             const newNotif = {
                 id: Date.now(),
-                type: type, // 'payment'
+                type: type, 
                 message: message,
                 read: false,
-                timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' ' + new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }),
                 target: targetUserId 
             };
             notifications.unshift(newNotif); 
             saveNotifications(notifications);
         }
         
-        // FUNGSI BARU: Hapus Semua Notifikasi
         function clearNotifications() {
-            if (confirm('Apakah Anda yakin ingin menghapus SEMUA notifikasi? Tindakan ini tidak dapat dibatalkan.')) {
-                // Filter notifikasi yang TIDAK ditujukan untuk user yang sedang login ('all' atau ID user)
-                const notifications = getNotifications().filter(n => n.target !== currentUser.id && n.target !== 'all');
+            if (confirm('Apakah Anda yakin ingin menghapus SEMUA notifikasi yang relevan dengan akun Anda? Tindakan ini tidak dapat dibatalkan.')) {
                 
-                // Jika hasil filternya 0, hapus seluruh local storage untuk notifikasi
-                if (notifications.length === 0) {
-                     localStorage.removeItem(NOTIFICATION_KEY);
-                } else {
-                     saveNotifications(notifications); 
-                }
+                const notifications = getNotifications().filter(n => 
+                    n.target !== 'all' && n.target !== currentUser.id
+                );
+                
+                saveNotifications(notifications); 
                 
                 renderNotifications(); 
                 renderMenu(); 
@@ -2064,7 +2390,6 @@
             const notifications = getNotifications();
             let changed = false;
             
-            // Filter notifikasi yang ditujukan untuk 'all' atau ID user saat ini
             notifications.forEach(n => {
                 if (!n.read && (n.target === 'all' || n.target === currentUser.id)) {
                     n.read = true;
@@ -2077,12 +2402,10 @@
             }
         }
         
-        // FUNGSI DIPERBARUI: Merender daftar notifikasi ke HTML
         function renderNotifications() {
             const notifications = getNotifications();
             let html = '';
             
-            // Filter notifikasi yang relevan untuk user ini
             const relevantNotifs = notifications.filter(n => 
                 (n.target === 'all' || n.target === currentUser.id) && n.type === 'payment'
             );
@@ -2090,10 +2413,13 @@
             if (relevantNotifs.length === 0) {
                 html = `<p style="text-align: center; margin: 30px 0; opacity: 0.6;">Tidak ada riwayat notifikasi pembayaran saat ini.</p>`;
             } else {
-                relevantNotifs.slice(0, 20).forEach(n => { // Batasi 20 notifikasi terbaru
-                    const icon = n.type === 'payment' ? '💸' : '💡'; // Hanya akan ada 'payment'
+                relevantNotifs.slice(0, 20).forEach(n => { 
+                    const icon = n.type === 'payment' ? '💸' : '💡'; 
                     const color = n.type === 'payment' ? 'var(--neon-color-header)' : '#3498db';
-                    const readStyle = n.read ? 'opacity: 0.7; background-color: transparent;' : 'font-weight: 600; background-color: var(--bg-main); box-shadow: var(--inset-shadow);';
+                    const readStyle = n.read ? 
+                                      'opacity: 0.7; background-color: transparent;' : 
+                                      `font-weight: 600; background-color: var(--card-bg); box-shadow: var(--soft-shadow);`;
+
 
                     html += `
                         <div style="padding: 10px; border-bottom: 1px dotted var(--shadow-dark); margin-bottom: 8px; font-size: 0.9em; display: flex; align-items: flex-start; gap: 10px; border-radius: 8px; ${readStyle}">
@@ -2109,35 +2435,30 @@
             notificationsList.innerHTML = html;
         }
 
-        // FUNGSI DIPERBARUI: Menampilkan halaman Notifikasi yang baru
         function showNotificationsPage() {
             if (!currentUser) {
                 showLoginPage();
                 return;
             }
             
-            // Sembunyikan semua halaman lain
             transitionToPage(notificationPage, 8); 
 
-            // Mark and Render
             setTimeout(() => {
                 markNotificationsAsRead();
                 renderNotifications();
             }, 500);
         }
         
-        // FUNGSI BARU: Menyembunyikan halaman Notifikasi
         function hideNotificationPage() {
             notificationPage.style.opacity = 0;
             setTimeout(() => {
                 notificationPage.style.display = 'none';
                 fabBackNotifButton.style.display = 'none';
                 dashboard.style.display = 'block';
-                // Transisi dashboard
                 setTimeout(() => { dashboard.style.opacity = 1; }, 50);
                 currentStep = 0;
                 renderMenu(); 
-            }, 400); // Sesuai dengan transisi
+            }, 400); 
         }
 
 
@@ -2145,9 +2466,9 @@
         // 3. FUNGSI UTILITY & UI
         // ======================================================
         
-        // FUNGSI BARU: Sembunyikan semua halaman (dengan transisi)
         function hideAllPages() {
-             const pages = [dashboard, loginPage, registrationPage, paymentPage, dataWargaPage, myProfilePage, notificationPage, invoicePage, reportPage];
+             // Tambahkan adminPage, modalEditUser, modalAdminInvoice
+             const pages = [dashboard, loginPage, registrationPage, paymentPage, dataWargaPage, myProfilePage, notificationPage, invoicePage, reportPage, adminPage];
              pages.forEach(page => {
                  page.style.opacity = 0;
                  // Sembunyikan FAB
@@ -2157,11 +2478,13 @@
                  fabBackNotifButton.style.display = 'none'; 
                  fabBackInvoiceButton.style.display = 'none';
                  fabBackReportButton.style.display = 'none';
+                 fabBackAdminButton.style.display = 'none'; 
              });
-             // Set display: none setelah transisi singkat
              setTimeout(() => {
                  pages.forEach(page => { page.style.display = 'none'; });
-             }, 300); // Sedikit lebih pendek dari transisi
+                 modalEditUser.style.display = 'none'; 
+                 modalAdminInvoice.style.display = 'none'; 
+             }, 300); 
         }
 
 
@@ -2187,17 +2510,52 @@
                 // Perbarui data currentUser lokal
                 currentUser = allUsersAndWarga[userIndex];
                 
-                // Opsional: Render ulang dashboard/profile jika diperlukan
-                if (currentStep === 7) {
-                    renderPaymentHistory(); 
-                }
-                if (currentStep === 6) {
-                    renderWargaTable();
-                }
+                // Simpan data global yang baru ke localStorage
+                saveUsersData(allUsersAndWarga);
             } else {
                 console.error("Gagal menemukan user dalam array global.");
             }
         }
+// --- FUNGSI HALAMAN LAPORAN BARU ---
+function getReportContent() {
+    const defaultContent = "### 📊 Laporan Keuangan RT [Ganti Judul]\n\nBerikut adalah ringkasan laporan keuangan Kas Warga Gang E21-25 untuk periode [Bulan/Tahun]. Data di bawah adalah data default. Admin dapat mengubahnya melalui menu Kontrol Admin.\n\n#### 💰 Pemasukan\n\n- Total Iuran diterima: [Nominal]\n- Dana Bantuan/Donasi: [Nominal]\n\n#### 💸 Pengeluaran\n\n- Biaya Kebersihan: [Nominal]\n- Acara Kemanusiaan: [Nominal]\n\n#### 🟢 Saldo Akhir\n\n**Total Kas Saat Ini: [Nominal]**\n\n*Catatan: Data status lunas warga di menu 'Data Warga' diperbarui secara real-time.*";
+    return localStorage.getItem(REPORT_STORAGE_KEY) || defaultContent;
+}
+
+function saveReportContent(content) {
+    localStorage.setItem(REPORT_STORAGE_KEY, content);
+}
+
+function renderReportContent() {
+    const content = getReportContent();
+    const reportDisplay = document.getElementById('reportContentDisplay');
+    
+    // Sederhana: Ganti markdown dasar ke HTML (Heading & Paragraf)
+    let htmlContent = content.split('\n').map(line => {
+        if (line.startsWith('### ')) {
+            return `<h4>${line.substring(4).trim()}</h4>`;
+        } else if (line.startsWith('#### ')) {
+             return `<h5>${line.substring(5).trim()}</h5>`;
+        } else if (line.startsWith('- ')) {
+            return `<li>${line.substring(2).trim()}</li>`;
+        } else if (line.trim().length > 0) {
+            return `<p>${line.trim()}</p>`;
+        }
+        return '';
+    }).join('');
+
+    reportDisplay.innerHTML = `<ul style="list-style: none; padding: 0;">${htmlContent}</ul>`;
+}
+
+function showReportPage() {
+    if (!currentUser) {
+        showLoginPage();
+        return;
+    }
+    
+    transitionToPage(reportPage, 10);
+    renderReportContent(); // Panggil fungsi render baru
+}
 
 
         // --- FUNGSI TAMPILAN DAN NAVIGASI ---
@@ -2222,14 +2580,11 @@
             const menuGrid = document.querySelector('.menu-grid');
             if (!menuGrid || !currentUser) return;
             
-            // Hitung Notifikasi Belum Dibaca
             const notifications = getNotifications();
-            // FILTER NOTIFIKASI yang hanya ditujukan ke user ini (ID) atau 'all'
             const unreadCount = notifications.filter(n => 
                 !n.read && (n.target === 'all' || n.target === currentUser.id)
             ).length;
             
-            // Dapatkan HTML menu item Notifikasi
             let notificationMenuItem = `
                 <a href="#" class="menu-item" onclick="showNotificationsPage()">
                     <span class="menu-icon">🔔</span>
@@ -2238,13 +2593,23 @@
                 </a>
             `;
             
-            // Hitung jumlah invoice yang ada
-            const totalInvoices = currentUser.invoices ? currentUser.invoices.length : 0;
+            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+            const totalInvoices = latestUser && latestUser.invoices ? latestUser.invoices.length : 0;
             let invoiceBadge = totalInvoices > 0 ? `<span class="badge" style="background-color: #3498db;">${totalInvoices}</span>` : '';
 
+            // Menu Admin
+            let adminMenu = '';
+            if (currentUser.isAdmin) {
+                adminMenu = `
+                    <a href="#" class="menu-item admin-link" onclick="showAdminPage()">
+                        <span class="menu-icon">👑</span>
+                        <strong>Kontrol Admin</strong>
+                    </a>
+                `;
+            }
 
-            // Buat ulang semua menu item
             const menuHtml = `
+                ${adminMenu} 
                 <a href="#" class="menu-item" onclick="showPaymentPage(1)">
                     <span class="menu-icon">💸</span>
                     <strong>Bayar Kas</strong>
@@ -2272,39 +2637,39 @@
             menuGrid.innerHTML = menuHtml;
         }
 
-        // FUNGSI BARU: Transisi untuk menampilkan halaman
         function transitionToPage(pageElement, step) {
              hideAllPages();
              setTimeout(() => {
                 pageElement.style.display = (pageElement === loginPage || pageElement === registrationPage) ? 'flex' : 'block';
-                // Tambahkan Opacity untuk Transisi
                 setTimeout(() => { 
                     pageElement.style.opacity = 1; 
-                }, 50); // Jeda singkat
+                }, 50); 
                 
                 currentStep = step;
                 
-                // Atur FAB
                 const fabMap = {
                     1: fabBackButton, 2: fabBackButton, 3: fabBackButton, 4: fabBackButton, 5: fabBackButton, 
-                    6: fabBackWargaButton, 7: fabBackProfileButton, 8: fabBackNotifButton, 9: fabBackInvoiceButton, 10: fabBackReportButton
+                    6: fabBackWargaButton, 7: fabBackProfileButton, 8: fabBackNotifButton, 9: fabBackInvoiceButton, 10: fabBackReportButton,
+                    11: fabBackAdminButton 
                 };
                 if (fabMap[step]) {
                     fabMap[step].style.display = 'block';
                 }
 
-             }, 350); // Jeda setelah semua halaman di-hide
+             }, 350); 
         }
 
 
         function showLoginPage() {
             transitionToPage(loginPage, 0);
             themeToggle.style.display = 'none';
-            currentUser = null;
+            currentUser = null; 
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginMessage').style.display = 'none';
         }
         
         function hideLoginPage(name) {
-            // Sembunyikan semua dan tampilkan dashboard
             transitionToPage(dashboard, 0);
             
             welcomeUserText.textContent = `Selamat Datang, ${name}! 👋`;
@@ -2312,7 +2677,6 @@
             if (savedTheme === 'light') { updateMode(false); } else { updateMode(true); }
             themeToggle.style.display = 'inline-block';
             
-            // Panggil renderMenu di sini untuk menampilkan menu dengan badge notifikasi
             renderMenu(); 
         }
 
@@ -2322,7 +2686,6 @@
         }
         
         function backToLogin() {
-             // Langsung tampilkan login tanpa hideAllPages karena sudah di-hideAllPages
             registrationPage.style.opacity = 0;
             setTimeout(() => {
                 registrationPage.style.display = 'none';
@@ -2345,34 +2708,29 @@
 
         // --- FUNGSI NAVIGASI FAB ---
         function handleFabClick() {
-            if (currentStep === 10) { // Dari Halaman Laporan
+            if (currentStep === 11) { 
+                hideAdminPage(); 
+            } else if (currentStep === 10) { 
                 hideReportPage();
-            } else if (currentStep === 9) { // Dari Halaman Invoice
-                // Jika sedang melihat detail, kembali ke daftar invoice
+            } else if (currentStep === 9) { 
                 if (selectedInvoice && singleInvoiceDisplay.style.display === 'block') {
-                    // Cek jika tombol back ditekan dari detail invoice
                     renderInvoiceList();
                     selectedInvoice = null;
-                    // Perbarui judul halaman ke Daftar Invoice
                     document.querySelector('#invoicePage .section-title').textContent = '📄 Daftar Invoice Pembayaran';
                 } else {
                     hideInvoicePage();
                 }
-            } else if (currentStep === 8) { // Dari Halaman Notifikasi
+            } else if (currentStep === 8) { 
                 hideNotificationPage();
-            } else if (currentStep === 7) { // Dari Halaman Profile
+            } else if (currentStep === 7) { 
                 hideMyProfilePage();
-            } else if (currentStep === 6) { // Dari Halaman Data Warga
+            } else if (currentStep === 6) { 
                  hideDataWargaPage();
-            } else if (currentStep === 5) { // Dari Step 5 kembali ke Step 2
+            } else if (currentStep === 5 || currentStep === 4 || currentStep === 3) { 
                 showPaymentPage(2);
-            } else if (currentStep === 4) { // Dari Step 4 kembali ke Step 2
-                showPaymentPage(2);
-            } else if (currentStep === 3) { // Dari Step 3 kembali ke Step 2
-                showPaymentPage(2);
-            } else if (currentStep === 2) { // Dari Step 2 kembali ke Step 1
+            } else if (currentStep === 2) { 
                 showPaymentPage(1);
-            } else if (currentStep === 1) { // Dari Step 1 kembali ke Dashboard
+            } else if (currentStep === 1) { 
                 hidePaymentPage();
             }
         }
@@ -2384,8 +2742,12 @@
                 return;
             }
 
+            // AMBIL DATA TERBARU DARI ARRAY GLOBAL SEBELUM MERENDER
+            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+            if(latestUser) currentUser = latestUser;
+            
             transitionToPage(myProfilePage, 7);
-            renderPaymentHistory(); // Render tabel riwayat
+            renderPaymentHistory(); 
         }
         
         function hideMyProfilePage() {
@@ -2394,24 +2756,26 @@
                 myProfilePage.style.display = 'none';
                 fabBackProfileButton.style.display = 'none';
                 dashboard.style.display = 'block';
-                 // Transisi dashboard
                 setTimeout(() => { dashboard.style.opacity = 1; }, 50);
                 currentStep = 0;
-                renderMenu(); // Perbarui menu setelah kembali ke dashboard
+                renderMenu(); 
             }, 400);
         }
 
         function renderPaymentHistory() {
-            // Mengisi data user di kartu profil
             profileUserName.textContent = currentUser.name;
             profileUserBlock.textContent = currentUser.block;
             profileUserRate.textContent = formatRupiah(currentUser.rate);
             
             let html = '';
             
-            // Hitung status Lunas 2025 (12 - arrears)
+            // Re-fetch data terbaru dari array global
+            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+            if(!latestUser) return;
+            currentUser = latestUser;
+            
             const paid2025Months = TOTAL_MONTHS_YEAR - currentUser.arrears2025;
-            const paid2026Months = currentUser.paid2026;      // Bulan yang sudah dibayar di 2026
+            const paid2026Months = currentUser.paid2026;      
             
             for (let i = 0; i < TOTAL_MONTHS_YEAR; i++) {
                 const monthName = MONTHS[i];
@@ -2419,7 +2783,6 @@
                 // Status 2025
                 let status2025Text = '';
                 let status2025Class = '';
-                // Menghitung status 2025: Jika indeks bulan (i) kurang dari total bulan yang sudah dibayar (paid2025Months), maka LUNAS.
                 if (i < paid2025Months) {
                     status2025Text = 'LUNAS';
                     status2025Class = 'status-paid';
@@ -2431,7 +2794,6 @@
                 // Status 2026
                 let status2026Text = '';
                 let status2026Class = '';
-                // Menghitung status 2026: Jika indeks bulan (i) kurang dari total bulan yang sudah dibayar di 2026 (paid2026Months), maka LUNAS.
                 if (i < paid2026Months) {
                     status2026Text = 'SUDAH LUNAS';
                     status2026Class = 'status-paid';
@@ -2451,9 +2813,7 @@
             
             paymentHistoryBody.innerHTML = html;
             
-            // Subtotal Calculation
             const totalUnpaid2025Months = currentUser.arrears2025;
-            // Pastikan total bulan yang belum dibayar di 2026 tidak negatif 
             const totalUnpaid2026Months = Math.max(0, TOTAL_MONTHS_YEAR - currentUser.paid2026);
             
             const totalArrearsRupiah = totalUnpaid2025Months * currentUser.rate;
@@ -2474,8 +2834,9 @@
             }
 
             transitionToPage(dataWargaPage, 6);
-            // Pastikan isTableExpanded diset ke false saat pertama kali masuk
             isTableExpanded = false; 
+            // Ambil data warga, tidak termasuk Admin (id 0)
+            allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
             renderWargaTable();
         }
         
@@ -2485,39 +2846,32 @@
                 dataWargaPage.style.display = 'none';
                 fabBackWargaButton.style.display = 'none';
                 dashboard.style.display = 'block';
-                // Transisi dashboard
                 setTimeout(() => { dashboard.style.opacity = 1; }, 50);
                 currentStep = 0;
-                renderMenu(); // Perbarui menu setelah kembali ke dashboard
+                renderMenu(); 
             }, 400);
         }
 
         function renderWargaTable() {
             let html = '';
-            // Tentukan data yang akan ditampilkan (10 atau semua)
-            const displayLimit = isTableExpanded ? allWargaData.length : 10;
-            const dataToDisplay = allWargaData.slice(0, displayLimit);
+            const dataWithoutAdmin = allWargaData; 
+            const displayLimit = isTableExpanded ? dataWithoutAdmin.length : 10;
+            const dataToDisplay = dataWithoutAdmin.slice(0, displayLimit);
 
             dataToDisplay.forEach((warga, index) => {
-                // Status Tunggakan 2025 (Arrears)
                 const arrearsText = warga.arrears2025 > 0 
                     ? `<span class="status-warning">${warga.arrears2025} bln</span>` 
                     : `<span class="status-ok">LUNAS</span>`;
                 
-                // Status Iuran 2026 (Paid 2026)
                 let paid2026Text;
                 if (warga.paid2026 >= 12) {
-                     // Jika sudah bayar 12 bulan (sepenuhnya) atau lebih untuk 2026
                      paid2026Text = `<span class="status-ok">LUNAS ${NEXT_YEAR}</span>`;
                 } else if (warga.paid2026 > 0) {
-                     // Jika sudah bayar sebagian
                      paid2026Text = `${warga.paid2026} bln`;
                 } else {
-                     // Jika 0 bulan (belum bayar sama sekali)
                      paid2026Text = `0 bln`; 
                 }
                 
-                // Tambahkan kelas untuk baris tersembunyi
                 const isHiddenRow = index >= 10 && !isTableExpanded;
                 const rowClass = isHiddenRow ? 'hidden-row' : '';
 
@@ -2533,19 +2887,17 @@
 
             wargaTableBody.innerHTML = html;
             
-            // Perbarui tombol
-            if (allWargaData.length > 10) {
+            if (dataWithoutAdmin.length > 10) {
                 toggleWargaButton.style.display = 'block';
                 if (isTableExpanded) {
                     toggleWargaButton.textContent = 'Sembunyikan Sisa Data Warga';
                 } else {
-                    toggleWargaButton.textContent = `Tampilkan ${allWargaData.length - 10} Data Warga Lainnya`;
+                    toggleWargaButton.textContent = `Tampilkan ${dataWithoutAdmin.length - 10} Data Warga Lainnya`;
                 }
             } else {
                 toggleWargaButton.style.display = 'none';
             }
             
-            // Menambah style untuk menyembunyikan (walaupun kelas hidden-row sudah ada di tr, ini untuk memastikan)
             const hiddenRows = document.querySelectorAll('.hidden-row');
             hiddenRows.forEach(row => {
                 if (isTableExpanded) {
@@ -2561,22 +2913,23 @@
             renderWargaTable();
         }
         
-        // --- FUNGSI HALAMAN INVOICE PEMBAYARAN BARU ---
+        // --- FUNGSI HALAMAN INVOICE PEMBAYARAN ---
         
         function renderInvoiceList() {
-             // Sembunyikan detail invoice, tampilkan daftar invoice
             singleInvoiceDisplay.style.display = 'none';
             invoiceListWrapper.style.display = 'block';
-            selectedInvoice = null; // Reset invoice yang sedang dilihat
+            selectedInvoice = null; 
             
-            const invoices = currentUser.invoices || [];
+            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+            const invoices = latestUser ? latestUser.invoices || [] : [];
+            
             const listContainer = document.getElementById('invoiceListContainer');
             let html = '';
             
             if (invoices.length === 0) {
                  html = `<p style="text-align: center; margin: 30px 0; opacity: 0.6;">Anda belum memiliki riwayat Invoice Pembayaran saat ini.</p>`;
             } else {
-                invoices.sort((a, b) => b.id - a.id); // Urutkan terbaru
+                invoices.sort((a, b) => b.id - a.id); 
                 
                 invoices.forEach(inv => {
                     html += `
@@ -2600,7 +2953,8 @@
         }
 
         function showSingleInvoice(invoiceID) {
-            const invoice = (currentUser.invoices || []).find(inv => inv.invoiceID === invoiceID);
+            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+            const invoice = (latestUser.invoices || []).find(inv => inv.invoiceID === invoiceID);
             
             if (!invoice) return;
             
@@ -2615,31 +2969,29 @@
             document.getElementById('invoiceAllocation').textContent = invoice.allocation;
             document.getElementById('invoiceTotal').textContent = formatRupiah(invoice.total);
             
-             // Ganti judul halaman menjadi "Detail Invoice"
              document.querySelector('#invoicePage .section-title').textContent = '📄 Detail Bukti Pembayaran';
         }
         
         function deleteSingleInvoice(invoiceID) {
             if (confirm(`Apakah Anda yakin ingin menghapus Invoice ID: ${invoiceID}? Tindakan ini tidak akan mengembalikan data pembayaran Anda.`)) {
                 
-                // Hapus dari currentUser.invoices
-                const initialCount = currentUser.invoices.length;
-                currentUser.invoices = currentUser.invoices.filter(inv => inv.invoiceID !== invoiceID);
+                const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
+                if (userIndex === -1) {
+                    console.error('User not found for deletion.');
+                    return;
+                }
                 
-                if (currentUser.invoices.length < initialCount) {
-                    // Simpan perubahan ke array global
-                    const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
-                    if (userIndex !== -1) {
-                        allUsersAndWarga[userIndex].invoices = currentUser.invoices;
-                    }
+                const initialCount = allUsersAndWarga[userIndex].invoices.length;
+                allUsersAndWarga[userIndex].invoices = allUsersAndWarga[userIndex].invoices.filter(inv => inv.invoiceID !== invoiceID);
+                
+                if (allUsersAndWarga[userIndex].invoices.length < initialCount) {
+                    currentUser = allUsersAndWarga[userIndex]; 
+                    saveUsersData(allUsersAndWarga); 
                     
-                    // Reset selectedInvoice dan render ulang
                     selectedInvoice = null;
                     renderInvoiceList();
-                    // Perbarui badge menu
                     renderMenu(); 
                     
-                    // Kembali ke daftar invoice setelah menghapus
                     if (document.getElementById('singleInvoiceDisplay').style.display === 'block') {
                         document.getElementById('singleInvoiceDisplay').style.display = 'none';
                         document.getElementById('invoiceListWrapper').style.display = 'block';
@@ -2660,10 +3012,8 @@
             }
             
             transitionToPage(invoicePage, 9);
-             // Ganti judul halaman menjadi "Daftar Invoice"
              document.querySelector('#invoicePage .section-title').textContent = '📄 Daftar Invoice Pembayaran';
 
-            // Tampilkan daftar invoice
             setTimeout(renderInvoiceList, 400);
         }
 
@@ -2673,7 +3023,6 @@
                 invoicePage.style.display = 'none';
                 fabBackInvoiceButton.style.display = 'none';
                 dashboard.style.display = 'block';
-                // Transisi dashboard
                 setTimeout(() => { dashboard.style.opacity = 1; }, 50);
                 currentStep = 0;
                 renderMenu(); 
@@ -2688,9 +3037,6 @@
             }
             
             transitionToPage(reportPage, 10);
-            
-            // Logika simulasi (total saldo saat ini 2.290.200)
-            // Laporan sudah disimulasikan di HTML
         }
 
         function hideReportPage() {
@@ -2699,23 +3045,364 @@
                 reportPage.style.display = 'none';
                 fabBackReportButton.style.display = 'none';
                 dashboard.style.display = 'block';
-                // Transisi dashboard
                 setTimeout(() => { dashboard.style.opacity = 1; }, 50);
                 currentStep = 0;
                 renderMenu(); 
             }, 400);
         }
 
-        // --- FUNGSI UTAMA UNTUK MENAMPILKAN STEP PEMBAYARAN ---
+        // ======================================================
+        // 4. FUNGSI ADMIN KONTROL (WARGA & INVOICE)
+        // ======================================================
+
+        function showAdminPage() {
+             if (!currentUser || !currentUser.isAdmin) {
+                alert('Akses Ditolak: Anda bukan administrator.');
+                showLoginPage();
+                return;
+            }
+            transitionToPage(adminPage, 11);
+            // Pastikan data terbaru diambil sebelum merender
+            allUsersAndWarga = getSavedUsersData(); 
+            renderAdminWargaTable();
+        }
+
+        function hideAdminPage() {
+            modalEditUser.style.opacity = 0; 
+            modalAdminInvoice.style.opacity = 0; 
+            setTimeout(() => {
+                modalEditUser.style.display = 'none';
+                modalAdminInvoice.style.display = 'none';
+                adminPage.style.display = 'none';
+                fabBackAdminButton.style.display = 'none';
+                dashboard.style.display = 'block';
+                setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+                currentStep = 0;
+                renderMenu(); 
+            }, 400);
+        }
+// --- FUNGSI MODAL LAPORAN ADMIN ---
+
+function showEditReportModal() {
+    // Ambil konten saat ini
+    const currentContent = getReportContent();
+    document.getElementById('editReportTextarea').value = currentContent;
+    
+    modalEditReport.style.display = 'flex';
+    setTimeout(() => { modalEditReport.style.opacity = 1; }, 50);
+}
+
+function hideEditReportModal() {
+    modalEditReport.style.opacity = 0;
+    setTimeout(() => { modalEditReport.style.display = 'none'; }, 300);
+}
+
+function saveEditedReport() {
+    const newContent = document.getElementById('editReportTextarea').value;
+    
+    saveReportContent(newContent);
+    
+    alert('Laporan berhasil diperbarui!');
+    
+    hideEditReportModal();
+    
+    // Perbarui tampilan laporan jika Admin membukanya
+    if (currentStep === 10) { 
+        renderReportContent();
+    }
+}
+        function renderAdminWargaTable() {
+            let html = '';
+            // Hapus tombol sebelumnya jika ada
+            let existingButton = document.querySelector('#adminTableWrapper .admin-invoice-button');
+            if (existingButton) existingButton.remove();
+
+            // Tampilkan semua data warga, kecuali Admin itu sendiri (id 0)
+            const adminViewData = allUsersAndWarga.filter(u => u.id !== 0).sort((a, b) => a.id - b.id);
+
+            adminViewData.forEach(warga => {
+                const totalTunggakan = warga.arrears2025 + Math.max(0, TOTAL_MONTHS_YEAR - warga.paid2026);
+                const statusPembayaran = totalTunggakan > 0 ? `<span class="status-warning">${totalTunggakan} bln</span>` : `<span class="status-ok">LUNAS</span>`;
+                
+                html += `
+                    <tr>
+                        <td>${warga.id}</td>
+                        <td class="name-col">${warga.name}</td>
+                        <td>${warga.block}</td>
+                        <td>${statusPembayaran}</td>
+                        <td>
+                            <button class="action-button" onclick="showEditUserModal(${warga.id})" style="background-color: var(--neon-color-header); margin-right: 5px; font-size: 0.8em;">
+                                Edit Data
+                            </button>
+                            <button class="action-button" onclick="deleteWargaData(${warga.id})" style="background-color: var(--delete-button); font-size: 0.8em;">
+                                Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            adminWargaTableBody.innerHTML = html;
+            
+            // Tambahkan tombol untuk mengelola Invoice
+            const invoiceControlHtml = `
+                <div class="admin-invoice-button" style="text-align: right; margin-bottom: 15px;">
+                    <button class="action-button" onclick="showAdminInvoiceModal()" style="background-color: var(--neon-color-header); color: white; box-shadow: 0 3px 0 var(--neon-shadow); font-size: 0.9em; padding: 10px 15px;">
+                        📄 Kelola Semua Invoice Warga
+                    </button>
+                </div>
+            `;
+            if (adminTableWrapper) {
+                 adminTableWrapper.insertAdjacentHTML('afterbegin', invoiceControlHtml);
+            }
+        }
+
+        // --- FUNGSI MODAL EDIT WARGA ---
+
+        function showEditUserModal(userId) {
+            const userToEdit = allUsersAndWarga.find(u => u.id === userId);
+            if (!userToEdit) {
+                alert('User tidak ditemukan.');
+                return;
+            }
+
+            // Isi form modal
+            document.getElementById('editUserId').value = userToEdit.id;
+            document.getElementById('editUserName').value = userToEdit.name;
+            document.getElementById('editUserBlock').value = userToEdit.block;
+            document.getElementById('editUserRate').value = userToEdit.rate;
+            // Data Dinamis yang bisa diubah
+            document.getElementById('editArrears2025').value = userToEdit.arrears2025;
+            document.getElementById('editPaid2026').value = userToEdit.paid2026;
+            // Data Login
+            document.getElementById('editUserUsername').value = userToEdit.username;
+            document.getElementById('editUserPassword').value = userToEdit.password;
+            
+            document.getElementById('modalEditUserTitle').textContent = `Edit Data Warga: ${userToEdit.name}`;
+
+            modalEditUser.style.display = 'flex';
+            setTimeout(() => { modalEditUser.style.opacity = 1; }, 50);
+        }
+
+        function hideEditUserModal() {
+            modalEditUser.style.opacity = 0;
+            setTimeout(() => { modalEditUser.style.display = 'none'; }, 300);
+        }
+
+        function saveEditedUser() {
+            const id = parseInt(document.getElementById('editUserId').value);
+            const name = document.getElementById('editUserName').value.trim();
+            const block = document.getElementById('editUserBlock').value.trim();
+            const rate = parseInt(document.getElementById('editUserRate').value);
+            const arrears2025 = parseInt(document.getElementById('editArrears2025').value);
+            const paid2026 = parseInt(document.getElementById('editPaid2026').value);
+            const username = document.getElementById('editUserUsername').value.trim().toLowerCase();
+            const password = document.getElementById('editUserPassword').value.trim();
+            
+            if (arrears2025 < 0 || paid2026 < 0 || paid2026 > TOTAL_MONTHS_YEAR) {
+                 alert("Input Tunggakan/Lunas tidak valid.");
+                 return;
+            }
+
+
+            const userIndex = allUsersAndWarga.findIndex(u => u.id === id);
+
+            if (userIndex !== -1) {
+                allUsersAndWarga[userIndex] = {
+                    ...allUsersAndWarga[userIndex],
+                    name: name,
+                    block: block,
+                    rate: rate,
+                    // Data Dinamis
+                    arrears2025: arrears2025,
+                    paid2026: Math.min(TOTAL_MONTHS_YEAR, paid2026), 
+                    // Data Login
+                    username: username,
+                    password: password,
+                };
+                
+                // Sinkronisasi data ke user yang sedang login jika datanya sendiri diubah
+                if (currentUser && currentUser.id === id) {
+                    currentUser = allUsersAndWarga[userIndex];
+                }
+                
+                saveUsersData(allUsersAndWarga); 
+                
+                alert(`Data ${name} (ID: ${id}) berhasil diperbarui.`);
+                hideEditUserModal();
+                
+                // Update tampilan terkait
+                renderAdminWargaTable(); 
+                
+                if (currentStep === 7 && currentUser && currentUser.id === id) { 
+                    renderPaymentHistory();
+                }
+                if (currentStep === 6) { 
+                    allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+                    renderWargaTable();
+                }
+
+            } else {
+                alert('Gagal menyimpan: User tidak ditemukan.');
+            }
+        }
+        
+        function addNewWargaFromAdmin() {
+            const name = prompt("Masukkan Nama Lengkap:");
+            if (!name) return;
+            const block = prompt("Masukkan Blok/Nomor (Contoh: E21-25):");
+            if (!block) return;
+            const rate = prompt("Masukkan Iuran Bulanan (Contoh: 25000):");
+            if (!rate || isNaN(parseInt(rate))) return alert('Rate harus angka.');
+            const username = prompt("Masukkan Username Login:");
+            if (!username) return;
+            const password = prompt("Masukkan Password Login:");
+            if (!password) return;
+
+            const newWarga = addNewWarga(name, block, parseInt(rate), username, password);
+            if (newWarga) {
+                renderAdminWargaTable();
+            }
+        }
+
+        // ======================================================
+        // 4.2 FUNGSI ADMIN: KONTROL INVOICE
+        // ======================================================
+
+        function showAdminInvoiceModal() {
+            modalAdminInvoice.style.display = 'flex';
+            setTimeout(() => { modalAdminInvoice.style.opacity = 1; }, 50);
+            renderAdminInvoiceList();
+        }
+
+        function hideAdminInvoiceModal() {
+            modalAdminInvoice.style.opacity = 0;
+            setTimeout(() => { modalAdminInvoice.style.display = 'none'; }, 300);
+        }
+
+        function renderAdminInvoiceList() {
+            let html = '';
+            
+            // Gabungkan semua invoice dari semua warga (kecuali Admin RT sendiri)
+            const allInvoices = allUsersAndWarga
+                .filter(u => u.id !== 0) 
+                .flatMap(user => 
+                    (user.invoices || []).map(inv => ({
+                        ...inv,
+                        userId: user.id,
+                        userName: user.name,
+                        userBlock: user.block
+                    }))
+                );
+            
+            allInvoices.sort((a, b) => b.id - a.id); // Urutkan terbaru dulu
+
+            allInvoices.slice(0, 50).forEach(inv => { // Batasi 50 invoice terakhir
+                html += `
+                    <tr>
+                        <td>${inv.invoiceID}</td>
+                        <td>${inv.userName} (${inv.userBlock})</td>
+                        <td>${inv.date}</td>
+                        <td>${formatRupiah(inv.total)}</td>
+                        <td>
+                            <button class="action-button" onclick="alert('Simulasi Edit: ID ${inv.invoiceID}\\nSilakan hapus invoice ini dan gunakan "Edit Data" warga untuk mengubah status tunggakan/lunas.')" style="background-color: #3498db; margin-right: 5px; font-size: 0.8em;">
+                                Edit
+                            </button>
+                            <button class="action-button" onclick="deleteAdminInvoice('${inv.invoiceID}', ${inv.userId})" style="background-color: var(--delete-button); font-size: 0.8em;">
+                                Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            adminInvoiceListBody.innerHTML = html;
+            
+            if (allInvoices.length === 0) {
+                 adminInvoiceListBody.innerHTML = `<tr><td colspan="5" style="text-align: center; opacity: 0.6;">Tidak ada invoice yang tercatat.</td></tr>`;
+            }
+        }
+
+        function deleteAdminInvoice(invoiceID, userId) {
+            if (!confirm(`Yakin hapus Invoice ${invoiceID} milik ID ${userId}?\\n(Tindakan ini TIDAK mengembalikan status tunggakan warga. Status tunggakan harus diubah manual melalui "Edit Data" warga tersebut.)`)) return;
+
+            const userIndex = allUsersAndWarga.findIndex(u => u.id === userId);
+            if (userIndex === -1) {
+                alert('User tidak ditemukan.');
+                return;
+            }
+
+            const initialCount = allUsersAndWarga[userIndex].invoices.length;
+            allUsersAndWarga[userIndex].invoices = allUsersAndWarga[userIndex].invoices.filter(inv => inv.invoiceID !== invoiceID);
+            
+            if (allUsersAndWarga[userIndex].invoices.length < initialCount) {
+                saveUsersData(allUsersAndWarga);
+                
+                // Perbarui data currentUser jika dia yang sedang login
+                if (currentUser && currentUser.id === userId) {
+                     currentUser = allUsersAndWarga[userIndex]; 
+                     renderMenu(); // Update badge invoice
+                     if (currentStep === 9) renderInvoiceList(); 
+                }
+                
+                renderAdminInvoiceList();
+                alert(`Invoice ${invoiceID} berhasil dihapus.`);
+                
+            } else {
+                alert('Gagal menghapus invoice.');
+            }
+        }
+
+        function addAdminInvoiceManual(invoiceID, userId, total, method, allocation) {
+            if (!invoiceID || !userId || !total || !method || !allocation) {
+                alert("Semua field (ID, ID Warga, Total, Metode, Alokasi) harus diisi.");
+                return;
+            }
+            
+            const userIndex = allUsersAndWarga.findIndex(u => u.id === parseInt(userId));
+            if (userIndex === -1) {
+                alert('User ID tidak ditemukan.');
+                return;
+            }
+            
+            const totalAmount = parseInt(total);
+
+            const newInvoice = {
+                id: Date.now(),
+                invoiceID: invoiceID,
+                date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+                total: totalAmount,
+                method: method,
+                allocation: allocation
+            };
+
+            if (!allUsersAndWarga[userIndex].invoices) allUsersAndWarga[userIndex].invoices = [];
+            allUsersAndWarga[userIndex].invoices.push(newInvoice);
+            
+            saveUsersData(allUsersAndWarga); 
+            
+            // Bersihkan form setelah sukses
+            document.getElementById('addInvoiceForm').reset();
+            
+            renderAdminInvoiceList();
+            alert(`Invoice ${invoiceID} berhasil ditambahkan ke ${allUsersAndWarga[userIndex].name}.\\n\\nCatatan: Status Tunggakan/Lunas warga tersebut perlu diperbarui secara manual melalui menu "Edit Data" di halaman Admin.`);
+        }
+
+        // ======================================================
+        // 5. FUNGSI PEMBAYARAN
+        // ======================================================
+
         function showPaymentPage(step = 1) {
             if (!currentUser) {
                 showLoginPage();
                 return;
             }
+            
+            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+            if(latestUser) currentUser = latestUser;
+
 
             transitionToPage(paymentPage, step);
             
-            // Reset views
             paymentStep1.style.display = 'none';
             paymentStep2.style.display = 'none';
             paymentStep3.style.display = 'none';
@@ -2724,7 +3411,6 @@
             
             fabBackButton.style.display = (step > 0 && step <= 5) ? 'block' : 'none'; 
 
-            // Tampilkan Step yang diminta
             setTimeout(() => {
                 if (step === 1) {
                     if (paymentStep1.style.display !== 'block') {
@@ -2736,15 +3422,13 @@
                         const totalArrearsRupiah = arrearsMonths2025 * currentUser.rate;
                         
                         let tunggakanMessage = '';
-                        // Hitung total bulan yang belum dibayar di 2026
                         const unpaid2026Months = TOTAL_MONTHS_YEAR - currentUser.paid2026;
                         
                         if (arrearsMonths2025 > 0) {
                             tunggakanInfo.classList.add('tunggakan-warning-style');
                             tunggakanInfo.classList.remove('tunggakan-lunas-style');
-                            tunggakanMessage = `⚠️ PERHATIAN: Anda memiliki ${arrearsMonths2025} bulan** tunggakan ${CURRENT_YEAR} (${formatRupiah(totalArrearsRupiah)}). Pembayaran akan dialokasikan untuk melunasi tunggakan tahun ${CURRENT_YEAR} terlebih dahulu.`;
+                            tunggakanMessage = `⚠️ PERHATIAN: Anda memiliki ${arrearsMonths2025} bulan tunggakan ${CURRENT_YEAR} (${formatRupiah(totalArrearsRupiah)}). Pembayaran akan dialokasikan untuk melunasi tunggakan tahun ${CURRENT_YEAR} terlebih dahulu.`;
                         } else {
-                            // Cek apakah ada tunggakan 2026 (yaitu belum lunas 12 bulan)
                             if (unpaid2026Months > 0) {
                                 tunggakanInfo.classList.add('tunggakan-lunas-style');
                                 tunggakanInfo.classList.remove('tunggakan-warning-style');
@@ -2752,7 +3436,7 @@
                             } else {
                                 tunggakanInfo.classList.add('tunggakan-lunas-style');
                                 tunggakanInfo.classList.remove('tunggakan-warning-style');
-                                tunggakanMessage = `🎉 LUNAS TOTAL: Anda lunas hingga akhir tahun ${NEXT_YEAR}. Terima kasih!`;
+                                tunggakanMessage = `🎉 LUNAS TOTAL: Anda lunas hingga akhir tahun ${NEXT_YEAR}. mantap. Terima kasih!`;
                             }
                         }
                         tunggakanInfo.innerHTML = tunggakanMessage;
@@ -2817,16 +3501,15 @@
                     otherTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
                     otherPaidSummary.textContent = getSummaryText();
                     
-                    // Logika Instruksi dan Detail Dana
                     if (selectedMethod === 'cash') {
-                         otherInstructionText.innerHTML = `Mohon hubungi Bendahara atau datnag secara langsung ke blok E25-09 untuk penyerahan dana sebesar ${formatRupiah(finalPaymentSummary.total)}.`;
+                         otherInstructionText.innerHTML = `Mohon hubungi Bendahara atau datang secara langsung ke blok E25-09 untuk penyerahan dana sebesar ${formatRupiah(finalPaymentSummary.total)}.`;
                          danaDetails.style.display = 'none';
                     } else if (selectedMethod === 'ewallet') {
-                         otherInstructionText.innerHTML = `Silakan transfer sejumlah **${formatRupiah(finalPaymentSummary.total)}** ke nomor E-Wallet (DANA) di bawah ini.`;
+                         otherInstructionText.innerHTML = `Silakan transfer sejumlah ${formatRupiah(finalPaymentSummary.total)} ke nomor E-Wallet (DANA) di bawah ini.`;
                          danaDetails.style.display = 'block';
                     }
                 }
-            }, 400); // Tunggu sebentar setelah transisi halaman
+            }, 400); 
         }
 
         function hidePaymentPage() {
@@ -2835,14 +3518,12 @@
                 paymentPage.style.display = 'none';
                 fabBackButton.style.display = 'none'; 
                 dashboard.style.display = 'block';
-                 // Transisi dashboard
                 setTimeout(() => { dashboard.style.opacity = 1; }, 50);
                 currentStep = 0;
-                renderMenu(); // Perbarui menu setelah kembali ke dashboard
+                renderMenu(); 
             }, 400);
         }
         
-        // FUNGSI BARU: Untuk mengaktifkan tampilan metode pembayaran yang dipilih
         function showPaymentFlow(method) {
              selectedMethod = method;
              document.querySelectorAll('.method-item').forEach(el => el.classList.remove('selected'));
@@ -2879,10 +3560,9 @@
                     currentRemainingInput -= totalArrears2025;
                     paidMonths2025Count = currentUser.arrears2025;
                 } else {
-                    // Hanya bayar bulan yang utuh
                     paidArrears2025 = currentRemainingInput - (currentRemainingInput % rate);
                     paidMonths2025Count = Math.floor(paidArrears2025 / rate);
-                    currentRemainingInput = currentRemainingInput % rate; // Sisa uang kurang dari 1 bulan iuran
+                    currentRemainingInput = currentRemainingInput % rate; 
                 }
             }
             
@@ -2891,24 +3571,18 @@
             // 2. Hitung Iuran Bulanan 2026
             amountForIuran2026 = currentRemainingInput;
             if (amountForIuran2026 > 0) {
-                // Total bulan yang belum dibayar di 2026 (maksimal 12)
                 const remainingMonths2026 = TOTAL_MONTHS_YEAR - currentUser.paid2026;
                 
-                // Berapa bulan iuran 2026 yang bisa dibayar dengan sisa uang?
                 let monthsToPay2026 = Math.floor(amountForIuran2026 / rate);
                 
-                // Batasi pembayaran maksimal sampai sisa bulan 2026 yang belum lunas
                 paidMonths2026Count = Math.min(monthsToPay2026, remainingMonths2026);
                 
-                // Hitung jumlah rupiah yang dialokasikan untuk 2026
                 const iuran2026Calculated = paidMonths2026Count * rate;
                 totalBilled += iuran2026Calculated;
                 
                 if (paidMonths2026Count > 0) {
-                    // Logika penentuan periode pembayaran untuk Iuran 2026 (Januari 2026 + X bulan)
                     const totalPaidMonthsBefore = currentUser.paid2026;
                     
-                    // Hitung bulan/tahun awal pembayaran 2026 ini
                     const startMonthIndex = totalPaidMonthsBefore % 12; 
                     const startYearOffset = Math.floor(totalPaidMonthsBefore / 12);
                     const startYear = NEXT_YEAR + startYearOffset;
@@ -2916,7 +3590,6 @@
 
                     const totalPaidMonthsAfter = totalPaidMonthsBefore + paidMonths2026Count;
 
-                    // Hitung bulan/tahun berakhir (karena totalPaidMonthsAfter sudah menjadi jumlah bulan, dikurangi 1 untuk mendapatkan indeks bulan terakhir)
                     const endMonthIndex = (totalPaidMonthsAfter - 1) % 12;
                     const endYearOffset = Math.floor((totalPaidMonthsAfter - 1) / 12);
                     const endYear = NEXT_YEAR + endYearOffset;
@@ -2976,14 +3649,15 @@
             return summaryText || 'Tidak ada alokasi pembayaran.';
         }
 
-        // FUNGSI BARU: Untuk membuat objek invoice
         function createInvoice(methodType) {
             const date = new Date();
-            // Inisialisasi jika null
-            if (!currentUser.invoices) currentUser.invoices = []; 
-            const invoiceCount = currentUser.invoices.length + 1;
             
-            // Buat Invoice ID (Cth: INV-1-202512-01)
+            const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
+            if (userIndex === -1) return;
+            
+            if (!allUsersAndWarga[userIndex].invoices) allUsersAndWarga[userIndex].invoices = []; 
+            const invoiceCount = allUsersAndWarga[userIndex].invoices.length + 1;
+            
             const invoiceID = `INV-${currentUser.id}-${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}-${invoiceCount.toString().padStart(2, '0')}`;
             
             const allocationText = getSummaryText();
@@ -2997,16 +3671,9 @@
                 allocation: allocationText
             };
             
-            // Tambahkan ke array invoices di currentUser
-            currentUser.invoices.push(newInvoice);
+            allUsersAndWarga[userIndex].invoices.push(newInvoice);
             
-            // Simpan perubahan ke array global (Sudah dilakukan di updateUserData)
-            // updateUserData tidak dipanggil, jadi harus panggil secara manual:
-            const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
-            if (userIndex !== -1) {
-                allUsersAndWarga[userIndex].invoices = currentUser.invoices;
-            }
-            
+            saveUsersData(allUsersAndWarga); 
         }
         
         // --- FUNGSI KONFIRMASI PEMBAYARAN (SIMULASI UPDATE DATA) ---
@@ -3017,49 +3684,44 @@
                  return;
             }
 
-            // 1. BUAT INVOICE SEBELUM UPDATE DATA
+            // 1. BUAT INVOICE
             createInvoice(methodType);
             
             // 2. Kirim Pesan WA (DIBUKA DI TAB BARU)
             const total = formatRupiah(finalPaymentSummary.total);
             const summary = getSummaryText();
-            const waMessage = `Halo Admin, saya *${currentUser.name}* (${currentUser.block}) telah melakukan pembayaran Kas sebesar *${total}* (${summary}) via **${methodType}**.%0A%0AMohon bantuannya untuk verifikasi pembayaran, saya akan mengirimkan bukti transfer/screenshot bayar/konfirmasi penyerahan dana.%0A%0ATerima kasih.`;
+            const waMessage = `Halo Admin, saya *${currentUser.name}* (${currentUser.block}) telah melakukan pembayaran Kas sebesar *${total}* (${summary}) via **${methodType}**.%0A%0AMohon bantuannya untuk verifikasi pembayaran, lampirkan bukti transfer/screenshot di sini .%0A%0ATerima kasih.`;
             const waUrl = `https://wa.me/${ADMIN_WA_NUMBER}?text=${waMessage}`;
             window.open(waUrl, '_blank');
             
             
             // 3. SIMULASI UPDATE DATA PENGGUNA (Backend Update) - Otomatis Lunas
             
-            // Hitung sisa tunggakan 2025
             const newArrears2025 = Math.max(0, currentUser.arrears2025 - finalPaymentSummary.paidMonths2025);
-            
-            // Hitung total paid 2026 yang baru (maksimal 12 bulan)
             const newPaid2026 = Math.min(TOTAL_MONTHS_YEAR, currentUser.paid2026 + finalPaymentSummary.paidMonths2026);
             
-            // Buat objek data baru
             const newData = {
                 arrears2025: newArrears2025,
                 paid2026: newPaid2026
             };
             
-            updateUserData(newData); // Update data currentUser dan array global
+            updateUserData(newData); 
             
-            // 4. Tambahkan Notifikasi Pembayaran Berhasil (kepada user yang bersangkutan)
-            const paymentNotifMessage = `Pembayaran Kas sebesar ${total} (${summary}) via ${methodType} telah berhasil dikonfirmasi. Bukti pembayaran dapat dilihat di halaman Invoice.`;
-            // Perubahan: Hanya kirim ke ID user yang bersangkutan
-            addNotification('payment', paymentNotifMessage, currentUser.id); 
+            // 4. Tambahkan Notifikasi Pembayaran Berhasil
+            const paymentNotifMessage = `Pembayaran Kas dari ${currentUser.name} (${currentUser.block}) sebesar ${total} via ${methodType} berhasil.`;
+            addNotification('payment', paymentNotifMessage, 'all'); 
             
             // 5. Kembali ke Dashboard
             hidePaymentPage();
             
-            // 6. Reset input nominal agar pembayaran baru dimulai dari nol
+            // 6. Reset input nominal
             nominalInput.value = '';
-            calculatePayment(); // Reset summary
+            calculatePayment(); 
         }
 
         // --- FUNGSI STEP 3 (QRIS) ---
         function downloadQR() {
-            alert('Simulasi: Gambar QR Code telah berhasil diunduh ke perangkat Anda.');
+            alert('Gambar QR Code telah berhasil diunduh ke perangkat Anda.');
         }
 
         // --- FUNGSI LOGIN/REGISTRASI ---
@@ -3068,7 +3730,6 @@
             const inputUsername = document.getElementById('usernameInput').value.trim().toLowerCase();
             const inputPassword = document.getElementById('passwordInput').value.trim();
             
-            // Cari pengguna di array tunggal
             const user = allUsersAndWarga.find(u => u.username === inputUsername && u.password === inputPassword);
             
             const loginMessage = document.getElementById('loginMessage');
@@ -3076,11 +3737,10 @@
             loginMessage.style.display = 'block';
             
             if (user) {
-                currentUser = user;
+                currentUser = user; 
                 loginMessage.style.color = '#00C49A';
-                loginMessage.innerHTML = `Login Berhasil! Selamat datang, **${user.name}**.`;
+                loginMessage.innerHTML = `Login Berhasil! Selamat datang, **${user.name}**${user.isAdmin ? ' (ADMIN)' : ''}.`;
                 
-                // Jeda 1 detik sebelum masuk dashboard
                 setTimeout(() => { hideLoginPage(user.name); }, 1000);
             } else {
                 loginMessage.style.color = '#FF4444';
@@ -3089,11 +3749,16 @@
         });
 
         // ======================================================
-        // 10. INISIALISASI & SPLASH SCREEN LOGIC
+        // 6. INISIALISASI & SPLASH SCREEN LOGIC
         // ======================================================
 
         function initializeApp() {
-             // Terapkan tema
+            // Ambil data user yang permanen dan disinkronkan
+            allUsersAndWarga = getSavedUsersData();
+            // Inisialisasi allWargaData tanpa Admin untuk tampilan publik
+            allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+            
+            // Terapkan tema
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'light') { updateMode(false); } else { updateMode(true); }
 
@@ -3101,27 +3766,24 @@
             setTimeout(() => {
                 loadingPage.classList.add('hidden');
                 
-                // Setelah transisi loading page selesai
                 setTimeout(() => {
                     loadingPage.style.display = 'none';
-                    // Tampilkan Login Page dengan transisi
                     showLoginPage(); 
                     
-                    // Inisialisasi tampilan tabel data warga dan menu
-                    if (currentUser) {
-                         renderWargaTable(); 
-                         renderMenu();
-                    }
-                    
-                }, 500); // Sesuai dengan transisi opacity loadingPage
+                }, 500); 
                 
-            }, 2000); // Jeda 2 detik sebelum transisi dimulai
+            }, 2000); 
         }
         
         // Panggil inisialisasi aplikasi saat DOM siap
         document.addEventListener('DOMContentLoaded', initializeApp);
 
     </script>
+
+
+
+
+
 </body>
 
 </html>
