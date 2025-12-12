@@ -846,33 +846,6 @@
     </button>
 </div>
  
-<div id="reportPage" class="page" style="display: none; opacity: 0;">
-    <h2 class="section-title">📊 Laporan Keuangan</h2>
-    
-    <div class="profile-card" style="padding: 20px;">
-        <div id="reportContentDisplay">
-            <p style="text-align: center; opacity: 0.7;">Memuat laporan...</p>
-        </div>
-    </div>
-</div>
-
-<div id="modalEditReport" class="modal" onclick="if(event.target === this) hideEditReportModal()" style="display: none; opacity: 0;">
-    <div class="modal-content" style="max-width: 90%; width: 600px;">
-        <span class="close-button" onclick="hideEditReportModal()">&times;</span>
-        <h3>✍️ Edit Konten Halaman Laporan</h3>
-        
-        <p style="font-size: 0.85em; opacity: 0.8;">Anda dapat mengedit konten laporan. Gunakan format Markdown sederhana (misalnya, `### Judul` untuk judul bagian, `- Item` untuk daftar).</p>
-        
-        <form onsubmit="event.preventDefault(); saveEditedReport()">
-            <label for="editReportTextarea" style="display: block; margin-bottom: 5px;">Konten Laporan:</label>
-            <textarea id="editReportTextarea" rows="15" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid var(--shadow-dark); border-radius: 8px; background-color: var(--input-bg); color: var(--text-color);"></textarea>
-            
-            <button type="submit" class="action-button" style="background-color: var(--ok-button); margin-top: 15px;">
-                💾 Simpan Konten Laporan
-            </button>
-        </form>
-    </div>
-</div>
 
         
         <form onsubmit="event.preventDefault(); saveEditedUser()">
@@ -1449,13 +1422,16 @@
     </div>
 
     <div class="my-profile-page" id="reportPage" style="display: none; opacity: 0;">
-        <button class="fab-back-button" id="fabBackReportButton" onclick="hideReportPage()">
+        <button class="fab-back-button" id="fabBackReportButton" onclick="handleFabClick()">
             ← 
         </button>
         <div class="container">
             <h1 class="section-title">📊 Laporan Keuangan Kas (Des 2025)</h1>
             
             <div class="profile-card">
+                 <div id="reportContentDisplay" style="margin-bottom: 25px;">
+                     <p style="text-align: center; opacity: 0.7;">Memuat laporan...</p>
+                </div>
 
 
                 <div style="display: flex; justify-content: space-around; gap: 10px; margin-bottom: 25px;">
@@ -1471,7 +1447,7 @@
                     </div>
                 </div>
                 
-                <h3 style="font-size: 1.0em; margin-top: 0; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">Rincian Pengeluaran</h3>
+                <h3 style="font-size: 1.0em; margin-top: 0; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">Rincian Pengeluaran (Simulasi)</h3>
                 
                 <table class="payment-history-table">
                     <thead>
@@ -1495,7 +1471,7 @@
                         <tr>
                             <td>07/12/25</td>
                             <td style="text-align: left;">Biaya perbaikan gerbang gang</td>
-                            <td class="status-unpaid">Rp 2.759.800</td>
+                            <td class="status-unpaid">Rp 759.800</td>
                         </tr>
                         </tbody>
                 </table>
@@ -1503,6 +1479,23 @@
                  </div>
         </div>
     </div>
+<div id="modalEditReport" class="modal" onclick="if(event.target === this) hideEditReportModal()" style="display: none; opacity: 0;">
+    <div class="modal-content" style="max-width: 90%; width: 600px;">
+        <span class="close-button" onclick="hideEditReportModal()">&times;</span>
+        <h3>✍️ Edit Konten Halaman Laporan</h3>
+        
+        <p style="font-size: 0.85em; opacity: 0.8;">Anda dapat mengedit konten laporan. Gunakan format Markdown sederhana (misalnya, `### Judul` untuk judul bagian, `- Item` untuk daftar).</p>
+        
+        <form onsubmit="event.preventDefault(); saveEditedReport()">
+            <label for="editReportTextarea" style="display: block; margin-bottom: 5px;">Konten Laporan:</label>
+            <textarea id="editReportTextarea" rows="15" style="width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid var(--shadow-dark); border-radius: 8px; background-color: var(--input-bg); color: var(--text-color);"></textarea>
+            
+            <button type="submit" class="action-button" style="background-color: var(--ok-button); margin-top: 15px;">
+                💾 Simpan Konten Laporan
+            </button>
+        </form>
+    </div>
+</div>
 
 
     <div class="login-page" id="loginPage" style="display: none; opacity: 0;">
@@ -1525,7 +1518,7 @@
             <h1>Registrasi Akun</h1>
             <form id="registrationForm">
                 <input type="text" id="regNama" class="login-input" placeholder="Nama Lengkap" required>
-                <input type="text" id="regBlokNo" class="login-input" placeholder="Blok/No Rumah (Cth: E23/01)" required>
+                <input type="text" id="regBlokNo" class="login-input" placeholder="Blok/No Rumah (Cth: E21-25)" required>
                 <input type="text" id="regIdUser" class="login-input" placeholder="ID Pengguna (Custom)" required>
                 <input type="password" id="regPassword" class="login-input" placeholder="Kata Sandi (Min 6 Karakter)" required>
                 <p style="margin: 10px 0 15px; font-size: 0.8em; opacity: 0.8;">
@@ -1542,47 +1535,46 @@
     </div>
 
 <script>
-        // ======================================================
-        // 1. DATA WARGA DAN PENGGUNA (GABUNGAN)
-        // ======================================================
+// ======================================================
+// 1. DATA WARGA DAN PENGGUNA (GABUNGAN)
+// ======================================================
 
-        // Variabel Global dan Data User
-        const MONTHS = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        const ADMIN_WA_NUMBER = '6287837644379'; 
-        const CURRENT_YEAR = 2025; 
-        const NEXT_YEAR = 2026;   
-        const TOTAL_MONTHS_YEAR = 12;
-        const USERS_STORAGE_KEY = 'kasWargaUsersData'; // Kunci untuk data warga/pembayaran di localStorage
-        
-        // Data DANA
-        const DANA_ACCOUNT = {
-            number: '08111435512',
-            name: 'Candra Purbaya'
-        };
+// Variabel Global dan Data User
+const MONTHS = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+const ADMIN_WA_NUMBER = '6287837644379'; 
+const CURRENT_YEAR = 2025; 
+const NEXT_YEAR = 2026;   
+const TOTAL_MONTHS_YEAR = 12;
+const USERS_STORAGE_KEY = 'kasWargaUsersData'; // Kunci untuk data warga/pembayaran di localStorage
+const REPORT_STORAGE_KEY = 'kasWargaReportContent'; // <<< PERBAIKAN: Kunci untuk Konten Laporan
+
+// Data DANA
+const DANA_ACCOUNT = {
+    number: '08111435512',
+    name: 'Candra Purbaya'
+};
 
 
-        // Data Awal Warga LENGKAP (50 data, termasuk Admin) - FORMAT BARU
-        // CATATAN: Perubahan pada data STATIS (name, block, rate, username, password, isAdmin) 
-        // di array ini AKAN MENIMPA data di localStorage saat inisialisasi.
-        const initialUsersAndWarga = [
-            // BARU: Akun Admin
-            { 
-            id: 0, 
-            name: 'Admin RT', 
-            block: 'ADM/00', 
-            rate: 0, 
-            arrears2025: 0, 
-            paid2026: 0, 
-            username: 'admin', 
-            password: '1111',
-            isAccount: true, 
-            isAdmin: true, 
-            invoices: [] 
-            }, 
-            
-            // --- DATA ANGGOTA SIMULASI ---
-
-             // --- DATA ANGGOTA BARU TAMBAHAN (46 Warga) ---
+// Data Awal Warga LENGKAP (50 data, termasuk Admin) - FORMAT BARU
+// CATATAN: Perubahan pada data STATIS (name, block, rate, username, password, isAdmin) 
+// di array ini AKAN MENIMPA data di localStorage saat inisialisasi.
+const initialUsersAndWarga = [
+    // BARU: Akun Admin
+    { 
+    id: 0, 
+    name: 'Admin RT', 
+    block: 'ADM/00', 
+    rate: 0, 
+    arrears2025: 0, 
+    paid2026: 0, 
+    username: 'admin', 
+    password: '1111',
+    isAccount: true, 
+    isAdmin: true, 
+    invoices: [] 
+    }, 
+    
+    // --- DATA ANGGOTA SIMULASI ---
             { 
             id: 4, 
             name: 'Novry', 
@@ -2149,378 +2141,475 @@
             isAccount: true, 
             invoices: [] 
             }
-        ];
+
+     // --- DATA ANGGOTA BARU TAMBAHAN (46 Warga) ---
+     // (Isi data simulasi Anda di sini jika ada)
+];
+
+// Data Warga kini diambil dari localStorage atau diinisialisasi
+let allUsersAndWarga = []; 
+let allWargaData = []; 
+
+// User yang login 
+let currentUser = null; 
+let selectedMethod = null;
+let finalPaymentSummary = {}; 
+let currentStep = 0; 
+let isTableExpanded = false; 
+let selectedInvoice = null; 
+
+// Variabel Notifikasi Global
+const NOTIFICATION_KEY = 'kasWargaNotifications';
+
+// --- GET ELEMENT DOM ---
+const body = document.body;
+const themeToggle = document.getElementById('themeToggle');
+const dashboard = document.getElementById('mainDashboard');
+const loginPage = document.getElementById('loginPage');
+const registrationPage = document.getElementById('registrationPage');
+const paymentPage = document.getElementById('paymentPage');
+const dataWargaPage = document.getElementById('dataWargaPage'); 
+const myProfilePage = document.getElementById('myProfilePage'); 
+const notificationPage = document.getElementById('notificationPage');
+const fabBackNotifButton = document.getElementById('fabBackNotifButton'); 
+const notificationsList = document.getElementById('notificationsList');
+const invoicePage = document.getElementById('invoicePage');
+const fabBackInvoiceButton = document.getElementById('fabBackInvoiceButton');
+const invoiceListContainer = document.getElementById('invoiceListContainer'); 
+const singleInvoiceDisplay = document.getElementById('singleInvoiceDisplay'); 
+const invoiceListWrapper = document.getElementById('invoiceListWrapper'); 
+const reportPage = document.getElementById('reportPage');
+const fabBackReportButton = document.getElementById('fabBackReportButton');
+const loadingPage = document.getElementById('loadingPage');
+
+// Elemen Admin Control
+const adminPage = document.getElementById('adminPage'); 
+const fabBackAdminButton = document.getElementById('fabBackAdminButton');
+const adminWargaTableBody = document.getElementById('adminWargaTableBody');
+const adminTableWrapper = document.getElementById('adminTableWrapper'); 
+const modalEditUser = document.getElementById('modalEditUser');
+const modalEditReport = document.getElementById('modalEditReport'); // BARU: Modal Edit Laporan
+
+// BARU: Elemen Admin Invoice Control
+const modalAdminInvoice = document.getElementById('modalAdminInvoice');
+const adminInvoiceListBody = document.getElementById('adminInvoiceListBody');
+
+// Elemen Form Payment
+const nominalInput = document.getElementById('nominalInput');
+
+
+// ======================================================
+// 1.5 FUNGSI DATA STORAGE (LOKAL) & CRUD PERMANEN
+// ======================================================
+
+/**
+ * Mengambil data pengguna dari localStorage atau menginisialisasi dari initialUsersAndWarga.
+ * Melakukan sinkronisasi: Data statis (nama, rate, dll) diperbarui dari kode sumber, 
+ * sementara data dinamis (arrears, paid2026, invoices) dipertahankan dari localStorage.
+ */
+function getSavedUsersData() {
+    const storedData = localStorage.getItem(USERS_STORAGE_KEY);
+    let currentData = storedData ? JSON.parse(storedData) : [];
+    
+    const currentDataMap = new Map(currentData.map(user => [user.id, user]));
+    let updatedData = [...currentData]; 
+
+    // Sinkronisasi data awal (dari kode JS) dengan data tersimpan (localStorage)
+    initialUsersAndWarga.forEach(initialUser => {
+        const storedUser = currentDataMap.get(initialUser.id);
         
-        // Data Warga kini diambil dari localStorage atau diinisialisasi
-        let allUsersAndWarga = []; 
-        let allWargaData = []; 
-
-        // User yang login 
-        let currentUser = null; 
-        let selectedMethod = null;
-        let finalPaymentSummary = {}; 
-        let currentStep = 0; 
-        let isTableExpanded = false; 
-        let selectedInvoice = null; 
-        
-        // Variabel Notifikasi Global
-        const NOTIFICATION_KEY = 'kasWargaNotifications';
-
-        // --- GET ELEMENT DOM ---
-        const body = document.body;
-        const themeToggle = document.getElementById('themeToggle');
-        const dashboard = document.getElementById('mainDashboard');
-        const loginPage = document.getElementById('loginPage');
-        const registrationPage = document.getElementById('registrationPage');
-        const paymentPage = document.getElementById('paymentPage');
-        const dataWargaPage = document.getElementById('dataWargaPage'); 
-        const myProfilePage = document.getElementById('myProfilePage'); 
-        const notificationPage = document.getElementById('notificationPage');
-        const fabBackNotifButton = document.getElementById('fabBackNotifButton'); 
-        const notificationsList = document.getElementById('notificationsList');
-        const invoicePage = document.getElementById('invoicePage');
-        const fabBackInvoiceButton = document.getElementById('fabBackInvoiceButton');
-        const invoiceListContainer = document.getElementById('invoiceListContainer'); 
-        const singleInvoiceDisplay = document.getElementById('singleInvoiceDisplay'); 
-        const invoiceListWrapper = document.getElementById('invoiceListWrapper'); 
-        const reportPage = document.getElementById('reportPage');
-        const fabBackReportButton = document.getElementById('fabBackReportButton');
-        const loadingPage = document.getElementById('loadingPage');
-        
-        // Elemen Admin Control
-        const adminPage = document.getElementById('adminPage'); 
-        const fabBackAdminButton = document.getElementById('fabBackAdminButton');
-        const adminWargaTableBody = document.getElementById('adminWargaTableBody');
-        const adminTableWrapper = document.getElementById('adminTableWrapper'); 
-        const modalEditUser = document.getElementById('modalEditUser');
-        
-        // BARU: Elemen Admin Invoice Control
-        const modalAdminInvoice = document.getElementById('modalAdminInvoice');
-        const adminInvoiceListBody = document.getElementById('adminInvoiceListBody');
-
-        // Elemen Form Payment
-        const nominalInput = document.getElementById('nominalInput');
-
-
-        // ======================================================
-        // 1.5 FUNGSI DATA STORAGE (LOKAL) & CRUD PERMANEN
-        // ======================================================
-        
-        /**
-         * Mengambil data pengguna dari localStorage atau menginisialisasi dari initialUsersAndWarga.
-         * Melakukan sinkronisasi: Data statis (nama, rate, dll) diperbarui dari kode sumber, 
-         * sementara data dinamis (arrears, paid2026, invoices) dipertahankan dari localStorage.
-         */
-        function getSavedUsersData() {
-            const storedData = localStorage.getItem(USERS_STORAGE_KEY);
-            let currentData = storedData ? JSON.parse(storedData) : [];
-            
-            const currentDataMap = new Map(currentData.map(user => [user.id, user]));
-            let updatedData = [...currentData]; 
-
-            // Sinkronisasi data awal (dari kode JS) dengan data tersimpan (localStorage)
-            initialUsersAndWarga.forEach(initialUser => {
-                const storedUser = currentDataMap.get(initialUser.id);
-                
-                if (!storedUser) {
-                    // Jika ID belum ada di localStorage, tambahkan data awal lengkap
-                    updatedData.push(initialUser);
-                } else {
-                    // Update info dasar/statis dari initialUser (untuk edit manual via kode)
-                    Object.assign(storedUser, {
-                        name: initialUser.name,
-                        block: initialUser.block,
-                        rate: initialUser.rate,
-                        username: initialUser.username,
-                        password: initialUser.password,
-                        isAccount: initialUser.isAccount,
-                        isAdmin: initialUser.isAdmin || false,
-                        // arrears2025, paid2026, invoices tetap dari storedUser
-                    });
-                    
-                    const index = updatedData.findIndex(u => u.id === initialUser.id);
-                    if (index !== -1) {
-                        updatedData[index] = storedUser;
-                    }
-                }
-            });
-
-            // Filter data yang mungkin dihapus dari initialUsersAndWarga
-            const initialIds = new Set(initialUsersAndWarga.map(u => u.id));
-            updatedData = updatedData.filter(user => initialIds.has(user.id));
-
-            updatedData.sort((a, b) => a.id - b.id);
-            
-            saveUsersData(updatedData);
-            
-            return updatedData;
-        }
-
-        function saveUsersData(users) {
-            const dataToSave = users.map(user => ({
-                id: user.id,
-                name: user.name,
-                block: user.block,
-                rate: user.rate,
-                arrears2025: user.arrears2025,
-                paid2026: user.paid2026,
-                username: user.username,
-                password: user.password,
-                isAccount: user.isAccount,
-                isAdmin: user.isAdmin || false,
-                invoices: user.invoices || [] 
-            }));
-            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(dataToSave));
-        }
-
-        function deleteWargaData(userId) {
-            if (userId === 0) {
-                alert("Tidak dapat menghapus akun Admin utama.");
-                return;
-            }
-            if (!confirm(`Apakah Anda yakin ingin menghapus data warga ID ${userId}? Semua riwayat pembayaran dan login akan hilang.`)) {
-                return;
-            }
-
-            const initialLength = allUsersAndWarga.length;
-            
-            allUsersAndWarga = allUsersAndWarga.filter(user => user.id !== userId);
-            
-            if (allUsersAndWarga.length < initialLength) {
-                saveUsersData(allUsersAndWarga); 
-                // Filter admin dari data warga untuk tampilan publik
-                allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
-                
-                alert(`Data warga ID ${userId} berhasil dihapus.`);
-                
-                if (currentStep === 11) { // Jika di halaman Admin
-                    renderAdminWargaTable();
-                } else if (currentStep === 6) { // Jika di halaman Data Warga
-                    renderWargaTable();
-                }
-                
-            } else {
-                alert(`Gagal menghapus: Warga dengan ID ${userId} tidak ditemukan.`);
-            }
-        }
-        
-        function addNewWarga(name, block, rate, username, password) {
-            if (!name || !block || !rate || !username || !password) {
-                alert("Semua kolom (Nama, Blok, Rate, Username, Password) harus diisi.");
-                return;
-            }
-
-            const maxId = allUsersAndWarga.reduce((max, user) => Math.max(max, user.id), 0);
-            const newId = maxId + 1;
-
-            const newWarga = {
-                id: newId,
-                name: name,
-                block: block,
-                rate: parseInt(rate), 
-                arrears2025: 0, 
-                paid2026: 0,    
-                username: username.toLowerCase(),
-                password: password,
-                isAccount: true,
-                isAdmin: false,
-                invoices: []
-            };
-
-            allUsersAndWarga.push(newWarga);
-            
-            saveUsersData(allUsersAndWarga);
-            allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
-
-            alert(`Warga baru (${name}, ID: ${newId}) berhasil ditambahkan!`);
-            
-            return newWarga;
-        }
-
-        // ======================================================
-        // 2. FUNGSI NOTIFIKASI
-        // ======================================================
-
-        function getNotifications() {
-            const data = localStorage.getItem(NOTIFICATION_KEY);
-            return data ? JSON.parse(data) : [];
-        }
-
-        function saveNotifications(notifications) {
-            const limitedNotifications = notifications.slice(0, 50);
-            localStorage.setItem(NOTIFICATION_KEY, JSON.stringify(limitedNotifications));
-            if (currentUser) { 
-                renderMenu(); 
-            }
-        }
-
-        function addNotification(type, message, targetUserId = 'all') {
-            if (type !== 'payment') {
-                return; 
-            }
-            
-            const notifications = getNotifications();
-            const newNotif = {
-                id: Date.now(),
-                type: type, 
-                message: message,
-                read: false,
-                timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' ' + new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }),
-                target: targetUserId 
-            };
-            notifications.unshift(newNotif); 
-            saveNotifications(notifications);
-        }
-        
-        function clearNotifications() {
-            if (confirm('Apakah Anda yakin ingin menghapus SEMUA notifikasi yang relevan dengan akun Anda? Tindakan ini tidak dapat dibatalkan.')) {
-                
-                const notifications = getNotifications().filter(n => 
-                    n.target !== 'all' && n.target !== currentUser.id
-                );
-                
-                saveNotifications(notifications); 
-                
-                renderNotifications(); 
-                renderMenu(); 
-            }
-        }
-
-        function markNotificationsAsRead() {
-            const notifications = getNotifications();
-            let changed = false;
-            
-            notifications.forEach(n => {
-                if (!n.read && (n.target === 'all' || n.target === currentUser.id)) {
-                    n.read = true;
-                    changed = true;
-                }
+        if (!storedUser) {
+            // Jika ID belum ada di localStorage, tambahkan data awal lengkap
+            updatedData.push(initialUser);
+        } else {
+            // Update info dasar/statis dari initialUser (untuk edit manual via kode)
+            Object.assign(storedUser, {
+                name: initialUser.name,
+                block: initialUser.block,
+                rate: initialUser.rate,
+                username: initialUser.username,
+                password: initialUser.password,
+                isAccount: initialUser.isAccount,
+                isAdmin: initialUser.isAdmin || false,
+                // arrears2025, paid2026, invoices tetap dari storedUser
             });
             
-            if (changed) {
-                saveNotifications(notifications);
+            const index = updatedData.findIndex(u => u.id === initialUser.id);
+            if (index !== -1) {
+                updatedData[index] = storedUser;
             }
         }
-        
-        function renderNotifications() {
-            const notifications = getNotifications();
-            let html = '';
-            
-            const relevantNotifs = notifications.filter(n => 
-                (n.target === 'all' || n.target === currentUser.id) && n.type === 'payment'
-            );
+    });
 
-            if (relevantNotifs.length === 0) {
-                html = `<p style="text-align: center; margin: 30px 0; opacity: 0.6;">Tidak ada riwayat notifikasi pembayaran saat ini.</p>`;
-            } else {
-                relevantNotifs.slice(0, 20).forEach(n => { 
-                    const icon = n.type === 'payment' ? '💸' : '💡'; 
-                    const color = n.type === 'payment' ? 'var(--neon-color-header)' : '#3498db';
-                    const readStyle = n.read ? 
-                                      'opacity: 0.7; background-color: transparent;' : 
-                                      `font-weight: 600; background-color: var(--card-bg); box-shadow: var(--soft-shadow);`;
+    // Filter data yang mungkin dihapus dari initialUsersAndWarga
+    const initialIds = new Set(initialUsersAndWarga.map(u => u.id));
+    updatedData = updatedData.filter(user => initialIds.has(user.id));
 
-
-                    html += `
-                        <div style="padding: 10px; border-bottom: 1px dotted var(--shadow-dark); margin-bottom: 8px; font-size: 0.9em; display: flex; align-items: flex-start; gap: 10px; border-radius: 8px; ${readStyle}">
-                            <span style="font-size: 1.2em; color: ${color};">${icon}</span>
-                            <div style="flex-grow: 1;">
-                                <p style="margin: 0; line-height: 1.4; font-weight: inherit;">${n.message}</p>
-                                <p style="margin: 3px 0 0; font-size: 0.75em; opacity: 0.7; font-weight: 500;">${n.timestamp}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            notificationsList.innerHTML = html;
-        }
-
-        function showNotificationsPage() {
-            if (!currentUser) {
-                showLoginPage();
-                return;
-            }
-            
-            transitionToPage(notificationPage, 8); 
-
-            setTimeout(() => {
-                markNotificationsAsRead();
-                renderNotifications();
-            }, 500);
-        }
-        
-        function hideNotificationPage() {
-            notificationPage.style.opacity = 0;
-            setTimeout(() => {
-                notificationPage.style.display = 'none';
-                fabBackNotifButton.style.display = 'none';
-                dashboard.style.display = 'block';
-                setTimeout(() => { dashboard.style.opacity = 1; }, 50);
-                currentStep = 0;
-                renderMenu(); 
-            }, 400); 
-        }
-
-
-        // ======================================================
-        // 3. FUNGSI UTILITY & UI
-        // ======================================================
-        
-        function hideAllPages() {
-             // Tambahkan adminPage, modalEditUser, modalAdminInvoice
-             const pages = [dashboard, loginPage, registrationPage, paymentPage, dataWargaPage, myProfilePage, notificationPage, invoicePage, reportPage, adminPage];
-             pages.forEach(page => {
-                 page.style.opacity = 0;
-                 // Sembunyikan FAB
-                 fabBackButton.style.display = 'none';
-                 fabBackWargaButton.style.display = 'none'; 
-                 fabBackProfileButton.style.display = 'none'; 
-                 fabBackNotifButton.style.display = 'none'; 
-                 fabBackInvoiceButton.style.display = 'none';
-                 fabBackReportButton.style.display = 'none';
-                 fabBackAdminButton.style.display = 'none'; 
-             });
-             setTimeout(() => {
-                 pages.forEach(page => { page.style.display = 'none'; });
-                 modalEditUser.style.display = 'none'; 
-                 modalAdminInvoice.style.display = 'none'; 
-             }, 300); 
-        }
-
-
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
-        }
-        
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Berhasil menyalin ke clipboard!');
-            }).catch(err => {
-                console.error('Gagal menyalin: ', err);
-            });
-        }
-        
-        function updateUserData(newData) {
-             // Cari indeks currentUser dalam array global
-            const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
-            
-            if (userIndex !== -1) {
-                // Perbarui data di array global
-                allUsersAndWarga[userIndex] = { ...allUsersAndWarga[userIndex], ...newData };
-                // Perbarui data currentUser lokal
-                currentUser = allUsersAndWarga[userIndex];
-                
-                // Simpan data global yang baru ke localStorage
-                saveUsersData(allUsersAndWarga);
-            } else {
-                console.error("Gagal menemukan user dalam array global.");
-            }
-        }
-// --- FUNGSI HALAMAN LAPORAN BARU ---
-function getReportContent() {
-    const defaultContent = "### 📊 Laporan Keuangan RT [Ganti Judul]\n\nBerikut adalah ringkasan laporan keuangan Kas Warga Gang E21-25 untuk periode [Bulan/Tahun]. Data di bawah adalah data default. Admin dapat mengubahnya melalui menu Kontrol Admin.\n\n#### 💰 Pemasukan\n\n- Total Iuran diterima: [Nominal]\n- Dana Bantuan/Donasi: [Nominal]\n\n#### 💸 Pengeluaran\n\n- Biaya Kebersihan: [Nominal]\n- Acara Kemanusiaan: [Nominal]\n\n#### 🟢 Saldo Akhir\n\n**Total Kas Saat Ini: [Nominal]**\n\n*Catatan: Data status lunas warga di menu 'Data Warga' diperbarui secara real-time.*";
-    return localStorage.getItem(REPORT_STORAGE_KEY) || defaultContent;
+    updatedData.sort((a, b) => a.id - b.id);
+    
+    saveUsersData(updatedData);
+    
+    return updatedData;
 }
+
+function saveUsersData(users) {
+    const dataToSave = users.map(user => ({
+        id: user.id,
+        name: user.name,
+        block: user.block,
+        rate: user.rate,
+        arrears2025: user.arrears2025,
+        paid2026: user.paid2026,
+        username: user.username,
+        password: user.password,
+        isAccount: user.isAccount,
+        isAdmin: user.isAdmin || false,
+        invoices: user.invoices || [] 
+    }));
+    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(dataToSave));
+}
+
+function deleteWargaData(userId) {
+    if (userId === 0) {
+        alert("Tidak dapat menghapus akun Admin utama.");
+        return;
+    }
+    if (!confirm(`Apakah Anda yakin ingin menghapus data warga ID ${userId}? Semua riwayat pembayaran dan login akan hilang.`)) {
+        return;
+    }
+
+    const initialLength = allUsersAndWarga.length;
+    
+    allUsersAndWarga = allUsersAndWarga.filter(user => user.id !== userId);
+    
+    if (allUsersAndWarga.length < initialLength) {
+        saveUsersData(allUsersAndWarga); 
+        // Filter admin dari data warga untuk tampilan publik
+        allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+        
+        alert(`Data warga ID ${userId} berhasil dihapus.`);
+        
+        if (currentStep === 11) { // Jika di halaman Admin
+            renderAdminWargaTable();
+        } else if (currentStep === 6) { // Jika di halaman Data Warga
+            renderWargaTable();
+        }
+        
+    } else {
+        alert(`Gagal menghapus: Warga dengan ID ${userId} tidak ditemukan.`);
+    }
+}
+
+function addNewWarga(name, block, rate, username, password) {
+    if (!name || !block || !rate || !username || !password) {
+        alert("Semua kolom (Nama, Blok, Rate, Username, Password) harus diisi.");
+        return;
+    }
+
+    const maxId = allUsersAndWarga.reduce((max, user) => Math.max(max, user.id), 0);
+    const newId = maxId + 1;
+
+    const newWarga = {
+        id: newId,
+        name: name,
+        block: block,
+        rate: parseInt(rate), 
+        arrears2025: 0, 
+        paid2026: 0,    
+        username: username.toLowerCase(),
+        password: password,
+        isAccount: true,
+        isAdmin: false,
+        invoices: []
+    };
+
+    allUsersAndWarga.push(newWarga);
+    
+    saveUsersData(allUsersAndWarga);
+    allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+
+    alert(`Warga baru (${name}, ID: ${newId}) berhasil ditambahkan!`);
+    
+    return newWarga;
+}
+
+// ======================================================
+// 2. FUNGSI NOTIFIKASI
+// ======================================================
+
+function getNotifications() {
+    const data = localStorage.getItem(NOTIFICATION_KEY);
+    return data ? JSON.parse(data) : [];
+}
+
+function saveNotifications(notifications) {
+    const limitedNotifications = notifications.slice(0, 50);
+    localStorage.setItem(NOTIFICATION_KEY, JSON.stringify(limitedNotifications));
+    if (currentUser) { 
+        renderMenu(); 
+    }
+}
+
+function addNotification(type, message, targetUserId = 'all') {
+    if (type !== 'payment') {
+        return; 
+    }
+    
+    const notifications = getNotifications();
+    const newNotif = {
+        id: Date.now(),
+        type: type, 
+        message: message,
+        read: false,
+        timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' ' + new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }),
+        target: targetUserId 
+    };
+    notifications.unshift(newNotif); 
+    saveNotifications(notifications);
+}
+
+function clearNotifications() {
+    if (confirm('Apakah Anda yakin ingin menghapus SEMUA notifikasi yang relevan dengan akun Anda? Tindakan ini tidak dapat dibatalkan.')) {
+        
+        const notifications = getNotifications().filter(n => 
+            n.target !== 'all' && n.target !== currentUser.id
+        );
+        
+        saveNotifications(notifications); 
+        
+        renderNotifications(); 
+        renderMenu(); 
+    }
+}
+
+function markNotificationsAsRead() {
+    const notifications = getNotifications();
+    let changed = false;
+    
+    notifications.forEach(n => {
+        if (!n.read && (n.target === 'all' || n.target === currentUser.id)) {
+            n.read = true;
+            changed = true;
+        }
+    });
+    
+    if (changed) {
+        saveNotifications(notifications);
+    }
+}
+
+function renderNotifications() {
+    const notifications = getNotifications();
+    let html = '';
+    
+    const relevantNotifs = notifications.filter(n => 
+        (n.target === 'all' || n.target === currentUser.id) && n.type === 'payment'
+    );
+
+    if (relevantNotifs.length === 0) {
+        html = `<p style="text-align: center; margin: 30px 0; opacity: 0.6;">Tidak ada riwayat notifikasi pembayaran saat ini.</p>`;
+    } else {
+        relevantNotifs.slice(0, 20).forEach(n => { 
+            const icon = n.type === 'payment' ? '💸' : '💡'; 
+            const color = n.type === 'payment' ? 'var(--neon-color-header)' : '#3498db';
+            const readStyle = n.read ? 
+                              'opacity: 0.7; background-color: transparent;' : 
+                              `font-weight: 600; background-color: var(--card-bg); box-shadow: var(--soft-shadow);`;
+
+
+            html += `
+                <div style="padding: 10px; border-bottom: 1px dotted var(--shadow-dark); margin-bottom: 8px; font-size: 0.9em; display: flex; align-items: flex-start; gap: 10px; border-radius: 8px; ${readStyle}">
+                    <span style="font-size: 1.2em; color: ${color};">${icon}</span>
+                    <div style="flex-grow: 1;">
+                        <p style="margin: 0; line-height: 1.4; font-weight: inherit;">${n.message}</p>
+                        <p style="margin: 3px 0 0; font-size: 0.75em; opacity: 0.7; font-weight: 500;">${n.timestamp}</p>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    notificationsList.innerHTML = html;
+}
+
+function showNotificationsPage() {
+    if (!currentUser) {
+        showLoginPage();
+        return;
+    }
+    
+    transitionToPage(notificationPage, 8); 
+
+    setTimeout(() => {
+        markNotificationsAsRead();
+        renderNotifications();
+    }, 500);
+}
+
+function hideNotificationPage() {
+    notificationPage.style.opacity = 0;
+    setTimeout(() => {
+        notificationPage.style.display = 'none';
+        fabBackNotifButton.style.display = 'none';
+        dashboard.style.display = 'block';
+        setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+        currentStep = 0;
+        renderMenu(); 
+    }, 400); 
+}
+
+
+// ======================================================
+// 3. FUNGSI UTILITY & UI
+// ======================================================
+
+function hideAllPages() {
+     // Tambahkan adminPage, modalEditUser, modalAdminInvoice
+     const pages = [dashboard, loginPage, registrationPage, paymentPage, dataWargaPage, myProfilePage, notificationPage, invoicePage, reportPage, adminPage];
+     pages.forEach(page => {
+         page.style.opacity = 0;
+         // Sembunyikan FAB
+         fabBackButton.style.display = 'none';
+         fabBackWargaButton.style.display = 'none'; 
+         fabBackProfileButton.style.display = 'none'; 
+         fabBackNotifButton.style.display = 'none'; 
+         fabBackInvoiceButton.style.display = 'none';
+         fabBackReportButton.style.display = 'none';
+         fabBackAdminButton.style.display = 'none'; 
+     });
+     setTimeout(() => {
+         pages.forEach(page => { page.style.display = 'none'; });
+         modalEditUser.style.display = 'none'; 
+         modalAdminInvoice.style.display = 'none'; 
+         modalEditReport.style.display = 'none'; // Tambahkan modalEditReport
+     }, 300); 
+}
+
+
+function formatRupiah(number) {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+}
+
+function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Berhasil menyalin ke clipboard!');
+    }).catch(err => {
+        console.error('Gagal menyalin: ', err);
+    });
+}
+
+function updateUserData(newData) {
+     // Cari indeks currentUser dalam array global
+    const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
+    
+    if (userIndex !== -1) {
+        // Perbarui data di array global
+        allUsersAndWarga[userIndex] = { ...allUsersAndWarga[userIndex], ...newData };
+        // Perbarui data currentUser lokal
+        currentUser = allUsersAndWarga[userIndex];
+        
+        // Simpan data global yang baru ke localStorage
+        saveUsersData(allUsersAndWarga);
+    } else {
+        console.error("Gagal menemukan user dalam array global.");
+    }
+}
+// --- FUNGSI HALAMAN LAPORAN BARU ---
+function renderReportContent() {
+    const content = getReportContent();
+    const reportDisplay = document.getElementById('reportContentDisplay');
+    
+    let htmlContent = '';
+    let currentSection = '';
+    let summaryTitle = '';
+    let details = [];
+    let finalBalance = '';
+    let footerNote = '';
+    
+    // 1. Mengurai konten teks
+    content.split('\n').forEach(line => {
+        line = line.trim();
+        
+        if (line.startsWith('### 📊')) {
+            // Judul Utama
+            summaryTitle = line.substring(6).trim();
+        } else if (line.startsWith('#### 💰 Pemasukan')) {
+            currentSection = 'Pemasukan';
+        } else if (line.startsWith('#### 💸 Pengeluaran')) {
+            currentSection = 'Pengeluaran';
+        } else if (line.startsWith('#### 🟢 Saldo Akhir')) {
+            currentSection = 'Saldo';
+        } else if (line.startsWith('- ') && currentSection) {
+            // Data list (e.g., - Total Iuran diterima: [Nominal])
+            const parts = line.substring(2).split(':');
+            if (parts.length >= 2) {
+                const label = parts[0].trim();
+                const value = parts.slice(1).join(':').trim(); // Mengambil sisa string sebagai nilai
+                details.push({ section: currentSection, label: label, value: value });
+            }
+        } else if (line.startsWith('**Total Kas Saat Ini:')) {
+            // Saldo Akhir
+            finalBalance = line.replace('**', '').replace('**', '').split(':')[1].trim();
+        } else if (line.startsWith('*Catatan:')) {
+            // Catatan Kaki
+            footerNote = line.replace('*', '').replace('*', '');
+        } else if (line.length > 0 && !summaryTitle) {
+            // Paragraf Ringkasan Awal
+            summaryTitle = summaryTitle || line;
+        }
+    });
+
+    // 2. Membangun Struktur HTML Tabel
+
+    // Kontainer Utama
+    htmlContent += `<div style="margin-bottom: 20px;">`;
+    htmlContent += `<h4 style="text-align: center; color: var(--neon-color-header); margin-bottom: 5px;">${summaryTitle}</h4>`;
+    htmlContent += `<p style="text-align: center; font-size: 0.9em; opacity: 0.8; margin-bottom: 20px;">${details.find(d => d.section === '').value || ''}</p>`;
+    htmlContent += `</div>`;
+
+
+    // --- Pemasukan dan Pengeluaran ---
+    const renderTable = (section, icon, color) => {
+        const sectionDetails = details.filter(d => d.section === section);
+        if (sectionDetails.length === 0) return '';
+        
+        let tableHtml = `<div class="profile-card" style="margin-bottom: 15px; border-left: 5px solid ${color}; padding: 15px;">`;
+        tableHtml += `<h5 style="color: ${color}; margin-top: 0; display: flex; align-items: center; gap: 8px;">${icon} ${section}</h5>`;
+        tableHtml += `<table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">`;
+        
+        sectionDetails.forEach(item => {
+            tableHtml += `
+                <tr>
+                    <td style="padding: 5px 0; border-bottom: 1px dotted var(--shadow-dark);">${item.label}</td>
+                    <td style="padding: 5px 0; text-align: right; font-weight: 600; border-bottom: 1px dotted var(--shadow-dark); color: ${color};">${item.value}</td>
+                </tr>
+            `;
+        });
+        
+        tableHtml += `</table></div>`;
+        return tableHtml;
+    };
+    
+    htmlContent += renderTable('Pemasukan', '💰', '#00A878'); // Hijau
+    htmlContent += renderTable('Pengeluaran', '💸', '#FF4444'); // Merah
+    
+    // --- Saldo Akhir ---
+    if (finalBalance) {
+        htmlContent += `
+            <div class="profile-card" style="margin-top: 20px; padding: 15px; background-color: var(--neon-bg); border: 2px solid var(--neon-color-header);">
+                <h5 style="margin: 0; color: var(--text-color);">Total Kas Saat Ini</h5>
+                <p style="font-size: 1.5em; font-weight: 800; color: var(--neon-color-header); margin: 5px 0 0;">${finalBalance}</p>
+            </div>
+        `;
+    }
+    
+    // Catatan Kaki
+    if (footerNote) {
+        htmlContent += `<p style="font-size: 0.8em; opacity: 0.7; margin-top: 20px; text-align: center;">${footerNote}</p>`;
+    }
+
+    reportDisplay.innerHTML = htmlContent;
+}
+
 
 function saveReportContent(content) {
     localStorage.setItem(REPORT_STORAGE_KEY, content);
@@ -2558,529 +2647,522 @@ function showReportPage() {
 }
 
 
-        // --- FUNGSI TAMPILAN DAN NAVIGASI ---
-        function updateMode(isDarkMode) {
-            if (isDarkMode) {
-                body.classList.add('dark-mode');
-                themeToggle.innerHTML = '🌙 Mode Gelap';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark-mode');
-                themeToggle.innerHTML = '☀️ Mode Terang';
-                localStorage.setItem('theme', 'light');
-            }
+// --- FUNGSI TAMPILAN DAN NAVIGASI ---
+function updateMode(isDarkMode) {
+    if (isDarkMode) {
+        body.classList.add('dark-mode');
+        themeToggle.innerHTML = '🌙 Mode Gelap';
+        localStorage.setItem('theme', 'dark');
+    } else {
+        body.classList.remove('dark-mode');
+        themeToggle.innerHTML = '☀️ Mode Terang';
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+function toggleMode() {
+    const isDarkMode = body.classList.contains('dark-mode');
+    updateMode(!isDarkMode);
+}
+
+function renderMenu() {
+    const menuGrid = document.querySelector('.menu-grid');
+    if (!menuGrid || !currentUser) return;
+    
+    const notifications = getNotifications();
+    const unreadCount = notifications.filter(n => 
+        !n.read && (n.target === 'all' || n.target === currentUser.id)
+    ).length;
+    
+    let notificationMenuItem = `
+        <a href="#" class="menu-item" onclick="showNotificationsPage()">
+            <span class="menu-icon">🔔</span>
+            <strong>Notifikasi</strong>
+            ${unreadCount > 0 ? `<span class="badge">${unreadCount}</span>` : ''}
+        </a>
+    `;
+    
+    const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+    const totalInvoices = latestUser && latestUser.invoices ? latestUser.invoices.length : 0;
+    let invoiceBadge = totalInvoices > 0 ? `<span class="badge" style="background-color: #3498db;">${totalInvoices}</span>` : '';
+
+    // Menu Admin
+    let adminMenu = '';
+    if (currentUser.isAdmin) {
+        adminMenu = `
+            <a href="#" class="menu-item admin-link" onclick="showAdminPage()">
+                <span class="menu-icon">👑</span>
+                <strong>Kontrol Admin</strong>
+            </a>
+        `;
+    }
+
+    const menuHtml = `
+        ${adminMenu} 
+        <a href="#" class="menu-item" onclick="showPaymentPage(1)">
+            <span class="menu-icon">💸</span>
+            <strong>Bayar Kas</strong>
+        </a>
+        <a href="#" class="menu-item" onclick="showMyProfilePage()">
+            <span class="menu-icon">👤</span>
+            <strong>Data Saya</strong>
+        </a>
+        <a href="#" class="menu-item" onclick="showDataWargaPage()">
+            <span class="menu-icon">🏘️</span>
+            <strong>Data Warga</strong>
+        </a>
+        <a href="#" class="menu-item" onclick="showReportPage()">
+            <span class="menu-icon">📊</span>
+            <strong>Laporan</strong>
+        </a>
+        ${notificationMenuItem}
+        <a href="#" class="menu-item" onclick="showInvoicePage()">
+            <span class="menu-icon">📄</span>
+            <strong>Invoice Pembayaran</strong>
+            ${invoiceBadge}
+        </a>
+    `;
+    
+    menuGrid.innerHTML = menuHtml;
+}
+
+function transitionToPage(pageElement, step) {
+     hideAllPages();
+     setTimeout(() => {
+        pageElement.style.display = (pageElement === loginPage || pageElement === registrationPage) ? 'flex' : 'block';
+        setTimeout(() => { 
+            pageElement.style.opacity = 1; 
+        }, 50); 
+        
+        currentStep = step;
+        
+        const fabMap = {
+            1: fabBackButton, 2: fabBackButton, 3: fabBackButton, 4: fabBackButton, 5: fabBackButton, 
+            6: fabBackWargaButton, 7: fabBackProfileButton, 8: fabBackNotifButton, 9: fabBackInvoiceButton, 10: fabBackReportButton,
+            11: fabBackAdminButton 
+        };
+        if (fabMap[step]) {
+            fabMap[step].style.display = 'block';
+        }
+
+     }, 350); 
+}
+
+
+function showLoginPage() {
+    transitionToPage(loginPage, 0);
+    themeToggle.style.display = 'none';
+    currentUser = null; 
+    document.getElementById('usernameInput').value = '';
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('loginMessage').style.display = 'none';
+}
+
+function hideLoginPage(name) {
+    transitionToPage(dashboard, 0);
+    
+    welcomeUserText.textContent = `Selamat Datang, ${name}! 👋`;
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') { updateMode(false); } else { updateMode(true); }
+    themeToggle.style.display = 'inline-block';
+    
+    renderMenu(); 
+}
+
+function showRegistrationPage() {
+    transitionToPage(registrationPage, 0);
+    document.getElementById('registrationForm').reset(); 
+}
+
+function backToLogin() {
+    registrationPage.style.opacity = 0;
+    setTimeout(() => {
+        registrationPage.style.display = 'none';
+        loginPage.style.display = 'flex';
+        setTimeout(() => { loginPage.style.opacity = 1; }, 50);
+    }, 300);
+}
+
+function registerViaWhatsApp() {
+    const nama = document.getElementById('regNama').value.trim();
+    const blokNo = document.getElementById('regBlokNo').value.trim();
+    const idUser = document.getElementById('regIdUser').value.trim();
+    const password = document.getElementById('regPassword').value.trim();
+    
+    const message = `Halo Admin, saya ingin mendaftar akun Kas Gang E21-25. Berikut detail pendaftaran saya:%0A%0A*Nama:* ${nama || 'Belum diisi'}%0A*Blok/No:* ${blokNo || 'Belum diisi'}%0A*ID Pengguna:* ${idUser || 'Belum diisi'}%0A*Password:* ${password || 'Belum diisi'}%0A%0AMohon diproses, terima kasih.`;
+    
+    const waUrl = `https://wa.me/${ADMIN_WA_NUMBER}?text=${message}`;
+    window.open(waUrl, '_blank');
+}
+
+// --- FUNGSI NAVIGASI FAB ---
+function handleFabClick() {
+    if (currentStep === 11) { 
+        hideAdminPage(); 
+    } else if (currentStep === 10) { 
+        hideReportPage();
+    } else if (currentStep === 9) { 
+        if (selectedInvoice && singleInvoiceDisplay.style.display === 'block') {
+            renderInvoiceList();
+            selectedInvoice = null;
+            document.querySelector('#invoicePage .section-title').textContent = '📄 Daftar Invoice Pembayaran';
+        } else {
+            hideInvoicePage();
+        }
+    } else if (currentStep === 8) { 
+        hideNotificationPage();
+    } else if (currentStep === 7) { 
+        hideMyProfilePage();
+    } else if (currentStep === 6) { 
+         hideDataWargaPage();
+    } else if (currentStep === 5 || currentStep === 4 || currentStep === 3) { 
+        showPaymentPage(2);
+    } else if (currentStep === 2) { 
+        showPaymentPage(1);
+    } else if (currentStep === 1) { 
+        hidePaymentPage();
+    }
+}
+
+// --- FUNGSI HALAMAN DATA SAYA ---
+function showMyProfilePage() {
+     if (!currentUser) {
+        showLoginPage();
+        return;
+    }
+
+    // AMBIL DATA TERBARU DARI ARRAY GLOBAL SEBELUM MERENDER
+    const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+    if(latestUser) currentUser = latestUser;
+    
+    transitionToPage(myProfilePage, 7);
+    renderPaymentHistory(); 
+}
+
+function hideMyProfilePage() {
+     myProfilePage.style.opacity = 0;
+     setTimeout(() => {
+        myProfilePage.style.display = 'none';
+        fabBackProfileButton.style.display = 'none';
+        dashboard.style.display = 'block';
+        setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+        currentStep = 0;
+        renderMenu(); 
+    }, 400);
+}
+
+function renderPaymentHistory() {
+    profileUserName.textContent = currentUser.name;
+    profileUserBlock.textContent = currentUser.block;
+    profileUserRate.textContent = formatRupiah(currentUser.rate);
+    
+    let html = '';
+    
+    // Re-fetch data terbaru dari array global
+    const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+    if(!latestUser) return;
+    currentUser = latestUser;
+    
+    const paid2025Months = TOTAL_MONTHS_YEAR - currentUser.arrears2025;
+    const paid2026Months = currentUser.paid2026;      
+    
+    for (let i = 0; i < TOTAL_MONTHS_YEAR; i++) {
+        const monthName = MONTHS[i];
+        
+        // Status 2025
+        let status2025Text = '';
+        let status2025Class = '';
+        if (i < paid2025Months) {
+            status2025Text = 'LUNAS';
+            status2025Class = 'status-paid';
+        } else {
+            status2025Text = 'BELUM LUNAS';
+            status2025Class = 'status-unpaid';
         }
         
-        function toggleMode() {
-            const isDarkMode = body.classList.contains('dark-mode');
-            updateMode(!isDarkMode);
+        // Status 2026
+        let status2026Text = '';
+        let status2026Class = '';
+        if (i < paid2026Months) {
+            status2026Text = 'SUDAH LUNAS';
+            status2026Class = 'status-paid';
+        } else {
+            status2026Text = 'BELUM LUNAS';
+            status2026Class = 'status-unpaid';
         }
         
-        function renderMenu() {
-            const menuGrid = document.querySelector('.menu-grid');
-            if (!menuGrid || !currentUser) return;
-            
-            const notifications = getNotifications();
-            const unreadCount = notifications.filter(n => 
-                !n.read && (n.target === 'all' || n.target === currentUser.id)
-            ).length;
-            
-            let notificationMenuItem = `
-                <a href="#" class="menu-item" onclick="showNotificationsPage()">
-                    <span class="menu-icon">🔔</span>
-                    <strong>Notifikasi</strong>
-                    ${unreadCount > 0 ? `<span class="badge">${unreadCount}</span>` : ''}
-                </a>
-            `;
-            
-            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
-            const totalInvoices = latestUser && latestUser.invoices ? latestUser.invoices.length : 0;
-            let invoiceBadge = totalInvoices > 0 ? `<span class="badge" style="background-color: #3498db;">${totalInvoices}</span>` : '';
+        html += `
+            <tr>
+                <td>${monthName}</td>
+                <td class="${status2025Class}">${status2025Text}</td>
+                <td class="${status2026Class}">${status2026Text}</td>
+            </tr>
+        `;
+    }
+    
+    paymentHistoryBody.innerHTML = html;
+    
+    const totalUnpaid2025Months = currentUser.arrears2025;
+    const totalUnpaid2026Months = Math.max(0, TOTAL_MONTHS_YEAR - currentUser.paid2026);
+    
+    const totalArrearsRupiah = totalUnpaid2025Months * currentUser.rate;
+    const totalUnpaid2026Rupiah = totalUnpaid2026Months * currentUser.rate; 
+    const subtotalRupiah = totalArrearsRupiah + totalUnpaid2026Rupiah;
 
-            // Menu Admin
-            let adminMenu = '';
-            if (currentUser.isAdmin) {
-                adminMenu = `
-                    <a href="#" class="menu-item admin-link" onclick="showAdminPage()">
-                        <span class="menu-icon">👑</span>
-                        <strong>Kontrol Admin</strong>
-                    </a>
-                `;
-            }
+    profileArrearsTotal.textContent = `${totalUnpaid2025Months} bln (${formatRupiah(totalArrearsRupiah)})`;
+    profileUnpaid2026Total.textContent = `${totalUnpaid2026Months} bln (${formatRupiah(totalUnpaid2026Rupiah)})`;
+    profileSubtotalTotal.textContent = formatRupiah(subtotalRupiah);
+}
 
-            const menuHtml = `
-                ${adminMenu} 
-                <a href="#" class="menu-item" onclick="showPaymentPage(1)">
-                    <span class="menu-icon">💸</span>
-                    <strong>Bayar Kas</strong>
-                </a>
-                <a href="#" class="menu-item" onclick="showMyProfilePage()">
-                    <span class="menu-icon">👤</span>
-                    <strong>Data Saya</strong>
-                </a>
-                <a href="#" class="menu-item" onclick="showDataWargaPage()">
-                    <span class="menu-icon">🏘️</span>
-                    <strong>Data Warga</strong>
-                </a>
-                <a href="#" class="menu-item" onclick="showReportPage()">
-                    <span class="menu-icon">📊</span>
-                    <strong>Laporan</strong>
-                </a>
-                ${notificationMenuItem}
-                <a href="#" class="menu-item" onclick="showInvoicePage()">
-                    <span class="menu-icon">📄</span>
-                    <strong>Invoice Pembayaran</strong>
-                    ${invoiceBadge}
-                </a>
-            `;
-            
-            menuGrid.innerHTML = menuHtml;
-        }
+// --- FUNGSI HALAMAN DATA WARGA ---
+function showDataWargaPage() {
+     if (!currentUser) {
+        showLoginPage();
+        return;
+    }
 
-        function transitionToPage(pageElement, step) {
-             hideAllPages();
-             setTimeout(() => {
-                pageElement.style.display = (pageElement === loginPage || pageElement === registrationPage) ? 'flex' : 'block';
-                setTimeout(() => { 
-                    pageElement.style.opacity = 1; 
-                }, 50); 
-                
-                currentStep = step;
-                
-                const fabMap = {
-                    1: fabBackButton, 2: fabBackButton, 3: fabBackButton, 4: fabBackButton, 5: fabBackButton, 
-                    6: fabBackWargaButton, 7: fabBackProfileButton, 8: fabBackNotifButton, 9: fabBackInvoiceButton, 10: fabBackReportButton,
-                    11: fabBackAdminButton 
-                };
-                if (fabMap[step]) {
-                    fabMap[step].style.display = 'block';
-                }
+    transitionToPage(dataWargaPage, 6);
+    isTableExpanded = false; 
+    // Ambil data warga, tidak termasuk Admin (id 0)
+    allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+    renderWargaTable();
+}
 
-             }, 350); 
-        }
+function hideDataWargaPage() {
+    dataWargaPage.style.opacity = 0;
+    setTimeout(() => {
+        dataWargaPage.style.display = 'none';
+        fabBackWargaButton.style.display = 'none';
+        dashboard.style.display = 'block';
+        setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+        currentStep = 0;
+        renderMenu(); 
+    }, 400);
+}
 
+function renderWargaTable() {
+    let html = '';
+    const dataWithoutAdmin = allWargaData; 
+    const displayLimit = isTableExpanded ? dataWithoutAdmin.length : 10;
+    const dataToDisplay = dataWithoutAdmin.slice(0, displayLimit);
 
-        function showLoginPage() {
-            transitionToPage(loginPage, 0);
-            themeToggle.style.display = 'none';
-            currentUser = null; 
-            document.getElementById('usernameInput').value = '';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('loginMessage').style.display = 'none';
+    dataToDisplay.forEach((warga, index) => {
+        const arrearsText = warga.arrears2025 > 0 
+            ? `<span class="status-warning">${warga.arrears2025} bln</span>` 
+            : `<span class="status-ok">LUNAS</span>`;
+        
+        let paid2026Text;
+        if (warga.paid2026 >= 12) {
+             paid2026Text = `<span class="status-ok">LUNAS ${NEXT_YEAR}</span>`;
+        } else if (warga.paid2026 > 0) {
+             paid2026Text = `${warga.paid2026} bln`;
+        } else {
+             paid2026Text = `0 bln`; 
         }
         
-        function hideLoginPage(name) {
-            transitionToPage(dashboard, 0);
-            
-            welcomeUserText.textContent = `Selamat Datang, ${name}! 👋`;
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') { updateMode(false); } else { updateMode(true); }
-            themeToggle.style.display = 'inline-block';
-            
-            renderMenu(); 
-        }
+        const isHiddenRow = index >= 10 && !isTableExpanded;
+        const rowClass = isHiddenRow ? 'hidden-row' : '';
 
-        function showRegistrationPage() {
-            transitionToPage(registrationPage, 0);
-            document.getElementById('registrationForm').reset(); 
+        html += `
+            <tr class="${rowClass}">
+                <td class="name-col">${warga.name}</td>
+                <td>${warga.block}</td>
+                <td>${arrearsText}</td>
+                <td>${paid2026Text}</td>
+            </tr>
+        `;
+    });
+
+    wargaTableBody.innerHTML = html;
+    
+    if (dataWithoutAdmin.length > 10) {
+        toggleWargaButton.style.display = 'block';
+        if (isTableExpanded) {
+            toggleWargaButton.textContent = 'Sembunyikan Sisa Data Warga';
+        } else {
+            toggleWargaButton.textContent = `Tampilkan ${dataWithoutAdmin.length - 10} Data Warga Lainnya`;
         }
+    } else {
+        toggleWargaButton.style.display = 'none';
+    }
+    
+    const hiddenRows = document.querySelectorAll('.hidden-row');
+    hiddenRows.forEach(row => {
+        if (isTableExpanded) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function toggleWargaTable() {
+    isTableExpanded = !isTableExpanded;
+    renderWargaTable();
+}
+
+// --- FUNGSI HALAMAN INVOICE PEMBAYARAN ---
+
+function renderInvoiceList() {
+    singleInvoiceDisplay.style.display = 'none';
+    invoiceListWrapper.style.display = 'block';
+    selectedInvoice = null; 
+    
+    const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+    const invoices = latestUser ? latestUser.invoices || [] : [];
+    
+    const listContainer = document.getElementById('invoiceListContainer');
+    let html = '';
+    
+    if (invoices.length === 0) {
+         html = `<p style="text-align: center; margin: 30px 0; opacity: 0.6;">Anda belum memiliki riwayat Invoice Pembayaran saat ini.</p>`;
+    } else {
+        invoices.sort((a, b) => b.id - a.id); 
         
-        function backToLogin() {
-            registrationPage.style.opacity = 0;
-            setTimeout(() => {
-                registrationPage.style.display = 'none';
-                loginPage.style.display = 'flex';
-                setTimeout(() => { loginPage.style.opacity = 1; }, 50);
-            }, 300);
-        }
-        
-        function registerViaWhatsApp() {
-            const nama = document.getElementById('regNama').value.trim();
-            const blokNo = document.getElementById('regBlokNo').value.trim();
-            const idUser = document.getElementById('regIdUser').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
-            
-            const message = `Halo Admin, saya ingin mendaftar akun Kas Gang E21-25. Berikut detail pendaftaran saya:%0A%0A*Nama:* ${nama || 'Belum diisi'}%0A*Blok/No:* ${blokNo || 'Belum diisi'}%0A*ID Pengguna:* ${idUser || 'Belum diisi'}%0A*Password:* ${password || 'Belum diisi'}%0A%0AMohon diproses, terima kasih.`;
-            
-            const waUrl = `https://wa.me/${ADMIN_WA_NUMBER}?text=${message}`;
-            window.open(waUrl, '_blank');
-        }
-
-        // --- FUNGSI NAVIGASI FAB ---
-        function handleFabClick() {
-            if (currentStep === 11) { 
-                hideAdminPage(); 
-            } else if (currentStep === 10) { 
-                hideReportPage();
-            } else if (currentStep === 9) { 
-                if (selectedInvoice && singleInvoiceDisplay.style.display === 'block') {
-                    renderInvoiceList();
-                    selectedInvoice = null;
-                    document.querySelector('#invoicePage .section-title').textContent = '📄 Daftar Invoice Pembayaran';
-                } else {
-                    hideInvoicePage();
-                }
-            } else if (currentStep === 8) { 
-                hideNotificationPage();
-            } else if (currentStep === 7) { 
-                hideMyProfilePage();
-            } else if (currentStep === 6) { 
-                 hideDataWargaPage();
-            } else if (currentStep === 5 || currentStep === 4 || currentStep === 3) { 
-                showPaymentPage(2);
-            } else if (currentStep === 2) { 
-                showPaymentPage(1);
-            } else if (currentStep === 1) { 
-                hidePaymentPage();
-            }
-        }
-        
-        // --- FUNGSI HALAMAN DATA SAYA ---
-        function showMyProfilePage() {
-             if (!currentUser) {
-                showLoginPage();
-                return;
-            }
-
-            // AMBIL DATA TERBARU DARI ARRAY GLOBAL SEBELUM MERENDER
-            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
-            if(latestUser) currentUser = latestUser;
-            
-            transitionToPage(myProfilePage, 7);
-            renderPaymentHistory(); 
-        }
-        
-        function hideMyProfilePage() {
-             myProfilePage.style.opacity = 0;
-             setTimeout(() => {
-                myProfilePage.style.display = 'none';
-                fabBackProfileButton.style.display = 'none';
-                dashboard.style.display = 'block';
-                setTimeout(() => { dashboard.style.opacity = 1; }, 50);
-                currentStep = 0;
-                renderMenu(); 
-            }, 400);
-        }
-
-        function renderPaymentHistory() {
-            profileUserName.textContent = currentUser.name;
-            profileUserBlock.textContent = currentUser.block;
-            profileUserRate.textContent = formatRupiah(currentUser.rate);
-            
-            let html = '';
-            
-            // Re-fetch data terbaru dari array global
-            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
-            if(!latestUser) return;
-            currentUser = latestUser;
-            
-            const paid2025Months = TOTAL_MONTHS_YEAR - currentUser.arrears2025;
-            const paid2026Months = currentUser.paid2026;      
-            
-            for (let i = 0; i < TOTAL_MONTHS_YEAR; i++) {
-                const monthName = MONTHS[i];
-                
-                // Status 2025
-                let status2025Text = '';
-                let status2025Class = '';
-                if (i < paid2025Months) {
-                    status2025Text = 'LUNAS';
-                    status2025Class = 'status-paid';
-                } else {
-                    status2025Text = 'BELUM LUNAS';
-                    status2025Class = 'status-unpaid';
-                }
-                
-                // Status 2026
-                let status2026Text = '';
-                let status2026Class = '';
-                if (i < paid2026Months) {
-                    status2026Text = 'SUDAH LUNAS';
-                    status2026Class = 'status-paid';
-                } else {
-                    status2026Text = 'BELUM LUNAS';
-                    status2026Class = 'status-unpaid';
-                }
-                
-                html += `
-                    <tr>
-                        <td>${monthName}</td>
-                        <td class="${status2025Class}">${status2025Text}</td>
-                        <td class="${status2026Class}">${status2026Text}</td>
-                    </tr>
-                `;
-            }
-            
-            paymentHistoryBody.innerHTML = html;
-            
-            const totalUnpaid2025Months = currentUser.arrears2025;
-            const totalUnpaid2026Months = Math.max(0, TOTAL_MONTHS_YEAR - currentUser.paid2026);
-            
-            const totalArrearsRupiah = totalUnpaid2025Months * currentUser.rate;
-            const totalUnpaid2026Rupiah = totalUnpaid2026Months * currentUser.rate; 
-            const subtotalRupiah = totalArrearsRupiah + totalUnpaid2026Rupiah;
-
-            profileArrearsTotal.textContent = `${totalUnpaid2025Months} bln (${formatRupiah(totalArrearsRupiah)})`;
-            profileUnpaid2026Total.textContent = `${totalUnpaid2026Months} bln (${formatRupiah(totalUnpaid2026Rupiah)})`;
-            profileSubtotalTotal.textContent = formatRupiah(subtotalRupiah);
-        }
-
-        
-        // --- FUNGSI HALAMAN DATA WARGA ---
-        function showDataWargaPage() {
-             if (!currentUser) {
-                showLoginPage();
-                return;
-            }
-
-            transitionToPage(dataWargaPage, 6);
-            isTableExpanded = false; 
-            // Ambil data warga, tidak termasuk Admin (id 0)
-            allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
-            renderWargaTable();
-        }
-        
-        function hideDataWargaPage() {
-            dataWargaPage.style.opacity = 0;
-            setTimeout(() => {
-                dataWargaPage.style.display = 'none';
-                fabBackWargaButton.style.display = 'none';
-                dashboard.style.display = 'block';
-                setTimeout(() => { dashboard.style.opacity = 1; }, 50);
-                currentStep = 0;
-                renderMenu(); 
-            }, 400);
-        }
-
-        function renderWargaTable() {
-            let html = '';
-            const dataWithoutAdmin = allWargaData; 
-            const displayLimit = isTableExpanded ? dataWithoutAdmin.length : 10;
-            const dataToDisplay = dataWithoutAdmin.slice(0, displayLimit);
-
-            dataToDisplay.forEach((warga, index) => {
-                const arrearsText = warga.arrears2025 > 0 
-                    ? `<span class="status-warning">${warga.arrears2025} bln</span>` 
-                    : `<span class="status-ok">LUNAS</span>`;
-                
-                let paid2026Text;
-                if (warga.paid2026 >= 12) {
-                     paid2026Text = `<span class="status-ok">LUNAS ${NEXT_YEAR}</span>`;
-                } else if (warga.paid2026 > 0) {
-                     paid2026Text = `${warga.paid2026} bln`;
-                } else {
-                     paid2026Text = `0 bln`; 
-                }
-                
-                const isHiddenRow = index >= 10 && !isTableExpanded;
-                const rowClass = isHiddenRow ? 'hidden-row' : '';
-
-                html += `
-                    <tr class="${rowClass}">
-                        <td class="name-col">${warga.name}</td>
-                        <td>${warga.block}</td>
-                        <td>${arrearsText}</td>
-                        <td>${paid2026Text}</td>
-                    </tr>
-                `;
-            });
-
-            wargaTableBody.innerHTML = html;
-            
-            if (dataWithoutAdmin.length > 10) {
-                toggleWargaButton.style.display = 'block';
-                if (isTableExpanded) {
-                    toggleWargaButton.textContent = 'Sembunyikan Sisa Data Warga';
-                } else {
-                    toggleWargaButton.textContent = `Tampilkan ${dataWithoutAdmin.length - 10} Data Warga Lainnya`;
-                }
-            } else {
-                toggleWargaButton.style.display = 'none';
-            }
-            
-            const hiddenRows = document.querySelectorAll('.hidden-row');
-            hiddenRows.forEach(row => {
-                if (isTableExpanded) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        function toggleWargaTable() {
-            isTableExpanded = !isTableExpanded;
-            renderWargaTable();
-        }
-        
-        // --- FUNGSI HALAMAN INVOICE PEMBAYARAN ---
-        
-        function renderInvoiceList() {
-            singleInvoiceDisplay.style.display = 'none';
-            invoiceListWrapper.style.display = 'block';
-            selectedInvoice = null; 
-            
-            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
-            const invoices = latestUser ? latestUser.invoices || [] : [];
-            
-            const listContainer = document.getElementById('invoiceListContainer');
-            let html = '';
-            
-            if (invoices.length === 0) {
-                 html = `<p style="text-align: center; margin: 30px 0; opacity: 0.6;">Anda belum memiliki riwayat Invoice Pembayaran saat ini.</p>`;
-            } else {
-                invoices.sort((a, b) => b.id - a.id); 
-                
-                invoices.forEach(inv => {
-                    html += `
-                        <div class="profile-card" style="margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-                             <div onclick="showSingleInvoice('${inv.invoiceID}')" style="cursor: pointer; flex-grow: 1;">
-                                <p style="font-size: 1.0em; margin-bottom: 5px;"><strong>${inv.invoiceID}</strong> (${inv.method})</p>
-                                <div style="display: flex; justify-content: space-between; font-size: 0.9em; opacity: 0.9;">
-                                    <span>Tgl: ${inv.date}</span>
-                                    <strong>${formatRupiah(inv.total)}</strong>
-                                </div>
-                                <p style="font-size: 0.8em; opacity: 0.7; margin: 5px 0 0;">Alokasi: ${inv.allocation}</p>
-                            </div>
-                            <button class="action-button" style="background-color: var(--delete-button); color: white; box-shadow: 0 3px 0 var(--delete-shadow); font-size: 0.7em; padding: 6px 10px; margin-left: 10px;" onclick="deleteSingleInvoice('${inv.invoiceID}')">
-                                🗑️ Hapus
-                            </button>
+        invoices.forEach(inv => {
+            html += `
+                <div class="profile-card" style="margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                     <div onclick="showSingleInvoice('${inv.invoiceID}')" style="cursor: pointer; flex-grow: 1;">
+                        <p style="font-size: 1.0em; margin-bottom: 5px;"><strong>${inv.invoiceID}</strong> (${inv.method})</p>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9em; opacity: 0.9;">
+                            <span>Tgl: ${inv.date}</span>
+                            <strong>${formatRupiah(inv.total)}</strong>
                         </div>
-                    `;
-                });
-            }
-            listContainer.innerHTML = html;
-        }
+                        <p style="font-size: 0.8em; opacity: 0.7; margin: 5px 0 0;">Alokasi: ${inv.allocation}</p>
+                    </div>
+                    <button class="action-button" style="background-color: var(--delete-button); color: white; box-shadow: 0 3px 0 var(--delete-shadow); font-size: 0.7em; padding: 6px 10px; margin-left: 10px;" onclick="deleteSingleInvoice('${inv.invoiceID}')">
+                        🗑️ Hapus
+                    </button>
+                </div>
+            `;
+        });
+    }
+    listContainer.innerHTML = html;
+}
 
-        function showSingleInvoice(invoiceID) {
-            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
-            const invoice = (latestUser.invoices || []).find(inv => inv.invoiceID === invoiceID);
-            
-            if (!invoice) return;
-            
-            selectedInvoice = invoice;
-            invoiceListWrapper.style.display = 'none';
-            singleInvoiceDisplay.style.display = 'block';
-            
-            document.getElementById('invoiceID').textContent = invoice.invoiceID;
-            document.getElementById('invoiceDate').textContent = invoice.date;
-            document.getElementById('invoiceUserNameBlock').textContent = `${currentUser.name} (${currentUser.block})`;
-            document.getElementById('invoiceMethod').textContent = invoice.method;
-            document.getElementById('invoiceAllocation').textContent = invoice.allocation;
-            document.getElementById('invoiceTotal').textContent = formatRupiah(invoice.total);
-            
-             document.querySelector('#invoicePage .section-title').textContent = '📄 Detail Bukti Pembayaran';
+function showSingleInvoice(invoiceID) {
+    const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+    const invoice = (latestUser.invoices || []).find(inv => inv.invoiceID === invoiceID);
+    
+    if (!invoice) return;
+    
+    selectedInvoice = invoice;
+    invoiceListWrapper.style.display = 'none';
+    singleInvoiceDisplay.style.display = 'block';
+    
+    document.getElementById('invoiceID').textContent = invoice.invoiceID;
+    document.getElementById('invoiceDate').textContent = invoice.date;
+    document.getElementById('invoiceUserNameBlock').textContent = `${currentUser.name} (${currentUser.block})`;
+    document.getElementById('invoiceMethod').textContent = invoice.method;
+    document.getElementById('invoiceAllocation').textContent = invoice.allocation;
+    document.getElementById('invoiceTotal').textContent = formatRupiah(invoice.total);
+    
+     document.querySelector('#invoicePage .section-title').textContent = '📄 Detail Bukti Pembayaran';
+}
+
+function deleteSingleInvoice(invoiceID) {
+    if (confirm(`Apakah Anda yakin ingin menghapus Invoice ID: ${invoiceID}? Tindakan ini tidak akan mengembalikan data pembayaran Anda.`)) {
+        
+        const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
+        if (userIndex === -1) {
+            console.error('User not found for deletion.');
+            return;
         }
         
-        function deleteSingleInvoice(invoiceID) {
-            if (confirm(`Apakah Anda yakin ingin menghapus Invoice ID: ${invoiceID}? Tindakan ini tidak akan mengembalikan data pembayaran Anda.`)) {
-                
-                const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
-                if (userIndex === -1) {
-                    console.error('User not found for deletion.');
-                    return;
-                }
-                
-                const initialCount = allUsersAndWarga[userIndex].invoices.length;
-                allUsersAndWarga[userIndex].invoices = allUsersAndWarga[userIndex].invoices.filter(inv => inv.invoiceID !== invoiceID);
-                
-                if (allUsersAndWarga[userIndex].invoices.length < initialCount) {
-                    currentUser = allUsersAndWarga[userIndex]; 
-                    saveUsersData(allUsersAndWarga); 
-                    
-                    selectedInvoice = null;
-                    renderInvoiceList();
-                    renderMenu(); 
-                    
-                    if (document.getElementById('singleInvoiceDisplay').style.display === 'block') {
-                        document.getElementById('singleInvoiceDisplay').style.display = 'none';
-                        document.getElementById('invoiceListWrapper').style.display = 'block';
-                        document.querySelector('#invoicePage .section-title').textContent = '📄 Daftar Invoice Pembayaran';
-                    }
-                    
-                } else {
-                    console.error('Gagal menghapus invoice.');
-                }
-            }
-        }
-
-
-        function showInvoicePage() {
-            if (!currentUser) {
-                showLoginPage();
-                return;
+        const initialCount = allUsersAndWarga[userIndex].invoices.length;
+        allUsersAndWarga[userIndex].invoices = allUsersAndWarga[userIndex].invoices.filter(inv => inv.invoiceID !== invoiceID);
+        
+        if (allUsersAndWarga[userIndex].invoices.length < initialCount) {
+            currentUser = allUsersAndWarga[userIndex]; 
+            saveUsersData(allUsersAndWarga); 
+            
+            selectedInvoice = null;
+            renderInvoiceList();
+            renderMenu(); 
+            
+            if (document.getElementById('singleInvoiceDisplay').style.display === 'block') {
+                document.getElementById('singleInvoiceDisplay').style.display = 'none';
+                document.getElementById('invoiceListWrapper').style.display = 'block';
+                document.querySelector('#invoicePage .section-title').textContent = '📄 Daftar Invoice Pembayaran';
             }
             
-            transitionToPage(invoicePage, 9);
-             document.querySelector('#invoicePage .section-title').textContent = '📄 Daftar Invoice Pembayaran';
-
-            setTimeout(renderInvoiceList, 400);
+        } else {
+            console.error('Gagal menghapus invoice.');
         }
+    }
+}
 
-        function hideInvoicePage() {
-            invoicePage.style.opacity = 0;
-             setTimeout(() => {
-                invoicePage.style.display = 'none';
-                fabBackInvoiceButton.style.display = 'none';
-                dashboard.style.display = 'block';
-                setTimeout(() => { dashboard.style.opacity = 1; }, 50);
-                currentStep = 0;
-                renderMenu(); 
-            }, 400);
-        }
 
-        // --- FUNGSI HALAMAN LAPORAN BARU ---
-        function showReportPage() {
-            if (!currentUser) {
-                showLoginPage();
-                return;
-            }
-            
-            transitionToPage(reportPage, 10);
-        }
+function showInvoicePage() {
+    if (!currentUser) {
+        showLoginPage();
+        return;
+    }
+    
+    transitionToPage(invoicePage, 9);
+     document.querySelector('#invoicePage .section-title').textContent = '📄 Daftar Invoice Pembayaran';
 
-        function hideReportPage() {
-            reportPage.style.opacity = 0;
-             setTimeout(() => {
-                reportPage.style.display = 'none';
-                fabBackReportButton.style.display = 'none';
-                dashboard.style.display = 'block';
-                setTimeout(() => { dashboard.style.opacity = 1; }, 50);
-                currentStep = 0;
-                renderMenu(); 
-            }, 400);
-        }
+    setTimeout(renderInvoiceList, 400);
+}
 
-        // ======================================================
-        // 4. FUNGSI ADMIN KONTROL (WARGA & INVOICE)
-        // ======================================================
+function hideInvoicePage() {
+    invoicePage.style.opacity = 0;
+     setTimeout(() => {
+        invoicePage.style.display = 'none';
+        fabBackInvoiceButton.style.display = 'none';
+        dashboard.style.display = 'block';
+        setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+        currentStep = 0;
+        renderMenu(); 
+    }, 400);
+}
 
-        function showAdminPage() {
-             if (!currentUser || !currentUser.isAdmin) {
-                alert('Akses Ditolak: Anda bukan administrator.');
-                showLoginPage();
-                return;
-            }
-            transitionToPage(adminPage, 11);
-            // Pastikan data terbaru diambil sebelum merender
-            allUsersAndWarga = getSavedUsersData(); 
-            renderAdminWargaTable();
-        }
+// --- FUNGSI HALAMAN LAPORAN BARU ---
+// Fungsi showReportPage sudah didefinisikan di atas (setelah updateUserData)
+function hideReportPage() {
+    reportPage.style.opacity = 0;
+     setTimeout(() => {
+        reportPage.style.display = 'none';
+        fabBackReportButton.style.display = 'none';
+        dashboard.style.display = 'block';
+        setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+        currentStep = 0;
+        renderMenu(); 
+    }, 400);
+}
 
-        function hideAdminPage() {
-            modalEditUser.style.opacity = 0; 
-            modalAdminInvoice.style.opacity = 0; 
-            setTimeout(() => {
-                modalEditUser.style.display = 'none';
-                modalAdminInvoice.style.display = 'none';
-                adminPage.style.display = 'none';
-                fabBackAdminButton.style.display = 'none';
-                dashboard.style.display = 'block';
-                setTimeout(() => { dashboard.style.opacity = 1; }, 50);
-                currentStep = 0;
-                renderMenu(); 
-            }, 400);
-        }
+// ======================================================
+// 4. FUNGSI ADMIN KONTROL (WARGA & INVOICE)
+// ======================================================
+
+function showAdminPage() {
+     if (!currentUser || !currentUser.isAdmin) {
+        alert('Akses Ditolak: Anda bukan administrator.');
+        showLoginPage();
+        return;
+    }
+    transitionToPage(adminPage, 11);
+    // Pastikan data terbaru diambil sebelum merender
+    allUsersAndWarga = getSavedUsersData(); 
+    renderAdminWargaTable();
+}
+
+function hideAdminPage() {
+    modalEditUser.style.opacity = 0; 
+    modalAdminInvoice.style.opacity = 0; 
+    modalEditReport.style.opacity = 0; // Tambahkan modalEditReport
+    setTimeout(() => {
+        modalEditUser.style.display = 'none';
+        modalAdminInvoice.style.display = 'none';
+        modalEditReport.style.display = 'none';
+        adminPage.style.display = 'none';
+        fabBackAdminButton.style.display = 'none';
+        dashboard.style.display = 'block';
+        setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+        currentStep = 0;
+        renderMenu(); 
+    }, 400);
+}
 // --- FUNGSI MODAL LAPORAN ADMIN ---
 
 function showEditReportModal() {
@@ -3111,533 +3193,354 @@ function saveEditedReport() {
         renderReportContent();
     }
 }
-        function renderAdminWargaTable() {
-            let html = '';
-            // Hapus tombol sebelumnya jika ada
-            let existingButton = document.querySelector('#adminTableWrapper .admin-invoice-button');
-            if (existingButton) existingButton.remove();
+function renderAdminWargaTable() {
+    let html = '';
+    // Hapus tombol sebelumnya jika ada
+    let existingButton = document.querySelector('#adminTableWrapper .admin-invoice-button');
+    if (existingButton) existingButton.remove();
 
-            // Tampilkan semua data warga, kecuali Admin itu sendiri (id 0)
-            const adminViewData = allUsersAndWarga.filter(u => u.id !== 0).sort((a, b) => a.id - b.id);
+    // Tampilkan semua data warga, kecuali Admin itu sendiri (id 0)
+    const adminViewData = allUsersAndWarga.filter(u => u.id !== 0).sort((a, b) => a.id - b.id);
 
-            adminViewData.forEach(warga => {
-                const totalTunggakan = warga.arrears2025 + Math.max(0, TOTAL_MONTHS_YEAR - warga.paid2026);
-                const statusPembayaran = totalTunggakan > 0 ? `<span class="status-warning">${totalTunggakan} bln</span>` : `<span class="status-ok">LUNAS</span>`;
-                
-                html += `
-                    <tr>
-                        <td>${warga.id}</td>
-                        <td class="name-col">${warga.name}</td>
-                        <td>${warga.block}</td>
-                        <td>${statusPembayaran}</td>
-                        <td>
-                            <button class="action-button" onclick="showEditUserModal(${warga.id})" style="background-color: var(--neon-color-header); margin-right: 5px; font-size: 0.8em;">
-                                Edit Data
-                            </button>
-                            <button class="action-button" onclick="deleteWargaData(${warga.id})" style="background-color: var(--delete-button); font-size: 0.8em;">
-                                Hapus
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            adminWargaTableBody.innerHTML = html;
-            
-            // Tambahkan tombol untuk mengelola Invoice
-            const invoiceControlHtml = `
-                <div class="admin-invoice-button" style="text-align: right; margin-bottom: 15px;">
-                    <button class="action-button" onclick="showAdminInvoiceModal()" style="background-color: var(--neon-color-header); color: white; box-shadow: 0 3px 0 var(--neon-shadow); font-size: 0.9em; padding: 10px 15px;">
-                        📄 Kelola Semua Invoice Warga
+    adminViewData.forEach(warga => {
+        const totalTunggakan = warga.arrears2025 + Math.max(0, TOTAL_MONTHS_YEAR - warga.paid2026);
+        const statusPembayaran = totalTunggakan > 0 ? `<span class="status-warning">${totalTunggakan} bln</span>` : `<span class="status-ok">LUNAS</span>`;
+        
+        html += `
+            <tr>
+                <td>${warga.id}</td>
+                <td class="name-col">${warga.name}</td>
+                <td>${warga.block}</td>
+                <td>${statusPembayaran}</td>
+                <td>
+                    <button class="action-button" onclick="showEditUserModal(${warga.id})" style="background-color: var(--neon-color-header); margin-right: 5px; font-size: 0.8em;">
+                        Edit Data
                     </button>
-                </div>
-            `;
-            if (adminTableWrapper) {
-                 adminTableWrapper.insertAdjacentHTML('afterbegin', invoiceControlHtml);
-            }
-        }
+                    <button class="action-button" onclick="deleteWargaData(${warga.id})" style="background-color: var(--delete-button); font-size: 0.8em;">
+                        Hapus
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+    adminWargaTableBody.innerHTML = html;
+    
+    // Tambahkan tombol untuk mengelola Invoice
+    const invoiceControlHtml = `
+        <div class="admin-invoice-button" style="text-align: right; margin-bottom: 15px;">
+            <button class="action-button" onclick="showAdminInvoiceModal()" style="background-color: var(--neon-color-header); color: white; box-shadow: 0 3px 0 var(--neon-shadow); font-size: 0.9em; padding: 10px 15px;">
+                📄 Kelola Semua Invoice Warga
+            </button>
+        </div>
+    `;
+    if (adminTableWrapper) {
+         adminTableWrapper.insertAdjacentHTML('afterbegin', invoiceControlHtml);
+    }
+}
 
-        // --- FUNGSI MODAL EDIT WARGA ---
+// --- FUNGSI MODAL EDIT WARGA ---
 
-        function showEditUserModal(userId) {
-            const userToEdit = allUsersAndWarga.find(u => u.id === userId);
-            if (!userToEdit) {
-                alert('User tidak ditemukan.');
-                return;
-            }
+function showEditUserModal(userId) {
+    const userToEdit = allUsersAndWarga.find(u => u.id === userId);
+    if (!userToEdit) {
+        alert('User tidak ditemukan.');
+        return;
+    }
 
-            // Isi form modal
-            document.getElementById('editUserId').value = userToEdit.id;
-            document.getElementById('editUserName').value = userToEdit.name;
-            document.getElementById('editUserBlock').value = userToEdit.block;
-            document.getElementById('editUserRate').value = userToEdit.rate;
-            // Data Dinamis yang bisa diubah
-            document.getElementById('editArrears2025').value = userToEdit.arrears2025;
-            document.getElementById('editPaid2026').value = userToEdit.paid2026;
+    // Isi form modal
+    document.getElementById('editUserId').value = userToEdit.id;
+    document.getElementById('editUserName').value = userToEdit.name;
+    document.getElementById('editUserBlock').value = userToEdit.block;
+    document.getElementById('editUserRate').value = userToEdit.rate;
+    // Data Dinamis yang bisa diubah
+    document.getElementById('editArrears2025').value = userToEdit.arrears2025;
+    document.getElementById('editPaid2026').value = userToEdit.paid2026;
+    // Data Login
+    document.getElementById('editUserUsername').value = userToEdit.username;
+    document.getElementById('editUserPassword').value = userToEdit.password;
+    
+    document.getElementById('modalEditUserTitle').textContent = `Edit Data Warga: ${userToEdit.name}`;
+
+    modalEditUser.style.display = 'flex';
+    setTimeout(() => { modalEditUser.style.opacity = 1; }, 50);
+}
+
+function hideEditUserModal() {
+    modalEditUser.style.opacity = 0;
+    setTimeout(() => { modalEditUser.style.display = 'none'; }, 300);
+}
+
+function saveEditedUser() {
+    const id = parseInt(document.getElementById('editUserId').value);
+    const name = document.getElementById('editUserName').value.trim();
+    const block = document.getElementById('editUserBlock').value.trim();
+    const rate = parseInt(document.getElementById('editUserRate').value);
+    const arrears2025 = parseInt(document.getElementById('editArrears2025').value);
+    const paid2026 = parseInt(document.getElementById('editPaid2026').value);
+    const username = document.getElementById('editUserUsername').value.trim().toLowerCase();
+    const password = document.getElementById('editUserPassword').value.trim();
+    
+    if (arrears2025 < 0 || paid2026 < 0 || paid2026 > TOTAL_MONTHS_YEAR) {
+         alert("Input Tunggakan/Lunas tidak valid.");
+         return;
+    }
+
+
+    const userIndex = allUsersAndWarga.findIndex(u => u.id === id);
+
+    if (userIndex !== -1) {
+        allUsersAndWarga[userIndex] = {
+            ...allUsersAndWarga[userIndex],
+            name: name,
+            block: block,
+            rate: rate,
+            // Data Dinamis
+            arrears2025: arrears2025,
+            paid2026: Math.min(TOTAL_MONTHS_YEAR, paid2026), 
             // Data Login
-            document.getElementById('editUserUsername').value = userToEdit.username;
-            document.getElementById('editUserPassword').value = userToEdit.password;
-            
-            document.getElementById('modalEditUserTitle').textContent = `Edit Data Warga: ${userToEdit.name}`;
-
-            modalEditUser.style.display = 'flex';
-            setTimeout(() => { modalEditUser.style.opacity = 1; }, 50);
-        }
-
-        function hideEditUserModal() {
-            modalEditUser.style.opacity = 0;
-            setTimeout(() => { modalEditUser.style.display = 'none'; }, 300);
-        }
-
-        function saveEditedUser() {
-            const id = parseInt(document.getElementById('editUserId').value);
-            const name = document.getElementById('editUserName').value.trim();
-            const block = document.getElementById('editUserBlock').value.trim();
-            const rate = parseInt(document.getElementById('editUserRate').value);
-            const arrears2025 = parseInt(document.getElementById('editArrears2025').value);
-            const paid2026 = parseInt(document.getElementById('editPaid2026').value);
-            const username = document.getElementById('editUserUsername').value.trim().toLowerCase();
-            const password = document.getElementById('editUserPassword').value.trim();
-            
-            if (arrears2025 < 0 || paid2026 < 0 || paid2026 > TOTAL_MONTHS_YEAR) {
-                 alert("Input Tunggakan/Lunas tidak valid.");
-                 return;
-            }
-
-
-            const userIndex = allUsersAndWarga.findIndex(u => u.id === id);
-
-            if (userIndex !== -1) {
-                allUsersAndWarga[userIndex] = {
-                    ...allUsersAndWarga[userIndex],
-                    name: name,
-                    block: block,
-                    rate: rate,
-                    // Data Dinamis
-                    arrears2025: arrears2025,
-                    paid2026: Math.min(TOTAL_MONTHS_YEAR, paid2026), 
-                    // Data Login
-                    username: username,
-                    password: password,
-                };
-                
-                // Sinkronisasi data ke user yang sedang login jika datanya sendiri diubah
-                if (currentUser && currentUser.id === id) {
-                    currentUser = allUsersAndWarga[userIndex];
-                }
-                
-                saveUsersData(allUsersAndWarga); 
-                
-                alert(`Data ${name} (ID: ${id}) berhasil diperbarui.`);
-                hideEditUserModal();
-                
-                // Update tampilan terkait
-                renderAdminWargaTable(); 
-                
-                if (currentStep === 7 && currentUser && currentUser.id === id) { 
-                    renderPaymentHistory();
-                }
-                if (currentStep === 6) { 
-                    allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
-                    renderWargaTable();
-                }
-
-            } else {
-                alert('Gagal menyimpan: User tidak ditemukan.');
-            }
+            username: username,
+            password: password,
+        };
+        
+        // Sinkronisasi data ke user yang sedang login jika datanya sendiri diubah
+        if (currentUser && currentUser.id === id) {
+            currentUser = allUsersAndWarga[userIndex];
         }
         
-        function addNewWargaFromAdmin() {
-            const name = prompt("Masukkan Nama Lengkap:");
-            if (!name) return;
-            const block = prompt("Masukkan Blok/Nomor (Contoh: E21-25):");
-            if (!block) return;
-            const rate = prompt("Masukkan Iuran Bulanan (Contoh: 25000):");
-            if (!rate || isNaN(parseInt(rate))) return alert('Rate harus angka.');
-            const username = prompt("Masukkan Username Login:");
-            if (!username) return;
-            const password = prompt("Masukkan Password Login:");
-            if (!password) return;
-
-            const newWarga = addNewWarga(name, block, parseInt(rate), username, password);
-            if (newWarga) {
-                renderAdminWargaTable();
-            }
+        saveUsersData(allUsersAndWarga); 
+        
+        alert(`Data ${name} (ID: ${id}) berhasil diperbarui.`);
+        hideEditUserModal();
+        
+        // Update tampilan terkait
+        renderAdminWargaTable(); 
+        
+        if (currentStep === 7 && currentUser && currentUser.id === id) { 
+            renderPaymentHistory();
+        }
+        if (currentStep === 6) { 
+            allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+            renderWargaTable();
         }
 
-        // ======================================================
-        // 4.2 FUNGSI ADMIN: KONTROL INVOICE
-        // ======================================================
+    } else {
+        alert('Gagal menyimpan: User tidak ditemukan.');
+    }
+}
 
-        function showAdminInvoiceModal() {
-            modalAdminInvoice.style.display = 'flex';
-            setTimeout(() => { modalAdminInvoice.style.opacity = 1; }, 50);
-            renderAdminInvoiceList();
-        }
+function addNewWargaFromAdmin() {
+    const name = prompt("Masukkan Nama Lengkap:");
+    if (!name) return;
+    const block = prompt("Masukkan Blok/Nomor (Contoh: E21-25):");
+    if (!block) return;
+    const rate = prompt("Masukkan Iuran Bulanan (Contoh: 25000):");
+    if (!rate || isNaN(parseInt(rate))) return alert('Rate harus angka.');
+    const username = prompt("Masukkan Username Login:");
+    if (!username) return;
+    const password = prompt("Masukkan Password Login:");
+    if (!password) return;
 
-        function hideAdminInvoiceModal() {
-            modalAdminInvoice.style.opacity = 0;
-            setTimeout(() => { modalAdminInvoice.style.display = 'none'; }, 300);
-        }
+    const newWarga = addNewWarga(name, block, parseInt(rate), username, password);
+    if (newWarga) {
+        renderAdminWargaTable();
+    }
+}
 
-        function renderAdminInvoiceList() {
-            let html = '';
-            
-            // Gabungkan semua invoice dari semua warga (kecuali Admin RT sendiri)
-            const allInvoices = allUsersAndWarga
-                .filter(u => u.id !== 0) 
-                .flatMap(user => 
-                    (user.invoices || []).map(inv => ({
-                        ...inv,
-                        userId: user.id,
-                        userName: user.name,
-                        userBlock: user.block
-                    }))
-                );
-            
-            allInvoices.sort((a, b) => b.id - a.id); // Urutkan terbaru dulu
+// ======================================================
+// 4.2 FUNGSI ADMIN: KONTROL INVOICE
+// ======================================================
 
-            allInvoices.slice(0, 50).forEach(inv => { // Batasi 50 invoice terakhir
-                html += `
-                    <tr>
-                        <td>${inv.invoiceID}</td>
-                        <td>${inv.userName} (${inv.userBlock})</td>
-                        <td>${inv.date}</td>
-                        <td>${formatRupiah(inv.total)}</td>
-                        <td>
-                            <button class="action-button" onclick="alert('Simulasi Edit: ID ${inv.invoiceID}\\nSilakan hapus invoice ini dan gunakan "Edit Data" warga untuk mengubah status tunggakan/lunas.')" style="background-color: #3498db; margin-right: 5px; font-size: 0.8em;">
-                                Edit
-                            </button>
-                            <button class="action-button" onclick="deleteAdminInvoice('${inv.invoiceID}', ${inv.userId})" style="background-color: var(--delete-button); font-size: 0.8em;">
-                                Hapus
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
+function showAdminInvoiceModal() {
+    modalAdminInvoice.style.display = 'flex';
+    setTimeout(() => { modalAdminInvoice.style.opacity = 1; }, 50);
+    renderAdminInvoiceList();
+}
 
-            adminInvoiceListBody.innerHTML = html;
-            
-            if (allInvoices.length === 0) {
-                 adminInvoiceListBody.innerHTML = `<tr><td colspan="5" style="text-align: center; opacity: 0.6;">Tidak ada invoice yang tercatat.</td></tr>`;
-            }
-        }
+function hideAdminInvoiceModal() {
+    modalAdminInvoice.style.opacity = 0;
+    setTimeout(() => { modalAdminInvoice.style.display = 'none'; }, 300);
+}
 
-        function deleteAdminInvoice(invoiceID, userId) {
-            if (!confirm(`Yakin hapus Invoice ${invoiceID} milik ID ${userId}?\\n(Tindakan ini TIDAK mengembalikan status tunggakan warga. Status tunggakan harus diubah manual melalui "Edit Data" warga tersebut.)`)) return;
+function renderAdminInvoiceList() {
+    let html = '';
+    
+    // Gabungkan semua invoice dari semua warga (kecuali Admin RT sendiri)
+    const allInvoices = allUsersAndWarga
+        .filter(u => u.id !== 0) 
+        .flatMap(user => 
+            (user.invoices || []).map(inv => ({
+                ...inv,
+                userId: user.id,
+                userName: user.name,
+                userBlock: user.block
+            }))
+        );
+    
+    allInvoices.sort((a, b) => b.id - a.id); // Urutkan terbaru dulu
 
-            const userIndex = allUsersAndWarga.findIndex(u => u.id === userId);
-            if (userIndex === -1) {
-                alert('User tidak ditemukan.');
-                return;
-            }
+    allInvoices.slice(0, 50).forEach(inv => { // Batasi 50 invoice terakhir
+        html += `
+            <tr>
+                <td>${inv.invoiceID}</td>
+                <td>${inv.userName} (${inv.userBlock})</td>
+                <td>${inv.date}</td>
+                <td>${formatRupiah(inv.total)}</td>
+                <td>
+                    <button class="action-button" onclick="alert('Simulasi Edit: ID ${inv.invoiceID}\\nSilakan hapus invoice ini dan gunakan "Edit Data" warga untuk mengubah status tunggakan/lunas.')" style="background-color: #3498db; margin-right: 5px; font-size: 0.8em;">
+                        Edit
+                    </button>
+                    <button class="action-button" onclick="deleteAdminInvoice('${inv.invoiceID}', ${inv.userId})" style="background-color: var(--delete-button); font-size: 0.8em;">
+                        Hapus
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
 
-            const initialCount = allUsersAndWarga[userIndex].invoices.length;
-            allUsersAndWarga[userIndex].invoices = allUsersAndWarga[userIndex].invoices.filter(inv => inv.invoiceID !== invoiceID);
-            
-            if (allUsersAndWarga[userIndex].invoices.length < initialCount) {
-                saveUsersData(allUsersAndWarga);
-                
-                // Perbarui data currentUser jika dia yang sedang login
-                if (currentUser && currentUser.id === userId) {
-                     currentUser = allUsersAndWarga[userIndex]; 
-                     renderMenu(); // Update badge invoice
-                     if (currentStep === 9) renderInvoiceList(); 
-                }
-                
-                renderAdminInvoiceList();
-                alert(`Invoice ${invoiceID} berhasil dihapus.`);
-                
-            } else {
-                alert('Gagal menghapus invoice.');
-            }
-        }
+    adminInvoiceListBody.innerHTML = html;
+    
+    if (allInvoices.length === 0) {
+         adminInvoiceListBody.innerHTML = `<tr><td colspan="5" style="text-align: center; opacity: 0.6;">Tidak ada invoice yang tercatat.</td></tr>`;
+    }
+}
 
-        function addAdminInvoiceManual(invoiceID, userId, total, method, allocation) {
-            if (!invoiceID || !userId || !total || !method || !allocation) {
-                alert("Semua field (ID, ID Warga, Total, Metode, Alokasi) harus diisi.");
-                return;
-            }
-            
-            const userIndex = allUsersAndWarga.findIndex(u => u.id === parseInt(userId));
-            if (userIndex === -1) {
-                alert('User ID tidak ditemukan.');
-                return;
-            }
-            
-            const totalAmount = parseInt(total);
+function deleteAdminInvoice(invoiceID, userId) {
+    if (!confirm(`Yakin hapus Invoice ${invoiceID} milik ID ${userId}?\\n(Tindakan ini TIDAK mengembalikan status tunggakan warga. Status tunggakan harus diubah manual melalui "Edit Data" warga tersebut.)`)) return;
 
-            const newInvoice = {
-                id: Date.now(),
-                invoiceID: invoiceID,
-                date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
-                total: totalAmount,
-                method: method,
-                allocation: allocation
-            };
+    const userIndex = allUsersAndWarga.findIndex(u => u.id === userId);
+    if (userIndex === -1) {
+        alert('User tidak ditemukan.');
+        return;
+    }
 
-            if (!allUsersAndWarga[userIndex].invoices) allUsersAndWarga[userIndex].invoices = [];
-            allUsersAndWarga[userIndex].invoices.push(newInvoice);
-            
-            saveUsersData(allUsersAndWarga); 
-            
-            // Bersihkan form setelah sukses
-            document.getElementById('addInvoiceForm').reset();
-            
-            renderAdminInvoiceList();
-            alert(`Invoice ${invoiceID} berhasil ditambahkan ke ${allUsersAndWarga[userIndex].name}.\\n\\nCatatan: Status Tunggakan/Lunas warga tersebut perlu diperbarui secara manual melalui menu "Edit Data" di halaman Admin.`);
-        }
-
-        // ======================================================
-        // 5. FUNGSI PEMBAYARAN
-        // ======================================================
-
-        function showPaymentPage(step = 1) {
-            if (!currentUser) {
-                showLoginPage();
-                return;
-            }
-            
-            const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
-            if(latestUser) currentUser = latestUser;
-
-
-            transitionToPage(paymentPage, step);
-            
-            paymentStep1.style.display = 'none';
-            paymentStep2.style.display = 'none';
-            paymentStep3.style.display = 'none';
-            paymentStep4.style.display = 'none'; 
-            paymentStep5.style.display = 'none'; 
-            
-            fabBackButton.style.display = (step > 0 && step <= 5) ? 'block' : 'none'; 
-
-            setTimeout(() => {
-                if (step === 1) {
-                    if (paymentStep1.style.display !== 'block') {
-                        paymentUserName.textContent = currentUser.name;
-                        paymentUserBlock.textContent = currentUser.block;
-                        paymentUserRate.textContent = formatRupiah(currentUser.rate);
-                        
-                        const arrearsMonths2025 = currentUser.arrears2025;
-                        const totalArrearsRupiah = arrearsMonths2025 * currentUser.rate;
-                        
-                        let tunggakanMessage = '';
-                        const unpaid2026Months = TOTAL_MONTHS_YEAR - currentUser.paid2026;
-                        
-                        if (arrearsMonths2025 > 0) {
-                            tunggakanInfo.classList.add('tunggakan-warning-style');
-                            tunggakanInfo.classList.remove('tunggakan-lunas-style');
-                            tunggakanMessage = `⚠️ PERHATIAN: Anda memiliki ${arrearsMonths2025} bulan tunggakan ${CURRENT_YEAR} (${formatRupiah(totalArrearsRupiah)}). Pembayaran akan dialokasikan untuk melunasi tunggakan tahun ${CURRENT_YEAR} terlebih dahulu.`;
-                        } else {
-                            if (unpaid2026Months > 0) {
-                                tunggakanInfo.classList.add('tunggakan-lunas-style');
-                                tunggakanInfo.classList.remove('tunggakan-warning-style');
-                                tunggakanMessage = `✅ LUNAS ${CURRENT_YEAR}: Anda lunas hingga Desember ${CURRENT_YEAR}. Pembayaran berikutnya dialokasikan untuk iuran mulai ${MONTHS[currentUser.paid2026 % 12]} ${NEXT_YEAR}.`;
-                            } else {
-                                tunggakanInfo.classList.add('tunggakan-lunas-style');
-                                tunggakanInfo.classList.remove('tunggakan-warning-style');
-                                tunggakanMessage = `🎉 LUNAS TOTAL: Anda lunas hingga akhir tahun ${NEXT_YEAR}. mantap. Terima kasih!`;
-                            }
-                        }
-                        tunggakanInfo.innerHTML = tunggakanMessage;
-
-                        const minPayment = currentUser.rate; 
-                        nominalInput.value = nominalInput.value || minPayment; 
-                        minPaymentText.textContent = formatRupiah(minPayment);
-                        calculatePayment();
-                    }
-                    
-                    paymentStep1.style.display = 'block';
-
-                } else if (step === 2) {
-                    if (continueButton.disabled && finalPaymentSummary.total === 0) {
-                        showPaymentPage(1);
-                        return;
-                    }
-                    
-                    paymentStep2.style.display = 'block';
-                    
-                    finalTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
-                    
-                    let summaryText = '';
-                    if (finalPaymentSummary.paidArrears > 0) {
-                        summaryText += `Pelunasan Tunggakan ${CURRENT_YEAR} (${finalPaymentSummary.paidMonths2025} bln)`;
-                    }
-                    if (finalPaymentSummary.paidMonths2026 > 0) {
-                         if (summaryText) summaryText += ' + ';
-                         summaryText += `Iuran ${NEXT_YEAR} (${finalPaymentSummary.paidMonths2026} bln)`;
-                    }
-                    finalPaidSummary.textContent = summaryText || 'Tidak ada alokasi pembayaran.';
-                    
-                    document.querySelectorAll('.method-item').forEach(el => el.classList.remove('selected'));
-
-                } else if (step === 3) { // QRIS
-                    paymentStep3.style.display = 'block';
-                    qrUserName.textContent = currentUser.name;
-                    qrUserBlock.textContent = currentUser.block;
-                    qrTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
-                    qrPaidSummary.textContent = getSummaryText();
-                    
-                } else if (step === 4) { // Transfer Bank
-                    paymentStep4.style.display = 'block';
-                    transferUserName.textContent = currentUser.name;
-                    transferUserBlock.textContent = currentUser.block;
-                    transferTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
-                    transferPaidSummary.textContent = getSummaryText();
-                } else if (step === 5) { // Tunai/E-Wallet (Baru)
-                    
-                    if (finalPaymentSummary.total === 0) {
-                        showPaymentPage(1);
-                        return;
-                    }
-                    
-                    paymentStep5.style.display = 'block';
-                    
-                    const method = selectedMethod === 'cash' ? 'Tunai' : 'E-Wallet (DANA)';
-                    
-                    paymentTypeHeader.textContent = method;
-                    otherUserName.textContent = currentUser.name;
-                    otherUserBlock.textContent = currentUser.block;
-                    otherTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
-                    otherPaidSummary.textContent = getSummaryText();
-                    
-                    if (selectedMethod === 'cash') {
-                         otherInstructionText.innerHTML = `Mohon hubungi Bendahara atau datang secara langsung ke blok E25-09 untuk penyerahan dana sebesar ${formatRupiah(finalPaymentSummary.total)}.`;
-                         danaDetails.style.display = 'none';
-                    } else if (selectedMethod === 'ewallet') {
-                         otherInstructionText.innerHTML = `Silakan transfer sejumlah ${formatRupiah(finalPaymentSummary.total)} ke nomor E-Wallet (DANA) di bawah ini.`;
-                         danaDetails.style.display = 'block';
-                    }
-                }
-            }, 400); 
-        }
-
-        function hidePaymentPage() {
-            paymentPage.style.opacity = 0;
-            setTimeout(() => {
-                paymentPage.style.display = 'none';
-                fabBackButton.style.display = 'none'; 
-                dashboard.style.display = 'block';
-                setTimeout(() => { dashboard.style.opacity = 1; }, 50);
-                currentStep = 0;
-                renderMenu(); 
-            }, 400);
+    const initialCount = allUsersAndWarga[userIndex].invoices.length;
+    allUsersAndWarga[userIndex].invoices = allUsersAndWarga[userIndex].invoices.filter(inv => inv.invoiceID !== invoiceID);
+    
+    if (allUsersAndWarga[userIndex].invoices.length < initialCount) {
+        saveUsersData(allUsersAndWarga);
+        
+        // Perbarui data currentUser jika dia yang sedang login
+        if (currentUser && currentUser.id === userId) {
+             currentUser = allUsersAndWarga[userIndex]; 
+             renderMenu(); // Update badge invoice
+             if (currentStep === 9) renderInvoiceList(); 
         }
         
-        function showPaymentFlow(method) {
-             selectedMethod = method;
-             document.querySelectorAll('.method-item').forEach(el => el.classList.remove('selected'));
-             document.querySelector(`.method-item[data-method="${method}"]`).classList.add('selected');
+        renderAdminInvoiceList();
+        alert(`Invoice ${invoiceID} berhasil dihapus.`);
+        
+    } else {
+        alert('Gagal menghapus invoice.');
+    }
+}
 
-             if (method === 'qris') {
-                 showPaymentPage(3);
-             } else if (method === 'transfer') {
-                 showPaymentPage(4);
-             } else if (method === 'cash' || method === 'ewallet') {
-                 showPaymentPage(5);
-             }
-         }
+function addAdminInvoiceManual(invoiceID, userId, total, method, allocation) {
+    if (!invoiceID || !userId || !total || !method || !allocation) {
+        alert("Semua field (ID, ID Warga, Total, Metode, Alokasi) harus diisi.");
+        return;
+    }
+    
+    const userIndex = allUsersAndWarga.findIndex(u => u.id === parseInt(userId));
+    if (userIndex === -1) {
+        alert('User ID tidak ditemukan.');
+        return;
+    }
+    
+    const totalAmount = parseInt(total);
+
+    const newInvoice = {
+        id: Date.now(),
+        invoiceID: invoiceID,
+        date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+        total: totalAmount,
+        method: method,
+        allocation: allocation
+    };
+
+    if (!allUsersAndWarga[userIndex].invoices) allUsersAndWarga[userIndex].invoices = [];
+    allUsersAndWarga[userIndex].invoices.push(newInvoice);
+    
+    saveUsersData(allUsersAndWarga); 
+    
+    // Bersihkan form setelah sukses
+    document.getElementById('addInvoiceForm').reset();
+    
+    renderAdminInvoiceList();
+    alert(`Invoice ${invoiceID} berhasil ditambahkan ke ${allUsersAndWarga[userIndex].name}.\\n\\nCatatan: Status Tunggakan/Lunas warga tersebut perlu diperbarui secara manual melalui menu "Edit Data" di halaman Admin.`);
+}
+
+// ======================================================
+// 5. FUNGSI PEMBAYARAN
+// ======================================================
+
+function showPaymentPage(step = 1) {
+    if (!currentUser) {
+        showLoginPage();
+        return;
+    }
+    
+    const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
+    if(latestUser) currentUser = latestUser;
 
 
-        function calculatePayment() {
-            let inputAmount = parseInt(nominalInput.value) || 0;
-            const rate = currentUser.rate;
-            let totalArrears2025 = currentUser.arrears2025 * rate; 
-            
-            let paidArrears2025 = 0;
-            let paidMonths2025Count = 0;
-            let amountForIuran2026 = 0;
-            let paidMonths2026Count = 0;
-            let totalBilled = 0;
-            let periodText = ' - ';
-            
-            let currentRemainingInput = inputAmount;
+    transitionToPage(paymentPage, step);
+    
+    paymentStep1.style.display = 'none';
+    paymentStep2.style.display = 'none';
+    paymentStep3.style.display = 'none';
+    paymentStep4.style.display = 'none'; 
+    paymentStep5.style.display = 'none'; 
+    
+    fabBackButton.style.display = (step > 0 && step <= 5) ? 'block' : 'none'; 
 
-            // 1. Prioritaskan Tunggakan 2025
-            if (totalArrears2025 > 0) {
-                if (currentRemainingInput >= totalArrears2025) {
-                    paidArrears2025 = totalArrears2025;
-                    currentRemainingInput -= totalArrears2025;
-                    paidMonths2025Count = currentUser.arrears2025;
+    setTimeout(() => {
+        if (step === 1) {
+            if (paymentStep1.style.display !== 'block') {
+                paymentUserName.textContent = currentUser.name;
+                paymentUserBlock.textContent = currentUser.block;
+                paymentUserRate.textContent = formatRupiah(currentUser.rate);
+                
+                const arrearsMonths2025 = currentUser.arrears2025;
+                const totalArrearsRupiah = arrearsMonths2025 * currentUser.rate;
+                
+                let tunggakanMessage = '';
+                const unpaid2026Months = TOTAL_MONTHS_YEAR - currentUser.paid2026;
+                
+                if (arrearsMonths2025 > 0) {
+                    tunggakanInfo.classList.add('tunggakan-warning-style');
+                    tunggakanInfo.classList.remove('tunggakan-lunas-style');
+                    tunggakanMessage = `⚠️ PERHATIAN: Anda memiliki ${arrearsMonths2025} bulan tunggakan ${CURRENT_YEAR} (${formatRupiah(totalArrearsRupiah)}). Pembayaran akan dialokasikan untuk melunasi tunggakan tahun ${CURRENT_YEAR} terlebih dahulu.`;
                 } else {
-                    paidArrears2025 = currentRemainingInput - (currentRemainingInput % rate);
-                    paidMonths2025Count = Math.floor(paidArrears2025 / rate);
-                    currentRemainingInput = currentRemainingInput % rate; 
-                }
-            }
-            
-            totalBilled += paidArrears2025;
-
-            // 2. Hitung Iuran Bulanan 2026
-            amountForIuran2026 = currentRemainingInput;
-            if (amountForIuran2026 > 0) {
-                const remainingMonths2026 = TOTAL_MONTHS_YEAR - currentUser.paid2026;
-                
-                let monthsToPay2026 = Math.floor(amountForIuran2026 / rate);
-                
-                paidMonths2026Count = Math.min(monthsToPay2026, remainingMonths2026);
-                
-                const iuran2026Calculated = paidMonths2026Count * rate;
-                totalBilled += iuran2026Calculated;
-                
-                if (paidMonths2026Count > 0) {
-                    const totalPaidMonthsBefore = currentUser.paid2026;
-                    
-                    const startMonthIndex = totalPaidMonthsBefore % 12; 
-                    const startYearOffset = Math.floor(totalPaidMonthsBefore / 12);
-                    const startYear = NEXT_YEAR + startYearOffset;
-                    const startMonth = MONTHS[startMonthIndex];
-
-                    const totalPaidMonthsAfter = totalPaidMonthsBefore + paidMonths2026Count;
-
-                    const endMonthIndex = (totalPaidMonthsAfter - 1) % 12;
-                    const endYearOffset = Math.floor((totalPaidMonthsAfter - 1) / 12);
-                    const endYear = NEXT_YEAR + endYearOffset;
-                    const endMonth = MONTHS[endMonthIndex];
-                    
-                    if (paidMonths2026Count === 1) {
-                        periodText = `${startMonth} ${startYear}`;
+                    if (unpaid2026Months > 0) {
+                        tunggakanInfo.classList.add('tunggakan-lunas-style');
+                        tunggakanInfo.classList.remove('tunggakan-warning-style');
+                        tunggakanMessage = `✅ LUNAS ${CURRENT_YEAR}: Anda lunas hingga Desember ${CURRENT_YEAR}. Pembayaran berikutnya dialokasikan untuk iuran mulai ${MONTHS[currentUser.paid2026 % 12]} ${NEXT_YEAR}.`;
                     } else {
-                        periodText = `${startMonth} ${startYear} s/d ${endMonth} ${endYear}`;
+                        tunggakanInfo.classList.add('tunggakan-lunas-style');
+                        tunggakanInfo.classList.remove('tunggakan-warning-style');
+                        tunggakanMessage = `🎉 LUNAS TOTAL: Anda lunas hingga akhir tahun ${NEXT_YEAR}. mantap. Terima kasih!`;
                     }
                 }
+                tunggakanInfo.innerHTML = tunggakanMessage;
+
+                const minPayment = currentUser.rate; 
+                nominalInput.value = nominalInput.value || minPayment; 
+                minPaymentText.textContent = formatRupiah(minPayment);
+                calculatePayment();
             }
             
-            // 3. Update Tampilan
-            tunggakanPaid.textContent = formatRupiah(paidArrears2025);
-            const totalPaidMonths = paidMonths2025Count + paidMonths2026Count;
-            paidMonths.textContent = `${totalPaidMonths} Bulan (${paidMonths2025Count} di ${CURRENT_YEAR}, ${paidMonths2026Count} di ${NEXT_YEAR})`;
-            paymentPeriod.textContent = periodText;
-            totalPayment.textContent = formatRupiah(totalBilled);
-            
-            // 4. Update Button State
-            const minPaymentRequired = rate;
-            if (totalBilled >= minPaymentRequired && totalBilled > 0) {
-                continueButton.disabled = false;
-                nominalInput.style.borderColor = '#00A878';
-            } else {
-                continueButton.disabled = true;
-                 if (inputAmount > 0) {
-                     nominalInput.style.borderColor = '#FFD700';
-                 } else {
-                     nominalInput.style.borderColor = 'transparent';
-                 }
+            paymentStep1.style.display = 'block';
+
+        } else if (step === 2) {
+            if (continueButton.disabled && finalPaymentSummary.total === 0) {
+                showPaymentPage(1);
+                return;
             }
             
-            // 5. Simpan Summary
-            finalPaymentSummary = {
-                total: totalBilled,
-                paidArrears: paidArrears2025,
-                paidMonthsCount: totalPaidMonths,
-                periodText: periodText,
-                paidMonths2025: paidMonths2025Count,
-                paidMonths2026: paidMonths2026Count,
-                arrearsStartMonths: currentUser.arrears2025,
-                paid2026StartMonths: currentUser.paid2026
-            };
-        }
-        
-        function getSummaryText() {
+            paymentStep2.style.display = 'block';
+            
+            finalTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
+            
             let summaryText = '';
             if (finalPaymentSummary.paidArrears > 0) {
                 summaryText += `Pelunasan Tunggakan ${CURRENT_YEAR} (${finalPaymentSummary.paidMonths2025} bln)`;
@@ -3646,137 +3549,317 @@ function saveEditedReport() {
                  if (summaryText) summaryText += ' + ';
                  summaryText += `Iuran ${NEXT_YEAR} (${finalPaymentSummary.paidMonths2026} bln)`;
             }
-            return summaryText || 'Tidak ada alokasi pembayaran.';
-        }
+            finalPaidSummary.textContent = summaryText || 'Tidak ada alokasi pembayaran.';
+            
+            document.querySelectorAll('.method-item').forEach(el => el.classList.remove('selected'));
 
-        function createInvoice(methodType) {
-            const date = new Date();
+        } else if (step === 3) { // QRIS
+            paymentStep3.style.display = 'block';
+            qrUserName.textContent = currentUser.name;
+            qrUserBlock.textContent = currentUser.block;
+            qrTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
+            qrPaidSummary.textContent = getSummaryText();
             
-            const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
-            if (userIndex === -1) return;
-            
-            if (!allUsersAndWarga[userIndex].invoices) allUsersAndWarga[userIndex].invoices = []; 
-            const invoiceCount = allUsersAndWarga[userIndex].invoices.length + 1;
-            
-            const invoiceID = `INV-${currentUser.id}-${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}-${invoiceCount.toString().padStart(2, '0')}`;
-            
-            const allocationText = getSummaryText();
-            
-            const newInvoice = {
-                id: Date.now(),
-                invoiceID: invoiceID,
-                date: date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
-                total: finalPaymentSummary.total,
-                method: methodType,
-                allocation: allocationText
-            };
-            
-            allUsersAndWarga[userIndex].invoices.push(newInvoice);
-            
-            saveUsersData(allUsersAndWarga); 
-        }
-        
-        // --- FUNGSI KONFIRMASI PEMBAYARAN (SIMULASI UPDATE DATA) ---
-        function simulatePaymentConfirmation(methodType) {
+        } else if (step === 4) { // Transfer Bank
+            paymentStep4.style.display = 'block';
+            transferUserName.textContent = currentUser.name;
+            transferUserBlock.textContent = currentUser.block;
+            transferTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
+            transferPaidSummary.textContent = getSummaryText();
+        } else if (step === 5) { // Tunai/E-Wallet (Baru)
             
             if (finalPaymentSummary.total === 0) {
-                 alert('Error: Tidak ada transaksi yang diproses. Nominal pembayaran Rp 0.'); 
-                 return;
+                showPaymentPage(1);
+                return;
             }
-
-            // 1. BUAT INVOICE
-            createInvoice(methodType);
             
-            // 2. Kirim Pesan WA (DIBUKA DI TAB BARU)
-            const total = formatRupiah(finalPaymentSummary.total);
-            const summary = getSummaryText();
-            const waMessage = `Halo Admin, saya *${currentUser.name}* (${currentUser.block}) telah melakukan pembayaran Kas sebesar *${total}* (${summary}) via **${methodType}**.%0A%0AMohon bantuannya untuk verifikasi pembayaran, lampirkan bukti transfer/screenshot di sini .%0A%0ATerima kasih.`;
-            const waUrl = `https://wa.me/${ADMIN_WA_NUMBER}?text=${waMessage}`;
-            window.open(waUrl, '_blank');
+            paymentStep5.style.display = 'block';
             
+            const method = selectedMethod === 'cash' ? 'Tunai' : 'E-Wallet (DANA)';
             
-            // 3. SIMULASI UPDATE DATA PENGGUNA (Backend Update) - Otomatis Lunas
+            paymentTypeHeader.textContent = method;
+            otherUserName.textContent = currentUser.name;
+            otherUserBlock.textContent = currentUser.block;
+            otherTotalDisplay.textContent = formatRupiah(finalPaymentSummary.total);
+            otherPaidSummary.textContent = getSummaryText();
             
-            const newArrears2025 = Math.max(0, currentUser.arrears2025 - finalPaymentSummary.paidMonths2025);
-            const newPaid2026 = Math.min(TOTAL_MONTHS_YEAR, currentUser.paid2026 + finalPaymentSummary.paidMonths2026);
-            
-            const newData = {
-                arrears2025: newArrears2025,
-                paid2026: newPaid2026
-            };
-            
-            updateUserData(newData); 
-            
-            // 4. Tambahkan Notifikasi Pembayaran Berhasil
-            const paymentNotifMessage = `Pembayaran Kas dari ${currentUser.name} (${currentUser.block}) sebesar ${total} via ${methodType} berhasil.`;
-            addNotification('payment', paymentNotifMessage, 'all'); 
-            
-            // 5. Kembali ke Dashboard
-            hidePaymentPage();
-            
-            // 6. Reset input nominal
-            nominalInput.value = '';
-            calculatePayment(); 
-        }
-
-        // --- FUNGSI STEP 3 (QRIS) ---
-        function downloadQR() {
-            alert('Gambar QR Code telah berhasil diunduh ke perangkat Anda.');
-        }
-
-        // --- FUNGSI LOGIN/REGISTRASI ---
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const inputUsername = document.getElementById('usernameInput').value.trim().toLowerCase();
-            const inputPassword = document.getElementById('passwordInput').value.trim();
-            
-            const user = allUsersAndWarga.find(u => u.username === inputUsername && u.password === inputPassword);
-            
-            const loginMessage = document.getElementById('loginMessage');
-            
-            loginMessage.style.display = 'block';
-            
-            if (user) {
-                currentUser = user; 
-                loginMessage.style.color = '#00C49A';
-                loginMessage.innerHTML = `Login Berhasil! Selamat datang, **${user.name}**${user.isAdmin ? ' (ADMIN)' : ''}.`;
-                
-                setTimeout(() => { hideLoginPage(user.name); }, 1000);
-            } else {
-                loginMessage.style.color = '#FF4444';
-                loginMessage.innerHTML = 'Username atau Kata Sandi salah. Silakan coba lagi.';
+            if (selectedMethod === 'cash') {
+                 otherInstructionText.innerHTML = `Mohon hubungi Bendahara atau datang secara langsung ke blok E25-09 untuk penyerahan dana sebesar ${formatRupiah(finalPaymentSummary.total)}.`;
+                 danaDetails.style.display = 'none';
+            } else if (selectedMethod === 'ewallet') {
+                 otherInstructionText.innerHTML = `Silakan transfer sejumlah ${formatRupiah(finalPaymentSummary.total)} ke nomor E-Wallet (DANA) di bawah ini.`;
+                 danaDetails.style.display = 'block';
             }
-        });
-
-        // ======================================================
-        // 6. INISIALISASI & SPLASH SCREEN LOGIC
-        // ======================================================
-
-        function initializeApp() {
-            // Ambil data user yang permanen dan disinkronkan
-            allUsersAndWarga = getSavedUsersData();
-            // Inisialisasi allWargaData tanpa Admin untuk tampilan publik
-            allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
-            
-            // Terapkan tema
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') { updateMode(false); } else { updateMode(true); }
-
-            // Tampilkan splash screen, kemudian beralih ke login
-            setTimeout(() => {
-                loadingPage.classList.add('hidden');
-                
-                setTimeout(() => {
-                    loadingPage.style.display = 'none';
-                    showLoginPage(); 
-                    
-                }, 500); 
-                
-            }, 2000); 
         }
+    }, 400); 
+}
+
+function hidePaymentPage() {
+    paymentPage.style.opacity = 0;
+    setTimeout(() => {
+        paymentPage.style.display = 'none';
+        fabBackButton.style.display = 'none'; 
+        dashboard.style.display = 'block';
+        setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+        currentStep = 0;
+        renderMenu(); 
+    }, 400);
+}
+
+function showPaymentFlow(method) {
+     selectedMethod = method;
+     document.querySelectorAll('.method-item').forEach(el => el.classList.remove('selected'));
+     document.querySelector(`.method-item[data-method="${method}"]`).classList.add('selected');
+
+     if (method === 'qris') {
+         showPaymentPage(3);
+     } else if (method === 'transfer') {
+         showPaymentPage(4);
+     } else if (method === 'cash' || method === 'ewallet') {
+         showPaymentPage(5);
+     }
+ }
+
+
+function calculatePayment() {
+    let inputAmount = parseInt(nominalInput.value) || 0;
+    const rate = currentUser.rate;
+    let totalArrears2025 = currentUser.arrears2025 * rate; 
+    
+    let paidArrears2025 = 0;
+    let paidMonths2025Count = 0;
+    let amountForIuran2026 = 0;
+    let paidMonths2026Count = 0;
+    let totalBilled = 0;
+    let periodText = ' - ';
+    
+    let currentRemainingInput = inputAmount;
+
+    // 1. Prioritaskan Tunggakan 2025
+    if (totalArrears2025 > 0) {
+        if (currentRemainingInput >= totalArrears2025) {
+            paidArrears2025 = totalArrears2025;
+            currentRemainingInput -= totalArrears2025;
+            paidMonths2025Count = currentUser.arrears2025;
+        } else {
+            paidArrears2025 = currentRemainingInput - (currentRemainingInput % rate);
+            paidMonths2025Count = Math.floor(paidArrears2025 / rate);
+            currentRemainingInput = currentRemainingInput % rate; 
+        }
+    }
+    
+    totalBilled += paidArrears2025;
+
+    // 2. Hitung Iuran Bulanan 2026
+    amountForIuran2026 = currentRemainingInput;
+    if (amountForIuran2026 > 0) {
+        const remainingMonths2026 = TOTAL_MONTHS_YEAR - currentUser.paid2026;
         
-        // Panggil inisialisasi aplikasi saat DOM siap
-        document.addEventListener('DOMContentLoaded', initializeApp);
+        let monthsToPay2026 = Math.floor(amountForIuran2026 / rate);
+        
+        paidMonths2026Count = Math.min(monthsToPay2026, remainingMonths2026);
+        
+        const iuran2026Calculated = paidMonths2026Count * rate;
+        totalBilled += iuran2026Calculated;
+        
+        if (paidMonths2026Count > 0) {
+            const totalPaidMonthsBefore = currentUser.paid2026;
+            
+            const startMonthIndex = totalPaidMonthsBefore % 12; 
+            const startYearOffset = Math.floor(totalPaidMonthsBefore / 12);
+            const startYear = NEXT_YEAR + startYearOffset;
+            const startMonth = MONTHS[startMonthIndex];
+
+            const totalPaidMonthsAfter = totalPaidMonthsBefore + paidMonths2026Count;
+
+            const endMonthIndex = (totalPaidMonthsAfter - 1) % 12;
+            const endYearOffset = Math.floor((totalPaidMonthsAfter - 1) / 12);
+            const endYear = NEXT_YEAR + endYearOffset;
+            const endMonth = MONTHS[endMonthIndex];
+            
+            if (paidMonths2026Count === 1) {
+                periodText = `${startMonth} ${startYear}`;
+            } else {
+                periodText = `${startMonth} ${startYear} s/d ${endMonth} ${endYear}`;
+            }
+        }
+    }
+    
+    // 3. Update Tampilan
+    tunggakanPaid.textContent = formatRupiah(paidArrears2025);
+    const totalPaidMonths = paidMonths2025Count + paidMonths2026Count;
+    paidMonths.textContent = `${totalPaidMonths} Bulan (${paidMonths2025Count} di ${CURRENT_YEAR}, ${paidMonths2026Count} di ${NEXT_YEAR})`;
+    paymentPeriod.textContent = periodText;
+    totalPayment.textContent = formatRupiah(totalBilled);
+    
+    // 4. Update Button State
+    const minPaymentRequired = rate;
+    if (totalBilled >= minPaymentRequired && totalBilled > 0) {
+        continueButton.disabled = false;
+        nominalInput.style.borderColor = '#00A878';
+    } else {
+        continueButton.disabled = true;
+         if (inputAmount > 0) {
+             nominalInput.style.borderColor = '#FFD700';
+         } else {
+             nominalInput.style.borderColor = 'transparent';
+         }
+    }
+    
+    // 5. Simpan Summary
+    finalPaymentSummary = {
+        total: totalBilled,
+        paidArrears: paidArrears2025,
+        paidMonthsCount: totalPaidMonths,
+        periodText: periodText,
+        paidMonths2025: paidMonths2025Count,
+        paidMonths2026: paidMonths2026Count,
+        arrearsStartMonths: currentUser.arrears2025,
+        paid2026StartMonths: currentUser.paid2026
+    };
+}
+
+function getSummaryText() {
+    let summaryText = '';
+    if (finalPaymentSummary.paidArrears > 0) {
+        summaryText += `Pelunasan Tunggakan ${CURRENT_YEAR} (${finalPaymentSummary.paidMonths2025} bln)`;
+    }
+    if (finalPaymentSummary.paidMonths2026 > 0) {
+         if (summaryText) summaryText += ' + ';
+         summaryText += `Iuran ${NEXT_YEAR} (${finalPaymentSummary.paidMonths2026} bln)`;
+    }
+    return summaryText || 'Tidak ada alokasi pembayaran.';
+}
+
+function createInvoice(methodType) {
+    const date = new Date();
+    
+    const userIndex = allUsersAndWarga.findIndex(u => u.id === currentUser.id);
+    if (userIndex === -1) return;
+    
+    if (!allUsersAndWarga[userIndex].invoices) allUsersAndWarga[userIndex].invoices = []; 
+    const invoiceCount = allUsersAndWarga[userIndex].invoices.length + 1;
+    
+    const invoiceID = `INV-${currentUser.id}-${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}-${invoiceCount.toString().padStart(2, '0')}`;
+    
+    const allocationText = getSummaryText();
+    
+    const newInvoice = {
+        id: Date.now(),
+        invoiceID: invoiceID,
+        date: date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+        total: finalPaymentSummary.total,
+        method: methodType,
+        allocation: allocationText
+    };
+    
+    allUsersAndWarga[userIndex].invoices.push(newInvoice);
+    
+    saveUsersData(allUsersAndWarga); 
+}
+
+// --- FUNGSI KONFIRMASI PEMBAYARAN (SIMULASI UPDATE DATA) ---
+function simulatePaymentConfirmation(methodType) {
+    
+    if (finalPaymentSummary.total === 0) {
+         alert('Error: Tidak ada transaksi yang diproses. Nominal pembayaran Rp 0.'); 
+         return;
+    }
+
+    // 1. BUAT INVOICE
+    createInvoice(methodType);
+    
+    // 2. Kirim Pesan WA (DIBUKA DI TAB BARU)
+    const total = formatRupiah(finalPaymentSummary.total);
+    const summary = getSummaryText();
+    const waMessage = `Halo Admin, saya *${currentUser.name}* (${currentUser.block}) telah melakukan pembayaran Kas sebesar *${total}* (${summary}) via **${methodType}**.%0A%0AMohon bantuannya untuk verifikasi pembayaran, lampirkan bukti transfer/screenshot di sini .%0A%0ATerima kasih.`;
+    const waUrl = `https://wa.me/${ADMIN_WA_NUMBER}?text=${waMessage}`;
+    window.open(waUrl, '_blank');
+    
+    
+    // 3. SIMULASI UPDATE DATA PENGGUNA (Backend Update) - Otomatis Lunas
+    
+    const newArrears2025 = Math.max(0, currentUser.arrears2025 - finalPaymentSummary.paidMonths2025);
+    const newPaid2026 = Math.min(TOTAL_MONTHS_YEAR, currentUser.paid2026 + finalPaymentSummary.paidMonths2026);
+    
+    const newData = {
+        arrears2025: newArrears2025,
+        paid2026: newPaid2026
+    };
+    
+    updateUserData(newData); 
+    
+    // 4. Tambahkan Notifikasi Pembayaran Berhasil
+    const paymentNotifMessage = `Pembayaran Kas dari ${currentUser.name} (${currentUser.block}) sebesar ${total} via ${methodType} berhasil.`;
+    addNotification('payment', paymentNotifMessage, 'all'); 
+    
+    // 5. Kembali ke Dashboard
+    hidePaymentPage();
+    
+    // 6. Reset input nominal
+    nominalInput.value = '';
+    calculatePayment(); 
+}
+
+// --- FUNGSI STEP 3 (QRIS) ---
+function downloadQR() {
+    alert('Gambar QR Code telah berhasil diunduh ke perangkat Anda.');
+}
+
+// --- FUNGSI LOGIN/REGISTRASI ---
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const inputUsername = document.getElementById('usernameInput').value.trim().toLowerCase();
+    const inputPassword = document.getElementById('passwordInput').value.trim();
+    
+    const user = allUsersAndWarga.find(u => u.username === inputUsername && u.password === inputPassword);
+    
+    const loginMessage = document.getElementById('loginMessage');
+    
+    loginMessage.style.display = 'block';
+    
+    if (user) {
+        currentUser = user; 
+        loginMessage.style.color = '#00C49A';
+        loginMessage.innerHTML = `Login Berhasil! Selamat datang, **${user.name}**${user.isAdmin ? ' (ADMIN)' : ''}.`;
+        
+        setTimeout(() => { hideLoginPage(user.name); }, 1000);
+    } else {
+        loginMessage.style.color = '#FF4444';
+        loginMessage.innerHTML = 'Username atau Kata Sandi salah. Silakan coba lagi.';
+    }
+});
+
+// ======================================================
+// 6. INISIALISASI & SPLASH SCREEN LOGIC
+// ======================================================
+
+function initializeApp() {
+    // Ambil data user yang permanen dan disinkronkan
+    allUsersAndWarga = getSavedUsersData();
+    // Inisialisasi allWargaData tanpa Admin untuk tampilan publik
+    allWargaData = allUsersAndWarga.filter(u => u.id !== 0); 
+    
+    // Terapkan tema
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') { updateMode(false); } else { updateMode(true); }
+
+    // Tampilkan splash screen, kemudian beralih ke login
+    setTimeout(() => {
+        loadingPage.classList.add('hidden');
+        
+        setTimeout(() => {
+            loadingPage.style.display = 'none';
+            showLoginPage(); 
+            
+        }, 500); 
+        
+    }, 2000); 
+}
+
+// Panggil inisialisasi aplikasi saat DOM siap
+document.addEventListener('DOMContentLoaded', initializeApp);
+
 
     </script>
 
@@ -3787,3 +3870,4 @@ function saveEditedReport() {
 </body>
 
 </html>
+
