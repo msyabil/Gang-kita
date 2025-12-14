@@ -797,7 +797,7 @@
             display: block;
             width: 100%;
         }
-
+ 
 
     </style>
 </head>
@@ -1246,65 +1246,100 @@
         </div>
     </div>
     
-    <div class="my-profile-page" id="myProfilePage" style="display: none; opacity: 0;">
-        <button class="fab-back-button" id="fabBackProfileButton" onclick="hideMyProfilePage()">
-            ← 
-        </button>
-        <div class="container">
-            <h1 class="section-title">👤 Data Riwayat Pembayaran Saya</h1>
-            
-            <div class="profile-card">
-                 <div class="profile-info-card" id="myProfileCard">
-                    <span class="profile-icon">🏡</span>
-                    <div class="profile-details">
-                        <p style="font-size: 1.2em; font-weight: 700;">
-                            <span id="profileUserName"></span> 
-                            <span class="status-badge">Aktif</span>
-                        </p>
-                        <p style="font-size: 0.9em;">Blok/No: <strong><span id="profileUserBlock"></span></strong></p>
-                        <p style="font-size: 0.8em; opacity: 0.8;">Iuran Bulanan: <strong><span id="profileUserRate"></span></strong></p>
-                    </div>
-                </div>
-                <h3 style="font-size: 1.0em; margin-top: 0; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">Rincian Pembayaran Kas Periode 2025-2026</h3>
+<div class="my-profile-page" id="myProfilePage" style="display: none; opacity: 0;">
+    <button class="fab-back-button" id="fabBackProfileButton" onclick="hideMyProfilePage()">
+        ←
+    </button>
+    <div class="container">
+        <h1 class="section-title">👤 Data Riwayat Pembayaran Saya</h1>
 
-                <table class="payment-history-table">
-                    <thead>
-                        <tr>
-                            <th>Bulan</th>
-                            <th>Periode 2025</th>
-                            <th>Periode 2026</th>
-                        </tr>
-                    </thead>
-                    <tbody id="paymentHistoryBody">
-                        </tbody>
-                </table>
-                
-                <h3 style="font-size: 1.0em; margin-top: 25px; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">Ringkasan Total Tagihan</h3>
-                <table class="profile-detail-table">
-                    <tbody>
-                        <tr>
-                            <th>Total Tunggakan 2025:</th>
-                            <td id="profileArrearsTotal">Rp 0</td>
-                        </tr>
-                         <tr>
-                            <th>Sisa Pembayaran 2026:</th>
-                            <td id="profileUnpaid2026Total">Rp 0</td>
-                        </tr>
-                        <tr class="table-row-total">
-                            <th>Subtotal Tagihan Total:</th>
-                            <td id="profileSubtotalTotal">Rp 0</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <button class="continue-button" style="margin-top: 30px;" onclick="showPaymentPage(1)">
-                    Bayar Sekarang
+        <div class="profile-card">
+            <div class="profile-info-card" id="myProfileCard">
+                <span class="profile-icon">🏡</span>
+                <div class="profile-details">
+                    <p style="font-size: 1.2em; font-weight: 700;">
+                        <span id="profileUserName"></span>
+                        <span class="status-badge">Aktif</span>
+                    </p>
+                    <p style="font-size: 0.9em;">Blok/No: <strong><span id="profileUserBlock"></span></strong></p>
+                    <p style="font-size: 0.8em; opacity: 0.8;">Iuran Bulanan: <strong><span id="profileUserRate"></span></strong></p>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.0em; margin-top: 25px; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">
+                Rincian Pembayaran Kas Periode <span id="year2025Display"></span>
+            </h3>
+            <h4 style="font-size: 0.8em; margin-top: 0; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">
+                *Agustus 2025 Status: 
+                <strong style="color: #00A878;">Gratis (Free)</strong> 
+                dan tidak dihitung dalam total tunggakan.
+            </h4>
+            
+            <button id="toggle2025Button" 
+                    onclick="togglePaymentHistory(2025)" 
+                    class="action-button toggle-button" 
+                    style="width: 100%; margin-top: 10px; margin-bottom: 10px; display: none;">
                 </button>
 
-            </div>
+            <table class="payment-history-table" id="paymentHistoryTable2025">
+                <thead>
+                    <tr>
+                        <th>Bulan</th>
+                        <th>Status Pembayaran</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentHistoryBody2025">
+                    </tbody>
+            </table>
+
+            <h3 style="font-size: 1.0em; margin-top: 25px; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">
+                Rincian Pembayaran Kas Periode <span id="year2026Display"></span>
+            </h3>
+            
+            <button id="toggle2026Button" 
+                    onclick="togglePaymentHistory(2026)" 
+                    class="action-button toggle-button" 
+                    style="width: 100%; margin-top: 10px; margin-bottom: 10px; display: none;">
+                </button>
+
+            <table class="payment-history-table" id="paymentHistoryTable2026">
+                <thead>
+                    <tr>
+                        <th>Bulan</th>
+                        <th>Status Pembayaran</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentHistoryBody2026">
+                    </tbody>
+            </table>
+
+            <h3 style="font-size: 1.0em; margin-top: 25px; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">Ringkasan Total Tagihan</h3>
+            <table class="profile-detail-table">
+                <tbody>
+                    <tr>
+                        <th>Total Tunggakan <span id="summaryYear2025"></span>:</th>
+                        <td id="profileArrearsTotal">Rp 0</td>
+                    </tr>
+                    <tr>
+                        <th>Sisa Pembayaran <span id="summaryYear2026"></span>:</th>
+                        <td id="profileUnpaid2026Total">Rp 0</td>
+                    </tr>
+                    <tr class="table-row-total">
+                        <th>Subtotal Tagihan Total:</th>
+                        <td id="profileSubtotalTotal">Rp 0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button class="continue-button" style="margin-top: 30px;" onclick="showPaymentPage(1)">
+                Bayar Sekarang
+            </button>
         </div>
     </div>
-    
+</div>
+
+
+
     <div class="my-profile-page" id="notificationPage" style="display: none; opacity: 0;">
         <button class="fab-back-button" id="fabBackNotifButton" onclick="handleFabClick()">
             ← 
@@ -1438,16 +1473,16 @@
                     <div style="text-align: center; flex: 1; padding: 15px 5px; border-radius: 12px; box-shadow: var(--inset-shadow); background-color: var(--bg-main);">
                         <h3 style="margin: 0 0 5px; font-size: 0.9em; font-weight: 500; color: var(--neon-color-header);">PEMASUKAN KAS</h3>
                         <strong style="font-size: 1.4em; color: var(--neon-color-header);" id="totalIncome"
-                        >Rp 250.000</strong>
+                        >Rp 0</strong>
                     </div>
                     <div style="text-align: center; flex: 1; padding: 15px 5px; border-radius: 12px; box-shadow: var(--inset-shadow); background-color: var(--bg-main);">
                         <h3 style="margin: 0 0 5px; font-size: 0.9em; font-weight: 500; color: var(--running-text-bg);">PENGELUARAN KAS</h3>
                         <strong style="font-size: 1.4em; color: var(--running-text-bg);" id="totalExpense"
-                        >Rp 959.800</strong>
+                        >Rp 0</strong>
                     </div>
                 </div>
-                
-                <h3 style="font-size: 1.0em; margin-top: 0; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">Rincian Pengeluaran (Simulasi)</h3>
+         
+               <h3 style="font-size: 1.0em; margin-top: 0; border-bottom: 1px solid var(--text-main); padding-bottom: 5px;">Rincian Pengeluaran</h3>
                 
                 <table class="payment-history-table">
                     <thead>
@@ -1458,20 +1493,22 @@
                         </tr>
                     </thead>
                     <tbody id="expenseTableBody">
+  
+  
                         <tr>
-                            <td>01/12/25</td>
-                            <td style="text-align: left;">Pembelian lampu jalan 2 pcs</td>
-                            <td class="status-unpaid">Rp 60.000</td>
+                           <td>01/12/25</td>
+                            <td style="text-align: left;">.......</td>
+                            <td class="status-unpaid">Rp 0</td>
                         </tr>
-                        <tr>
+                        <tr> 
                             <td>05/12/25</td>
-                            <td style="text-align: left;">Biaya Konsumsi Rapat Bulanan</td>
-                            <td class="status-unpaid">Rp 150.000</td>
+                            <td style="text-align: left;">.....</td>
+                            <td class="status-unpaid">Rp 00</td>
                         </tr>
                         <tr>
                             <td>07/12/25</td>
-                            <td style="text-align: left;">Biaya perbaikan gerbang gang</td>
-                            <td class="status-unpaid">Rp 759.800</td>
+                            <td style="text-align: left;">....</td>
+                            <td class="status-unpaid">Rp 00</td>
                         </tr>
                         </tbody>
                 </table>
@@ -1540,11 +1577,15 @@
 // ======================================================
 
 // Variabel Global dan Data User
-const MONTHS = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+const MONTHS = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", 
+"September", "Oktober", "November", "Desember"];
+ 
 const ADMIN_WA_NUMBER = '6287837644379'; 
 const CURRENT_YEAR = 2025; 
 const NEXT_YEAR = 2026;   
-const TOTAL_MONTHS_YEAR = 12;
+const TOTAL_MONTHS_YEAR= 11; 
+
 const USERS_STORAGE_KEY = 'kasWargaUsersData'; // Kunci untuk data warga/pembayaran di localStorage
 const REPORT_STORAGE_KEY = 'kasWargaReportContent'; // <<< PERBAIKAN: Kunci untuk Konten Laporan
 
@@ -1580,10 +1621,10 @@ const initialUsersAndWarga = [
             name: 'Novry', 
             block: 'E21-38', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'novry', 
-            password: '0000', 
+            password: '2138', 
             isAccount: true, 
             invoices: [] 
             },
@@ -1592,10 +1633,10 @@ const initialUsersAndWarga = [
             name: 'Fathur', 
             block: 'E21-39', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 2, 
             paid2026: 0, 
             username: 'fathur', 
-            password: '0000', 
+            password: '2139', 
             isAccount: true, 
             invoices: [] 
             },
@@ -1604,10 +1645,10 @@ const initialUsersAndWarga = [
             name: 'Hanif', 
             block: 'E21-41', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'hanif', 
-            password: '0000', 
+            password: '2141', 
             isAccount: true, 
             invoices: [] 
             },
@@ -1619,7 +1660,7 @@ const initialUsersAndWarga = [
             arrears2025: 0, 
             paid2026: 0, 
             username: 'eka adi', 
-            password: '0000', 
+            password: '2142', 
             isAccount: true, 
             invoices: [] 
             },
@@ -1628,10 +1669,10 @@ const initialUsersAndWarga = [
             name: 'Larasati', 
             block: 'E21-43', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 2, 
             paid2026: 0, 
             username: 'larasati', 
-            password: '0000', 
+            password: '2143', 
             isAccount: true, 
             invoices: [] 
             },
@@ -1653,7 +1694,7 @@ const initialUsersAndWarga = [
             block: 'E21-47', 
             rate: 25000, 
             arrears2025: 0, 
-            paid2026: 0, 
+            paid2026: 1, 
             username: 'rakel', 
             password: '0000', 
             isAccount: true, 
@@ -1664,7 +1705,7 @@ const initialUsersAndWarga = [
             name: 'Hendra', 
             block: 'E21-48', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'hendra', 
             password: '0000', 
@@ -1676,7 +1717,7 @@ const initialUsersAndWarga = [
             name: 'Nana Rusmana', 
             block: 'E21-49', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'nana', 
             password: '0000', 
@@ -1688,7 +1729,7 @@ const initialUsersAndWarga = [
             name: 'Aji', 
             block: 'E21-50', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 2, 
             paid2026: 0, 
             username: 'aji', 
             password: '0000', 
@@ -1699,11 +1740,11 @@ const initialUsersAndWarga = [
             id: 1, 
             name: 'Rohman', 
             block: 'E21-51', 
-         rate: 25000, 
-         arrears2025: 0, 
-          paid2026: 0, 
+           rate: 25000, 
+          arrears2025: 0, 
+            paid2026: 1, 
             username: 'rohman', 
-            password: '2788',
+            password: '2151',
             isAccount: true, 
             invoices: [] 
             },
@@ -1714,7 +1755,7 @@ const initialUsersAndWarga = [
             name: 'Darmadi', 
             block: 'E21-52', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'darmadi', 
             password: '0000', 
@@ -1726,7 +1767,7 @@ const initialUsersAndWarga = [
             name: 'Viko', 
             block: 'E21-53', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'viko', 
             password: '0000', 
@@ -1738,7 +1779,7 @@ const initialUsersAndWarga = [
             name: 'Hendri', 
             block: 'E21-55', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'hendri', 
             password: '0000', 
@@ -1750,7 +1791,7 @@ const initialUsersAndWarga = [
             name: 'Riyandi', 
             block: 'E21-56', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 2, 
             paid2026: 0, 
             username: 'riyandi', 
             password: '0000', 
@@ -1774,7 +1815,7 @@ const initialUsersAndWarga = [
             name: 'Iwan', 
             block: 'E21-61', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 2, 
             paid2026: 0, 
             username: 'iwan', 
             password: '0000', 
@@ -1798,7 +1839,7 @@ const initialUsersAndWarga = [
             name: 'Koko', 
             block: 'E21-66', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'koko', 
             password: '0000', 
@@ -1810,7 +1851,7 @@ const initialUsersAndWarga = [
             name: 'Rico', 
             block: 'E21-67', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'rico', 
             password: '0000', 
@@ -1822,7 +1863,7 @@ const initialUsersAndWarga = [
             name: 'Irwan', 
             block: 'E21-68', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 4, 
             paid2026: 0, 
             username: 'irwan', 
             password: '0000', 
@@ -1834,7 +1875,7 @@ const initialUsersAndWarga = [
             name: 'Toro', 
             block: 'E21-69', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'toro', 
             password: '0000', 
@@ -1846,7 +1887,7 @@ const initialUsersAndWarga = [
             name: 'Topan', 
             block: 'E21-79', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 3, 
             paid2026: 0, 
             username: 'topan', 
             password: '0000', 
@@ -1858,7 +1899,7 @@ const initialUsersAndWarga = [
             name: 'Heri', 
             block: 'E21-71', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 4, 
             paid2026: 0, 
             username: 'heri', 
             password: '0000', 
@@ -1870,7 +1911,7 @@ const initialUsersAndWarga = [
             name: 'Bayu Ade', 
             block: 'E21-72', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 6, 
             paid2026: 0, 
             username: 'bayu ade', 
             password: '0000', 
@@ -1882,19 +1923,21 @@ const initialUsersAndWarga = [
             name: 'Firly', 
             block: 'E21-73', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'firly', 
             password: '0000', 
             isAccount: true, 
             invoices: [] 
             },
+            
+    //        blok E25
             { 
             id: 29, 
             name: 'Krisna', 
             block: 'E25-03', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 8, 
             paid2026: 0, 
             username: 'krisna', 
             password: '0000', 
@@ -1906,7 +1949,7 @@ const initialUsersAndWarga = [
             name: 'Deny', 
             block: 'E25-08', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'deny', 
             password: '0000', 
@@ -1930,7 +1973,7 @@ const initialUsersAndWarga = [
             name: 'Alfian', 
             block: 'E25-10', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'alfian', 
             password: '0000', 
@@ -1955,7 +1998,7 @@ const initialUsersAndWarga = [
             block: 'E25-15', 
             rate: 25000, 
             arrears2025: 0, 
-            paid2026: 0, 
+            paid2026: 1, 
             username: 'deri', 
             password: '0000', 
             isAccount: true, 
@@ -1978,7 +2021,7 @@ const initialUsersAndWarga = [
             name: 'Dede Dwi', 
             block: 'E25-19', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 4, 
             paid2026: 0, 
             username: 'dede dwi', 
             password: '0000', 
@@ -1990,7 +2033,7 @@ const initialUsersAndWarga = [
             name: 'Anang', 
             block: 'E25-20', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 10, 
             paid2026: 0, 
             username: 'anang', 
             password: '0000', 
@@ -2002,7 +2045,7 @@ const initialUsersAndWarga = [
             name: 'Parulian', 
             block: 'E25-21', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 6, 
             paid2026: 0, 
             username: 'parulian', 
             password: '0000', 
@@ -2011,12 +2054,12 @@ const initialUsersAndWarga = [
             },
             { 
             id: 39, 
-            name: 'Bayu Nur', 
+            name: 'Bayu Nur faizin', 
             block: 'E25-22', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
-            username: 'bayu nur', 
+            username: 'bayu', 
             password: '0000', 
             isAccount: true, 
             invoices: [] 
@@ -2026,7 +2069,7 @@ const initialUsersAndWarga = [
             name: 'Waluyo', 
             block: 'E25-23', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 10, 
             paid2026: 0, 
             username: 'waluyo', 
             password: '0000', 
@@ -2038,7 +2081,7 @@ const initialUsersAndWarga = [
             name: 'Hadi', 
             block: 'E25-27', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'hadi', 
             password: '0000', 
@@ -2062,7 +2105,7 @@ const initialUsersAndWarga = [
             name: 'Budi Almawan', 
             block: 'E25-30', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 2, 
             paid2026: 0, 
             username: 'budi almawan', 
             password: '0000', 
@@ -2074,7 +2117,7 @@ const initialUsersAndWarga = [
             name: 'Bagus', 
             block: 'E25-31', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 5, 
             paid2026: 0, 
             username: 'bagus', 
             password: '0000', 
@@ -2098,7 +2141,7 @@ const initialUsersAndWarga = [
             name: 'Dede Gunawan', 
             block: 'E25-33', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 1, 
             paid2026: 0, 
             username: 'dede gunawan', 
             password: '0000', 
@@ -2110,7 +2153,7 @@ const initialUsersAndWarga = [
             name: 'Kardan', 
             block: 'E25-35', 
             rate: 25000, 
-            arrears2025: 0, 
+            arrears2025: 2, 
             paid2026: 0, 
             username: 'kardan', 
             password: '0000', 
@@ -2157,6 +2200,10 @@ let finalPaymentSummary = {};
 let currentStep = 0; 
 let isTableExpanded = false; 
 let selectedInvoice = null; 
+// Variabel baru untuk status toggle
+let is2025Expanded = false;
+let is2026Expanded = false;
+
 
 // Variabel Notifikasi Global
 const NOTIFICATION_KEY = 'kasWargaNotifications';
@@ -2197,7 +2244,6 @@ const adminInvoiceListBody = document.getElementById('adminInvoiceListBody');
 // Elemen Form Payment
 const nominalInput = document.getElementById('nominalInput');
 
-
 // ======================================================
 // 1.5 FUNGSI DATA STORAGE (LOKAL) & CRUD PERMANEN
 // ======================================================
@@ -2206,6 +2252,8 @@ const nominalInput = document.getElementById('nominalInput');
  * Mengambil data pengguna dari localStorage atau menginisialisasi dari initialUsersAndWarga.
  * Melakukan sinkronisasi: Data statis (nama, rate, dll) diperbarui dari kode sumber, 
  * sementara data dinamis (arrears, paid2026, invoices) dipertahankan dari localStorage.
+ * * !!! PERUBAHAN: Data Dinamis (arrears2025, paid2026, invoices) kini JUGA di-update dari
+ * initialUsersAndWarga untuk memungkinkan editing manual via code.
  */
 function getSavedUsersData() {
     const storedData = localStorage.getItem(USERS_STORAGE_KEY);
@@ -2222,7 +2270,8 @@ function getSavedUsersData() {
             // Jika ID belum ada di localStorage, tambahkan data awal lengkap
             updatedData.push(initialUser);
         } else {
-            // Update info dasar/statis dari initialUser (untuk edit manual via kode)
+            // Update SEMUA info (Statis & Dinamis) dari initialUser untuk menimpa localStorage
+            // INI ADALAH PERUBAHAN UTAMA
             Object.assign(storedUser, {
                 name: initialUser.name,
                 block: initialUser.block,
@@ -2231,7 +2280,11 @@ function getSavedUsersData() {
                 password: initialUser.password,
                 isAccount: initialUser.isAccount,
                 isAdmin: initialUser.isAdmin || false,
-                // arrears2025, paid2026, invoices tetap dari storedUser
+                
+                // BARIS BARU: DATA DINAMIS KINI DI-UPDATE DARI KODE SUMBER
+                arrears2025: initialUser.arrears2025, 
+                paid2026: initialUser.paid2026,
+                invoices: initialUser.invoices || []
             });
             
             const index = updatedData.findIndex(u => u.id === initialUser.id);
@@ -2251,6 +2304,8 @@ function getSavedUsersData() {
     
     return updatedData;
 }
+// ... sisa kode tidak berubah
+
 
 function saveUsersData(users) {
     const dataToSave = users.map(user => ({
@@ -2824,39 +2879,82 @@ function handleFabClick() {
     }
 }
 
+// --- 
+ 
+
+// ... kode di atas tidak berubah ...
+
+// --- FUNGSI HALAMAN DATA SAYA ---
 // --- FUNGSI HALAMAN DATA SAYA ---
 function showMyProfilePage() {
+     // Pastikan ini adalah pengecekan pertama.
      if (!currentUser) {
         showLoginPage();
         return;
     }
 
-    // AMBIL DATA TERBARU DARI ARRAY GLOBAL SEBELUM MERENDER
+    // 1. AMBIL DATA TERBARU DARI ARRAY GLOBAL SEBELUM MERENDER
+    // Ini penting agar tunggakan yang baru dibayar ter-update
     const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
     if(latestUser) currentUser = latestUser;
     
-    transitionToPage(myProfilePage, 7);
-    renderPaymentHistory(); 
+    // Set status default saat masuk halaman (Hanya tampilkan 2 bulan pertama)
+    is2025Expanded = false;
+    is2026Expanded = false;
+    
+    // 2. Transisi Halaman ke ID myProfilePage (step 7)
+    // Pastikan ID 'myProfilePage' sudah benar di HTML Anda
+    transitionToPage(myProfilePage, 7); 
+    
+    // 3. Panggil fungsi rendering data setelah transisi
+    // Diberi delay agar data dimuat setelah transisi selesai (opsional)
+    setTimeout(renderPaymentHistory, 350); 
 }
+// --- FUNGSI NAVIGASI FAB ---
+
+// ... fungsi handleFabClick() sudah ada
+
+// --- FUNGSI HALAMAN DATA SAYA ---
+
+// ... fungsi showMyProfilePage() sudah ada
 
 function hideMyProfilePage() {
      myProfilePage.style.opacity = 0;
      setTimeout(() => {
         myProfilePage.style.display = 'none';
-        fabBackProfileButton.style.display = 'none';
+        
+        // PASTIKAN TOMBOL KEMBALI HILANG
+        fabBackProfileButton.style.display = 'none'; 
+        
+        // PASTIKAN DASHBOARD MUNCUL
         dashboard.style.display = 'block';
-        setTimeout(() => { dashboard.style.opacity = 1; }, 50);
+        setTimeout(() => { 
+            dashboard.style.opacity = 1; 
+        }, 50);
+        
+        // RESET STATUS
         currentStep = 0;
+        
+        // RENDER ULANG MENU (untuk memastikan notif badge terupdate)
         renderMenu(); 
     }, 400);
 }
+
+// ...
 
 function renderPaymentHistory() {
     profileUserName.textContent = currentUser.name;
     profileUserBlock.textContent = currentUser.block;
     profileUserRate.textContent = formatRupiah(currentUser.rate);
     
-    let html = '';
+    // Update tahun di judul ringkasan (Memerlukan ID summaryYear2025 & summaryYear2026)
+    document.getElementById('year2025Display').textContent = CURRENT_YEAR;
+    document.getElementById('year2026Display').textContent = NEXT_YEAR;
+    document.getElementById('summaryYear2025').textContent = CURRENT_YEAR;
+    document.getElementById('summaryYear2026').textContent = NEXT_YEAR;
+    
+    let html2025 = '';
+    let html2026 = '';
     
     // Re-fetch data terbaru dari array global
     const latestUser = allUsersAndWarga.find(u => u.id === currentUser.id);
@@ -2866,21 +2964,72 @@ function renderPaymentHistory() {
     const paid2025Months = TOTAL_MONTHS_YEAR - currentUser.arrears2025;
     const paid2026Months = currentUser.paid2026;      
     
+    // Inisialisasi variabel perhitungan tagihan
+    let totalUnpaid2025Months = 0;
+    
+    // --- RENDER 2025 ---
+    // Logika ini yang harus diubah dari 2 menjadi nilai yang lebih kecil
+    const displayLimit2025 = is2025Expanded ? TOTAL_MONTHS_YEAR : 2; 
+    const historyTable2025 = document.getElementById('paymentHistoryTable2025'); // Ambil elemen tabel
+    
     for (let i = 0; i < TOTAL_MONTHS_YEAR; i++) {
         const monthName = MONTHS[i];
-        
-        // Status 2025
         let status2025Text = '';
         let status2025Class = '';
-        if (i < paid2025Months) {
+        
+        // Aturan Khusus: Agustus 2025 (Indeks 7) adalah FREE
+        if (i === 7) { 
+            status2025Text = 'FREE';
+            status2025Class = 'status-ok';
+        } else if (i < paid2025Months) {
             status2025Text = 'LUNAS';
             status2025Class = 'status-paid';
         } else {
             status2025Text = 'BELUM LUNAS';
             status2025Class = 'status-unpaid';
+            
+            // HANYA HITUNG JIKA BUKAN AGUSTUS (i !== 7)
+            if (i !== 7) {
+                 totalUnpaid2025Months++;
+            }
         }
+
+        const isHiddenRow = i >= displayLimit2025;
+        // Tambahkan style display:none jika baris harus disembunyikan
+        const rowStyle = isHiddenRow ? 'display: none;' : '';
         
-        // Status 2026
+        html2025 += `
+            <tr style="${rowStyle}">
+                <td>${monthName}</td>
+                <td class="${status2025Class}">${status2025Text}</td>
+            </tr>
+        `;
+    }
+    document.getElementById('paymentHistoryBody2025').innerHTML = html2025;
+    
+    // Tampilkan/Sembunyikan Tabel secara keseluruhan jika perlu
+    // historyTable2025.style.display = 'table'; // Tabel harus selalu 'table' jika data ada
+
+    
+    // --- TOGGLE BUTTON 2025 ---
+    const toggle2025Button = document.getElementById('toggle2025Button');
+    if (TOTAL_MONTHS_YEAR > 2) {
+        toggle2025Button.style.display = 'block';
+        toggle2025Button.textContent = is2025Expanded 
+            ? 'Sembunyikan' 
+            : `Tampilkan ${TOTAL_MONTHS_YEAR - 2} Bulan Lainnya`;
+    } else {
+        toggle2025Button.style.display = 'none';
+    }
+ 
+
+    // --- RENDER 2026 ---
+    const displayLimit2026 = is2026Expanded ? TOTAL_MONTHS_YEAR : 2;
+    const historyTable2026 = document.getElementById('paymentHistoryTable2026'); // Ambil elemen tabel
+    
+    for (let i = 0; i < TOTAL_MONTHS_YEAR; i++) {
+        const monthName = MONTHS[i];
+        
         let status2026Text = '';
         let status2026Class = '';
         if (i < paid2026Months) {
@@ -2891,18 +3040,35 @@ function renderPaymentHistory() {
             status2026Class = 'status-unpaid';
         }
         
-        html += `
-            <tr>
+        const isHiddenRow = i >= displayLimit2026;
+        // Tambahkan style display:none jika baris harus disembunyikan
+        const rowStyle = isHiddenRow ? 'display: none;' : '';
+
+
+        html2026 += `
+            <tr style="${rowStyle}">
                 <td>${monthName}</td>
-                <td class="${status2025Class}">${status2025Text}</td>
                 <td class="${status2026Class}">${status2026Text}</td>
             </tr>
         `;
     }
+    document.getElementById('paymentHistoryBody2026').innerHTML = html2026;
     
-    paymentHistoryBody.innerHTML = html;
+    // Tampilkan/Sembunyikan Tabel secara keseluruhan jika perlu
+    // historyTable2026.style.display = 'table'; // Tabel harus selalu 'table' jika data ada
     
-    const totalUnpaid2025Months = currentUser.arrears2025;
+     // --- TOGGLE BUTTON 2026 ---
+    const toggle2026Button = document.getElementById('toggle2026Button');
+    if (TOTAL_MONTHS_YEAR > 2) {
+        toggle2026Button.style.display = 'block';
+        toggle2026Button.textContent = is2026Expanded 
+            ? 'Sembunyikan' 
+            : `Tampilkan ${TOTAL_MONTHS_YEAR - 2} Bulan Lainnya`;
+    } else {
+        toggle2026Button.style.display = 'none';
+    }
+    
+    // --- PERHITUNGAN ULANG TOTAL TAGIHAN ---
     const totalUnpaid2026Months = Math.max(0, TOTAL_MONTHS_YEAR - currentUser.paid2026);
     
     const totalArrearsRupiah = totalUnpaid2025Months * currentUser.rate;
@@ -2913,6 +3079,23 @@ function renderPaymentHistory() {
     profileUnpaid2026Total.textContent = `${totalUnpaid2026Months} bln (${formatRupiah(totalUnpaid2026Rupiah)})`;
     profileSubtotalTotal.textContent = formatRupiah(subtotalRupiah);
 }
+
+// ... kode di bawah tidak berubah ...
+
+
+
+function toggleTable(tableId) {
+        var table = document.getElementById(tableId);
+        if (table.style.display === "none") {
+            table.style.display = "table"; // atau "block" jika itu bukan tabel
+        } else {
+            table.style.display = "none";
+        }
+    }
+
+
+
+
 
 // --- FUNGSI HALAMAN DATA WARGA ---
 function showDataWargaPage() {
@@ -3130,8 +3313,17 @@ function hideReportPage() {
         renderMenu(); 
     }, 400);
 }
+ 
+// --- FUNGSI TOGGLE BARU ---
+function togglePaymentHistory(year) {
+    if (year === 2025) {
+        is2025Expanded = !is2025Expanded;
+    } else if (year === 2026) {
+        is2026Expanded = !is2026Expanded;
+    }
+    renderPaymentHistory(); 
+}
 
-// ======================================================
 // 4. FUNGSI ADMIN KONTROL (WARGA & INVOICE)
 // ======================================================
 
@@ -3861,9 +4053,7 @@ function initializeApp() {
 document.addEventListener('DOMContentLoaded', initializeApp);
 
 
-    </script>
-
-
+     </script>
 
 
 
